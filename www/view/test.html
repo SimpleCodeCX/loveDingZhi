@@ -8,23 +8,26 @@
 
 </head>
 <body  ng-controller="myCtrl">
-<ion-header-bar class="bar-positive">
-  <h1 class="title">collection-repeat</h1>
-</ion-header-bar>
-<ion-content>
-  <ion-list>
-    <ion-item collection-repeat="item in items">
-      {{item}}
-      <ion-option-button class="button-positive">...</ion-option-button>
-    </ion-item>
-  </ion-list>
-</ion-content>
+<ion-slide-box style="border: 1px solid red;" does-continue="true" auto-play="true" slide-interval="1000" show-pager="true" >
+  <ion-slide>
+    <img style="height: 350px;" src="../img/ben.png">
+  </ion-slide>
+  <ion-slide>
+    <img style="height: 350px;" src="../img/mike.png">
+  </ion-slide>
+  <ion-slide>
+    <img style="height: 350px;" src="../img/perry.png">
+  </ion-slide>
+  <ion-slide>
+    <img src="../img/max.png" style="height: 350px;">
+  </ion-slide>
+</ion-slide-box>
+
+
 <script type="text/javascript">
   angular.module("myApp",["ionic"])
-    .controller("myCtrl",function($scope){
-      $scope.items = [];
-      for(var i=0;i<5000;i++)
-        $scope.items.push(["item",i+1].join(""));
+    .controller("myCtrl",function($scope,$ionicSlideBoxDelegate){
+
     });
 
 

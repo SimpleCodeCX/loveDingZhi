@@ -2,7 +2,7 @@
  * Created by simple on 2016/10/15.
  */
 
-angular.module("starter",["ionic"])
+angular.module("starter",["ionic","starter.controllers"])
   .run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -62,6 +62,49 @@ angular.module("starter",["ionic"])
           }
         }
     })
+      .state("design_drawing",{
+      url:"/design_drawing",
+      templateUrl:"design/design_drawing.html",
+        controller: 'Design_drawingCtrl'
+    })
+      .state("designer",{
+      url:"/designer",
+      templateUrl:"design/designer.html",
+        controller: 'DesignerCtrl'
+    })
+      .state("apply_designer",{
+        url:"/apply_designer",
+        templateUrl:"design/apply_designer.html",
+        controller:"Apply_designerCtrl"
+      })
+
+
+      .state("designer_details",{
+        url:"/designer_details",
+        templateUrl:"design/designer_details.html",
+        controller:"Designer_detailsCtrl"
+      })
+      .state("sjg_details",{
+        url:"/sjg_details",
+        templateUrl:"design/sjg_details.html"
+      })
+
+
+      .state("logo",{
+      url:"/logo",
+      templateUrl:"design/logo.html",
+        controller:"LogoCtrl"
+    })
+
+ /*     .state("design_tabs.design_drawing",{
+        url:"/design_drawing",
+        views:{
+          "design_page":{
+            templateUrl:"design/design_drawing.html"
+          }
+        }
+
+      })*/
       .state("tab.aiDingZhi",{
         url:"/aiDingZhi",
         views:{

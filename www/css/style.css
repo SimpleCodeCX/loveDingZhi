@@ -1,1 +1,107 @@
 /* Empty. Add your own CSS if you like */
+
+/*修改tabs栏的未选中颜色*/
+.tabs-striped.tabs-stable .tab-item{
+color: #666;
+}
+.testBorder{
+  border: 1px solid red;
+}
+
+/*design页面*/
+/*------------------------------->>>>>>>>*/
+/*design页面里的幻灯片样式（ion-slide-box），设置其高宽度*/
+.design_page .design-slide ion-slide{
+  height: 300px;
+  width: 100%;
+}
+.design_page .design-slide ion-slide img{
+  height:300px;
+  width: 100%;
+}
+/*design页面里的slider-pager的高度和大小*/
+.design_page .slider-pager .slider-pager-page{
+  font-size: 15px;
+}
+.design_page .slider-pager{
+  bottom: 20px;
+}
+
+/*design_drawing页面*/
+/*------------------------------->>>>>>>>*/
+.design_drawing_page .row{
+  height: 185px;
+}
+.design_drawing_page .row .col{
+  text-align: center;
+  line-height: 20px;
+  height: 185px;
+}
+.design_drawing_page .row .col .img_div img{
+  border: 1px solid black;
+  box-shadow: 1px 1px 1px;
+  height: 140px;
+}
+.design_drawing_page .row .col img{
+  height: 136px;
+  width: 100%;
+}
+
+
+/*drawing_details页面*/
+/*------------------------------->>>>>>>>*/
+.ion_modal_view {
+  filter:alpha(opacity=50);
+  -moz-opacity:0.5;
+  -khtml-opacity: 0.5;
+  opacity: 0.6;
+}
+.ion_modal_view2 {
+  filter:alpha(opacity=50);
+  -moz-opacity:0.5;
+  -khtml-opacity: 0.5;
+  opacity: 0.9;
+}
+
+/*design_details_page页面*/
+/*------------------------------->>>>>>>>*/
+.design_details_page .row{
+  height: 200px;
+}
+.design_details_page .row .col{
+  text-align: center;
+  line-height: 20px;
+  height: 200px;
+}
+.design_details_page .row .col .img_div img{
+  border: 1px solid black;
+  box-shadow: 1px 1px 1px;
+  height: 140px;
+}
+.design_details_page .row .col img{
+  height: 150px;
+  width: 100%;
+}
+/*logo_page页面*/
+/*------------------------------->>>>>>>>*/
+.logo_page .row{
+  height: 200px;
+}
+.logo_page .row .col{
+  text-align: center;
+  line-height: 20px;
+  height: 200px;
+}
+.logo_page .row .col .img_div img{
+  border: 1px solid black;
+  box-shadow: 1px 1px 1px;
+  height: 140px;
+}
+.logo_page .row .col img{
+  height: 150px;
+  width: 100%;
+}
+
+
+
+

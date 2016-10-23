@@ -1,0 +1,68 @@
+<div class="">
+  <ion-view   hide-back-button="true">
+    <ion-nav-buttons side="left" >
+      <a class="button button-clear " href="#/tab/design">
+        <i class="icon ion-chevron-left"></i>
+        返回
+      </a>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+      <a class="button button-small button-balanced" href="#/apply_designer">
+        成为设计师
+      </a>
+    </ion-nav-buttons>
+    <ion-nav-title class="">
+      <i class="icon ion-paper-airplane"></i>
+      设计师
+    </ion-nav-title>
+
+    <ion-content class="stable-bg">
+
+
+
+        <div class="row row-wrap" >
+          <div class="col col-50"  ng-repeat="design in design_datas" ng-click="goToDesignDetails()">
+            <div class="" style="padding: 0;text-align: center;">
+              <a class="button button-balanced" style="border-radius: 30px;">
+                <img class="button" style="height: 130px;width: 120px;
+                           border-radius: 100px;" src="../img/touxiang/{{design.touxiang}}">
+              </a>
+              <div style="margin-top: 10px;">
+                <p class="" style="margin: 0px;">{{design.name}}    擅长衣服设计</p>
+                <p class="">作品数：{{design.works}}</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+
+   <!--   <ion-list  type="item-text-wrap">
+        <ion-item class="item-avatar-left item-icon-right"
+                  href="#/designer_details"
+                  ng-repeat="i in [1,2,3,4,5,6,7,8,9,0]">
+          <img src="../img/touxiang/1.jpg">
+
+
+            <h2>Ben    擅长衣服设计</h2>
+            <p>作品数：20</p>
+
+
+          <i  class="icon ion-chevron-right icon-accessory" style="font-size: 30px;"></i>
+        </ion-item>
+      </ion-list>-->
+
+
+
+    </ion-content>
+  </ion-view>
+</div>
+
+
+
+
+
+
+
+

@@ -1,0 +1,78 @@
+<div class="design_details_page">
+  <ion-view   hide-back-button="true">
+    <ion-nav-buttons side="left" >
+      <a class="button button-clear " href="#/designer">
+        <i class="icon ion-chevron-left"></i>
+        返回
+      </a>
+    </ion-nav-buttons>
+    <ion-nav-title class="">
+      <i class="icon ion-paper-airplane"></i>
+      设计师详情
+    </ion-nav-title>
+
+    <ion-content class="stable-bg">
+      <ion-list  type="item-text-wrap">
+        <ion-item>
+          <div class="light-bg" style="padding: 0;text-align: center;">
+            <a class="button button-balanced" style="border-radius: 30px;">
+              <img class="button" style="height: 150px;width: 150px;
+                           border-radius: 180px;" src="../img/ben.png">
+            </a>
+          </div>
+        </ion-item>
+     <!--   <ion-item class="item-thumbnail-left item-icon-right">
+          <img src="../img/touxiang/1.jpg">
+          <div style="margin-top: 20px;">
+            <h2>Ben</h2>
+            <p>作品数：20</p>
+          </div>
+        </ion-item>-->
+        <ion-item class="item-body">
+          灵感：首先介绍你的灵感来源，以及这一灵感在你的设计中的体现（或是主题在你的设计中的体现），
+          在设计中采用了什么样的材质，款式，及特殊的手法，通过这些方面表达了设计者什么样的情感或想法。
+          灵感：首先介绍你的灵感来源，以及这一灵感在你的设计中的体现（或是主题在你的设计中的体现），
+          在设计中采用了什么样的材质，款式，及特殊的手法，通过这些方面表达了设计者什么样的情感或想法。
+        </ion-item>
+        <ion-item class="item-divider" style="margin-bottom: 20px;">
+          作品
+        </ion-item>
+      </ion-list>
+
+      <div class="">
+        <div class="row" ng-repeat="i in [1,2,3,4,5,6,7]">
+          <div class="col col-50" style=""  ng-click="goToSjg_details()">
+            <div class="">
+              <img src="../img/sjg/sjg2.jpg">
+            </div>
+            <div class="">
+              <i class=" icon ion-ios-heart-outline"></i>
+              成熟风格
+            </div>
+          </div>
+          <div class="col col-50 ">
+            <div class="">
+              <img src="../img/sjg/sjg1.jpg">
+            </div>
+            <div class="">
+              <i class=" icon ion-ios-heart-outline"></i>
+              成熟风格
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-content>
+    <ion-footer-bar>
+      <button class="button button-small button-balanced">私人定制</button>
+      <button class="button button-small button-balanced">关注</button>
+    </ion-footer-bar>
+  </ion-view>
+</div>
+
+
+
+
+
+
+
+
