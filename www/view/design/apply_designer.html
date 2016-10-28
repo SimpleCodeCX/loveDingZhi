@@ -9,23 +9,42 @@
     </a>
   </ion-nav-buttons>
   <ion-content>
-    <ion-list type="card" style="padding-bottom: 0;margin-top: 30px;">
+    <ion-list class="" type="list-inset" style="padding-bottom: 0;margin-top: 30px;">
       <ion-item class="" style="">
         <input type="text" placeholder="学历">
       </ion-item>
       <ion-item class="" style="" >
         <input type="text" placeholder="专业">
       </ion-item>
-      <ion-item class="" onclick="alert('你好');">
-        上传专业证书
-        <input type="file" >
+      <ion-item class="">
+        <img style="margin-top: 10px;" src="{{imgMajorSrc}}">
+        <br/>
+        <button class="button button-dark button-clear button-outline" ng-click="uploadImgMajor()" >
+          <i class="icon ion-plus"></i>上传专业证书
+        </button>
+
+      </ion-item>
+      <ion-item class="item-divider" style="">
+        <button class="button button-dark button-clear button-outline" ng-click="uploadImgWorks()" >
+          <i class="icon ion-wand"></i>上传我的作品
+        </button>
+         <!-- 上传我的作品
+          <button class="button button-large  button-clear button-dark"
+                  style="vertical-align: inherit;"
+                  ng-click="uploadImgWorks()">
+            <i class="icon ion-wand" style="font-size: 40px;"></i>
+          </button>-->
+      </ion-item>
+      <ion-item>
+        <div class="row row-wrap">
+          <div ng-repeat="imgWords in imgWorksSrc" class="col col-50">
+            <img style="height: 150px;width: 100%;" src="{{imgWords}}">
+          </div>
+        </div>
       </ion-item>
     </ion-list>
-    <div class="padding" style="margin-top: 5px;padding-top: 0;">
-
-      <button class="button button-balanced" onclick="alert('你好');">上传我的作品</button>
+    <div class="padding">
+      <button class="button button-full button-balanced">开通</button>
     </div>
-
-
   </ion-content>
 </ion-view>

@@ -2,7 +2,7 @@
  * Created by simple on 2016/10/15.
  */
 
-angular.module("starter",["ionic","starter.controllers"])
+angular.module('starter',['ionic','starter.controllers','starter.services','ngCordova'])
   .run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -58,7 +58,8 @@ angular.module("starter",["ionic","starter.controllers"])
         url:"/design",
         views:{
           "tab-design":{
-            templateUrl:"design/design.html"
+            templateUrl:"design/design.html",
+            controller: 'DesignCtrl'
           }
         }
     })
@@ -88,13 +89,36 @@ angular.module("starter",["ionic","starter.controllers"])
         url:"/sjg_details",
         templateUrl:"design/sjg_details.html"
       })
-
-
+      .state("upload_logo",{
+        url:"/upload_logo",
+        templateUrl:"design/upload_logo.html",
+        controller:"Upload_logoCtrl"
+      })
+      .state("upload_sjg",{
+        url:"/upload_sjg",
+        templateUrl:"design/upload_sjg.html",
+        controller:"Upload_sjgCtrl"
+      })
       .state("logo",{
       url:"/logo",
       templateUrl:"design/logo.html",
         controller:"LogoCtrl"
     })
+      .state("dingzhi",{
+        url:"/dingzhi",
+        templateUrl:"design/dingzhi.html",
+        controller:"DingzhiCtrl"
+      })
+      .state("orderPay",{
+        url:"/orderPay",
+        templateUrl:"design/orderPay.html",
+        controller:"OrderPayCtrl"
+      })
+      .state("postNeed",{
+        url:"/postNeed",
+        templateUrl:"aiDingZhi/postNeed.html",
+        controller:"PostNeedCtrl"
+      })
 
  /*     .state("design_tabs.design_drawing",{
         url:"/design_drawing",
@@ -109,7 +133,8 @@ angular.module("starter",["ionic","starter.controllers"])
         url:"/aiDingZhi",
         views:{
           "tab-aiDingZhi":{
-            templateUrl:"aiDingZhi/aiDingZhi.html"
+            templateUrl:"aiDingZhi/aiDingZhi.html",
+            controller:"AiDingZhiCtrl"
           }
         }
       })
@@ -117,26 +142,138 @@ angular.module("starter",["ionic","starter.controllers"])
         url:"/shopping",
         views:{
           "tab-shopping":{
-            templateUrl:"shopping/shopping.html"
+            templateUrl:"shopping/shopping.html",
+            controller:"ShoppingCtrl"
           }
         }
       })
+
+      .state("makeCloth",{
+        url:"/makeCloth",
+        templateUrl:"shopping/makeCloth.html",
+        controller:"MakeClothCtrl"
+      })
+
+      .state("shangJia_details",{
+        url:"/shangJia_details",
+        templateUrl:"shopping/shangJia_details.html",
+        controller:"ShangJia_detailsCtrl"
+      })
+
+      .state("shangjia_cloth",{
+        url:"/shangjia_cloth",
+        templateUrl:"shopping/shangjia_cloth.html",
+        controller:"Shangjia_clothCtrl"
+      })
+
+      .state("shangjia_logo",{
+        url:"/shangjia_logo",
+        templateUrl:"shopping/shangjia_logo.html",
+        controller:"Shangjia_logoCtrl"
+      })
+
+      .state("shangjia_upload",{
+        url:"/shangjia_upload",
+        templateUrl:"shopping/shangjia_upload.html",
+        controller:"Shangjia_uploadCtrl"
+      })
+
+
+
+
+
       .state("tab.account",{
         url:"/account",
         views:{
           "tab-account":{
-            templateUrl:"account/account.html"
+            templateUrl:"account/account.html",
+            controller:"AccountCtrl"
           }
         }
       })
+
+      .state("myInformation",{
+        url:"/myInformation",
+        templateUrl:"account/myInformation.html",
+        controller:"MyInformationCtrl"
+      })
+      .state("myCollect",{
+        url:"/myCollect",
+        templateUrl:"account/myCollect.html",
+        controller:"MyCollectCtrl"
+      })
+      .state("myWorks",{
+        url:"/myWorks",
+        templateUrl:"account/myWorks.html",
+        controller:"MyWorksCtrl"
+      })
+      .state("myShop",{
+        url:"/myShop",
+        templateUrl:"account/myShop.html",
+        controller:"MyShopCtrl"
+      })
+      .state("updateInfo",{
+        url:"/updateInfo",
+        templateUrl:"account/updateInfo.html",
+        controller:"UpdateInfoCtrl"
+      })
+      .state("update_touxiang",{
+        url:"/update_touxiang",
+        templateUrl:"account/update_touxiang.html",
+        controller:"Update_touxiangCtrl"
+      })
+      .state("update_name",{
+        url:"/update_name",
+        templateUrl:"account/update_name.html",
+        controller:"Update_nameCtrl"
+      })
+      .state("update_address",{
+        url:"/update_address",
+        templateUrl:"account/update_address.html",
+        controller:"Update_addressCtrl"
+      })
+
+      .state("collect_sjg",{
+        url:"/collect_sjg",
+        templateUrl:"account/collect_sjg.html",
+        controller:"Collect_sjgCtrl"
+      })
+
+      .state("collect_logo",{
+        url:"/collect_logo",
+        templateUrl:"account/collect_logo.html",
+        controller:"Collect_logoCtrl"
+      })
+
+      .state("mySjg",{
+        url:"/mySjg",
+        templateUrl:"account/mySjg.html",
+        controller:"MySjgCtrl"
+      })
+
+      .state("myLogo",{
+        url:"/myLogo",
+        templateUrl:"account/myLogo.html",
+        controller:"MyLogoCtrl"
+      })
+
+
+
+
+
+
+
+
       .state("login",{
         url:"/login",
         templateUrl:"account/login.html"
       })
+
       .state("register",{
         url:"/register",
         templateUrl:"account/register.html"
       });
+
 
     $urlRouterProvider.otherwise("/tab/home");
   }]);

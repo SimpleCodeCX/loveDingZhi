@@ -1,0 +1,88 @@
+<div class="">
+  <ion-view   hide-back-button="true">
+    <ion-nav-title class="">
+      我的Logo
+    </ion-nav-title>
+    <ion-nav-buttons side="left">
+      <a class="button button-clear " href="#/myWorks">
+        返回
+      </a>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+      <a class="button button-small button-balanced">
+        上传Logo
+      </a>
+    </ion-nav-buttons>
+    <ion-content class="stable-bg">
+      <div class="sjg_show">
+        <div class="row" ng-repeat="i in [1,2,3,4,5]">
+          <div class="col col-50 " style="" ng-click="openModal()">
+            <div class="img_div">
+              <img src="../img/shangcheng/cloth/1.jpg"  style="  height: 150px;width: 100%;">
+            </div>
+
+
+          </div>
+          <div class="col col-50 ">
+            <div class="img_div">
+              <img src="../img/shangcheng/cloth/2-1.jpg" style="  height: 150px;width: 100%;">
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+      <script id="shopping_details" type="text/ng-template">
+        <ion-modal-view  class="dark-bg ion_modal_view">
+        </ion-modal-view>
+        <ion-modal-view  class="light-bg"  style="width: 90%;min-height:89%;
+                      margin-top: 40px;margin-left: 20px;">
+          <ion-content class="dark-bg">
+            <div style="margin-top: 10px;" class="padding">
+              <div class="light-bg">
+                <ion-list>
+                  <ion-item class="item-icon-right" style="text-align: center;" >
+                    <i class="icon ion-ios-close-outline"
+                       ng-click="closeModal()"></i>
+                  </ion-item>
+                  <ion-item class="item-image" style="text-align: center;">
+                    <img style="width: 100%;" src="../img/sjg/sjg1.jpg">
+                  </ion-item>
+                  <ion-item>
+                    <button ng-click="goToShangJia_details()">
+                      商家
+                    </button>
+                  </ion-item>
+
+                  <div class="padding">
+                    <button class="button button-block button-balanced" ng-click="makeCloth()">
+                      开始定制
+                    </button>
+                  </div>
+                </ion-list>
+              </div>
+
+
+
+            </div>
+            </div>
+
+          </ion-content>
+        </ion-modal-view>
+
+
+
+      </script>
+
+    </ion-content>
+  </ion-view>
+</div>
+
+
+
+
+
+
+
+
+

@@ -44,19 +44,15 @@
       </div>
     </div>
 
-
-
-
-
 <hr class="" style="margin: 0px;"/>
 
     <div class="design-slide">
 
       <ion-slide-box   auto-play="true" does-continue="true" show-pager="true" slide-interval="1000">
-        <ion-slide class="">
-          <img  src="../img/sjg/sjg1.jpg">
+        <ion-slide ng-repeat="imgSrc in designDatas" class="">
+          <img  src="{{imgSrc}}">
         </ion-slide>
-        <ion-slide>
+       <!-- <ion-slide>
           <img  src="../img/sjg/sjg2.jpg">
         </ion-slide>
         <ion-slide>
@@ -67,9 +63,10 @@
         </ion-slide>
         <ion-slide>
           <img  src="../img/sjg/sjg5.png">
-        </ion-slide>
+        </ion-slide>-->
       </ion-slide-box>
     </div>
+
 
     <!--<div class="row">
       <div class="col col-33" >

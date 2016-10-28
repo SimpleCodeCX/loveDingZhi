@@ -1,5 +1,40 @@
 <ion-view view-title="关于我" hide-back-button="false">
-  <ion-content>
-    这是用户管理模块的首页
+  <ion-content >
+    <ion-list type="">
+      <ion-item class="item-thumbnail-left " style="margin-top: 10px;" ng-click="goToMyInformation()">
+        <img src="../img/sjg/sjg1.jpg">
+
+        <div style="display: inline-block;vertical-align: middle;margin-top: 10px;">
+          <h2>Simple小东</h2>
+          <p>Nine Inch Nails</p>
+          </div>
+        <div style="display: inline-block;vertical-align: middle;float: right;margin-top: 13px;" class="">
+          <button class="button button-balanced button-large button-clear button-icon ion-chevron-right" >
+          </button>
+        </div>
+
+      </ion-item>
+      <ion-item  class="item-icon-left item-button-right" style="margin-top: 20px;" ng-click="goToMyCollect()">
+        <i class="icon ion-android-chat"></i>
+         我的收藏
+        <button class="button button-balanced button-clear
+        button-large button-icon ion-chevron-right">
+        </button>
+      </ion-item>
+      <ion-item  class="item-icon-left item-button-right" style="margin-top: 5px;" ng-click="goToMyWorks()">
+        <i class="icon ion-android-chat"></i>
+        我的作品
+        <button class="button button-balanced button-clear
+        button-large button-icon ion-chevron-right">
+        </button>
+      </ion-item>
+      <ion-item  class="item-icon-left item-button-right" style="margin-top: 5px;" ng-click="goToMyShop()">
+        <i class="icon ion-android-chat"></i>
+        我的商城
+        <button class="button button-balanced button-clear
+        button-large button-icon ion-chevron-right">
+        </button>
+      </ion-item>
+    </ion-list>
   </ion-content>
 </ion-view>

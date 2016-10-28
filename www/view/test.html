@@ -8,30 +8,56 @@
 
 </head>
 <body  ng-controller="myCtrl">
-<ion-slide-box style="border: 1px solid red;" does-continue="true" auto-play="true" slide-interval="1000" show-pager="true" >
-  <ion-slide>
-    <img style="height: 350px;" src="../img/ben.png">
-  </ion-slide>
-  <ion-slide>
-    <img style="height: 350px;" src="../img/mike.png">
-  </ion-slide>
-  <ion-slide>
-    <img style="height: 350px;" src="../img/perry.png">
-  </ion-slide>
-  <ion-slide>
-    <img src="../img/max.png" style="height: 350px;">
-  </ion-slide>
-</ion-slide-box>
 
+<ion-header-bar class="bar bar-dark">
+  <h1 class="title">11</h1>
+</ion-header-bar>
+<ion-content class="has-header calm-bg">
+  <div>
+    a:{{a}}
+  </div>
+  <hr/>
+  <div>
+    {{designDatas}}
+  </div>
+  <button class="button button-dark" ng-click="aa()">获得数据</button>
+  <ion-slide-box   auto-play="true" does-continue="true" show-pager="true" slide-interval="1000">
+    <ion-slide ng-repeat="imgSrc in designDatas" class="">
+      <img style=" height: 306px;width: 100%;"  src="{{imgSrc}}">
+    </ion-slide>
 
+  </ion-slide-box>
+</ion-content>
 <script type="text/javascript">
   angular.module("myApp",["ionic"])
     .controller("myCtrl",function($scope,$ionicSlideBoxDelegate){
+      $scope.designDatas=[];
+      $scope.designDatas=$scope.a;
+      $scope.aa=function () {
+        alert();
+        $scope.designDatas = ["../img/sjg/sjg1.jpg",
+          "../img/sjg/sjg2.jpg",
+          "../img/sjg/sjg3.jpg",
+          "../img/sjg/sjg4.jpg",
+          "../img/sjg/sjg5.png"];
+        $ionicSlideBoxDelegate.update();
+      }
+      })
 
-    });
+
 
 
 </script>
 </body>
 </html>
 
+<!--
+.controller('MyPhotosCtrl', function ($scope, $ionicSlideBoxDelegate) {
+$scope.photos= [ ... ]
+$ionicSlideBoxDelegate.update();})
+<slide-box show-pager="false"
+           on-slide-changed="onSlideChanged(index)"
+           active-slide="currentIndex">
+  <slide ng-repeat="photo in photos">
+    <img ng-src="{{ photo.ThumbnailURL }}" />
+  </slide></slide-box>  -->

@@ -102,6 +102,15 @@ color: #666;
   width: 100%;
 }
 
+/*aiDingZhi_page页面*/
+/*------------------------------->>>>>>>>*/
+.aiDingZhi_page .row .col{
+  height: 90px;
+  margin-left: 10px;
+  text-align: center;
+  font-size: 15px;
+  border-radius: 13px;
+}
 
 
 

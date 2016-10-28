@@ -1,0 +1,242 @@
+<ion-view hide-back-button="false">
+  <ion-nav-buttons side="left" >
+    <a class="button button-clear " href="#/tab/aiDingZhi">
+      <i class="icon ion-chevron-left"></i>
+      返回
+    </a>
+  </ion-nav-buttons>
+  <ion-nav-title>
+    发布需求
+  </ion-nav-title>
+  <ion-content>
+
+    <ion-slide-box show-pager="false">
+
+      <ion-slide>
+
+        <ion-list>
+          <ion-item class="item-divider" style="width: 50%;margin: auto;margin-top: 20px;border-radius: 15px;">
+            <div  style="width: 100%; text-align: center;">
+              <h1>起个标题</h1>
+            </div>
+
+          </ion-item>
+          <ion-item class="item-input" style="margin-top: 20px;">
+            <input type="text" placeholder="请简短描述一个你的标题" style="font-size: 15px;">
+          </ion-item>
+        </ion-list>
+        <div style="text-align: center;margin-top: 20px;">
+          <button class="button button-balanced" ng-click="slideNext()">
+            下一步
+          </button>
+        </div>
+      </ion-slide>
+      <ion-slide>
+        <div class="row" style="margin-bottom: 20px;">
+          <div class="col col-90 "style="margin-left: 18px;text-align: center;height: 250px;margin-top: 20px;">
+            <textarea style="height: 250px;width: 100%;border-top: 1px solid #888888;
+            border-bottom: 1px solid #888888;padding-top: 15px;" placeholder="请详细描述您的定制需求"></textarea>
+          </div>
+        </div>
+        <div style="text-align: center;">
+          <button class="button button-balanced" ng-click="slidePre()">
+            上一步
+          </button>
+          <button class="button button-balanced" ng-click="slideNext()">
+            下一步
+          </button>
+        </div>
+      </ion-slide>
+
+      <ion-slide>
+        <ion-list>
+          <ion-item class="item-toggle" style="margin-top: 20px;">
+            是否选择设计师
+            <label class="toggle toggle-assertive">
+              <input type="checkbox" ng-model="toggleSelectSjs.checked" ng-click="isSjsToggleOpen()">
+              <div class="track">
+                <div class="handle"></div>
+              </div>
+            </label>
+
+          </ion-item>
+        </ion-list>
+
+        <!--设计师列表-->
+        <div  class="row"
+              ng-show="isDisplaySjsList"
+              ng-repeat="i in [1,2,3,4,5,6,7,8,9,0,12,13,14,45,56,78,43,21]">
+          <div class="col col-50 " style="" ng-click="viewSjsDetails()">
+            <div class="img_div">
+              <img src="../img/touxiang/1.jpg"  style="  height: 150px;width: 100%;">
+            </div>
+          </div>
+          <div class="col col-50 " ng-click="viewSjsDetails()">
+            <div class="img_div">
+              <img src="../img/touxiang/2.png" style="  height: 150px;width: 100%;">
+            </div>
+          </div>
+        </div>
+
+        <!--已经选择了设计师-->
+        <ion-list ng-show="isDisplaySelectSjs">
+          <ion-item class="item-image" style="text-align: center;">
+            <img style="width: 50%;" src="../img/sjg/sjg1.jpg">
+          </ion-item>
+        </ion-list>
+
+        <div style="text-align: center;margin-top: 20px;">
+          <button class="button button-balanced" ng-click="slidePre()">
+            上一步
+          </button>
+          <button class="button button-balanced" ng-click="slideNext()">
+            下一步
+          </button>
+        </div>
+      </ion-slide>
+
+      <ion-slide>
+        <ion-list>
+          <ion-item class="item-toggle" style="margin-top: 20px;">
+            是否定价
+            <label class="toggle toggle-assertive">
+              <input type="checkbox" ng-model="togglePrice.checked" ng-click="isPriceToggleOpen()">
+              <div class="track">
+                <div class="handle"></div>
+              </div>
+            </label>
+
+          </ion-item>
+          <!--定价输入框-->
+          <ion-item ng-show="isDisplayPrice" class="item-input" style="margin-top: 20px;">
+            <label class="input-label" style="width: 30px;">￥</label>
+            <input type="text" placeholder="请输入价格">
+          </ion-item>
+        </ion-list>
+
+
+
+
+
+        <div style="text-align: center;margin-top: 20px;">
+          <button class="button button-balanced button-outline" ng-click="slidePre()">
+            上一步
+          </button>
+          <button class="button button-balanced" style="width: 100px;" ng-click="slideNext()" >
+            提交
+          </button>
+        </div>
+      </ion-slide>
+
+     <!-- <ion-slide>
+        <div class="row testBorder" style="margin-top: 0px;margin-bottom: 20px;">
+          <div class="col col-90 testBorder"
+               style="margin-left: 18px;text-align: center;height: 250px;">
+            <i class="button button-calm button-clear button-icon  ion-plus-circled "
+               style="font-size: 250px;" ng-click="uploadLogo()"></i>
+            <i class="button button-calm button-clear button-icon  ion-arrow-return-left "
+               style="font-size: 40px;position: fixed;top:220px;" ng-click="slideCloth()"></i>
+          </div>
+        </div>
+        <ion-list>
+          <ion-item style="text-align: center;">
+            <b>上传Logo</b>
+
+          </ion-item>
+        </ion-list>
+      </ion-slide>-->
+
+    </ion-slide-box>
+<!--    <ion-list style="margin-top: 100px;">
+      <ion-item>
+        第一步：填写需求描述
+      </ion-item>
+      <ion-item>
+        第二步：选择设计师
+      </ion-item>
+      <ion-item>
+        第三步：设计稿定价
+      </ion-item>
+    </ion-list>
+    <div class="padding">
+      <button class="button button-full button-balanced" style="border-radius: 5px;">发布</button>
+    </div>-->
+
+
+    <script id="selectSjg_modal" type="text/ng-template">
+      <ion-modal-view  class="dark-bg ion_modal_view">
+      </ion-modal-view>
+      <ion-modal-view  class="light-bg"  style="width: 98%;min-height:89%;
+                      margin-top: 40px;margin-left: 5px;">
+        <ion-content class="dark-bg">
+          <div style="margin-top: 10px;" class="padding">
+            <div class="light-bg">
+                  <ion-list  type="item-text-wrap">
+                    <ion-item class="item-icon-right" style="text-align: center;" >
+                      <i class="icon ion-ios-close-outline"
+                         ng-click="closeModal()"></i>
+                    </ion-item>
+                    <ion-item>
+                      <div class="light-bg" style="padding: 0;text-align: center;">
+                        <a class="button button-balanced" style="border-radius: 30px;">
+                          <img class="button" style="height: 150px;width: 150px;
+                           border-radius: 180px;" src="../img/ben.png">
+                        </a>
+                      </div>
+                      <div style="text-align: center;margin-top: 20px;">
+                        <button class="button button-balanced button-outline button-full" ng-click="selectSjs()">选择</button>
+                      </div>
+                    </ion-item>
+
+                    <!--   <ion-item class="item-thumbnail-left item-icon-right">
+                         <img src="../img/touxiang/1.jpg">
+                         <div style="margin-top: 20px;">
+                           <h2>Ben</h2>
+                           <p>作品数：20</p>
+                         </div>
+                       </ion-item>-->
+                    <ion-item class="item-body">
+                      灵感：首先介绍你的灵感来源，以及这一灵感在你的设计中的体现（或是主题在你的设计中的体现），
+                      在设计中采用了什么样的材质，款式，及特殊的手法，通过这些方面表达了设计者什么样的情感或想法。
+                      灵感：首先介绍你的灵感来源，以及这一灵感在你的设计中的体现（或是主题在你的设计中的体现），
+                      在设计中采用了什么样的材质，款式，及特殊的手法，通过这些方面表达了设计者什么样的情感或想法。
+                    </ion-item>
+                    <ion-item class="item-divider" style="margin-bottom: 20px;">
+                      作品
+                    </ion-item>
+                  </ion-list>
+
+                  <div class="">
+                    <div class="row" ng-repeat="i in [1,2,3,4,5,6,7]">
+                      <div class="col col-50" style=""  ng-click="goToSjg_details()">
+                        <div class="">
+                          <img src="../img/sjg/sjg2.jpg" style="  height: 150px;width: 100%;">
+                        </div>
+                        <div class="">
+                          <i class=" icon ion-ios-heart-outline"></i>
+                          成熟风格
+                        </div>
+                      </div>
+                      <div class="col col-50 ">
+                        <div class="">
+                          <img src="../img/sjg/sjg1.jpg" style="  height: 150px;width: 100%;">
+                        </div>
+                        <div class="">
+                          <i class=" icon ion-ios-heart-outline"></i>
+                          成熟风格
+                        </div>
+                      </div>
+                    </div>
+                    <hr/>
+                  </div>
+            </div>
+          </div>
+
+        </ion-content>
+      </ion-modal-view>
+
+
+
+    </script>
+  </ion-content>
+</ion-view>

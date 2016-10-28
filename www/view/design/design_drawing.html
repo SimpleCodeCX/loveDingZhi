@@ -6,6 +6,12 @@
         返回
       </a>
     </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+      <a class="button button-small button-balanced" href="#/upload_sjg">
+        上传设计稿
+      </a>
+
+    </ion-nav-buttons>
     <ion-nav-title class="">
       <i class="icon ion-paper-airplane"></i>
       设计稿
@@ -13,7 +19,7 @@
 
     <ion-content class="stable-bg">
       <div class="sjg_show">
-        <div class="row">
+        <div class="row" ng-repeat="i in [1,2,3,4,5]">
           <div class="col col-50 " style="" ng-click="modal.show()">
             <div class="img_div">
               <img src="../img/sjg/sjg1.jpg">
@@ -98,69 +104,16 @@
                     灵感：首先介绍你的灵感来源，以及这一灵感在你的设计中的体现（或是主题在你的设计中的体现），
                     在设计中采用了什么样的材质，款式，及特殊的手法，通过这些方面表达了设计者什么样的情感或想法。
                   </ion-item>
+                  <ion-item class="item-divider" style="text-align: center;">
+                    价格：￥90  团购价：￥50
+                    <i class="button icon ion-chatbubble balanced"></i>
+                  </ion-item>
                   <div class="padding">
-                    <button class="button button-block button-balanced">
+                    <button class="button button-block button-balanced" ng-click="dingzhi(true)">
                       我要定制
                     </button>
                   </div>
                 </ion-list>
-
-
-              <!--  <div class="row light-bg" style="padding: 0;">
-
-                  <div class="col col-100" style="padding: 0;text-align: right;">
-                   <div class="button button-balanced button-clear
-                    icon ion-ios-close-outline" ></div>
-                  </div>
-                </div>
-
-
-
-
-
-
-                <hr style="border-top-color: #e8e8e8;margin: 0px;"/>
-            <div class="row light-bg">
-              <div class="col col-100">
-                <img style="width: 100%;" src="../img/sjg/sjg1.jpg">
-              </div>
-           </div>
-            <hr style="border-top-color: #e8e8e8;"/>
-                <div class="row light-bg" style="padding: 0;text-align: center;">
-                  <div class="col col-100">
-                    <a class="button button-balanced" style="border-radius: 30px;">
-                      <img class="button" style="height: 150px;width: 150px;border-radius: 180px;" src="../img/ben.png">
-                    </a>
-                  </div>
-                </div>
-            <div class="row light-bg" >
-              <div class="col col-100">
-                灵感：首先介绍你的灵感来源，以及这一灵感在你的设计中的体现（或是主题在你的设计中的体现），
-                在设计中采用了什么样的材质，款式，及特殊的手法，通过这些方面表达了设计者什么样的情感或想法。
-                灵感：首先介绍你的灵感来源，以及这一灵感在你的设计中的体现（或是主题在你的设计中的体现），
-                在设计中采用了什么样的材质，款式，及特殊的手法，通过这些方面表达了设计者什么样的情感或想法。
-              </div>
-            </div>
-
-                <div class="row light-bg" style="padding: 0;">
-                  <div class="col col-100">
-                    <button class="button button-full button-balanced">
-                      我要定制
-                    </button>
-                  </div>
-                </div>
--->
-
-
-
-
-
-
-
-
-
-
-
             </div>
 
 
