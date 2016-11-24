@@ -1,6 +1,6 @@
-<ion-view hide-back-button="false">
+<ion-view hide-back-button="true">
   <ion-nav-buttons side="left" >
-    <a class="button button-clear " href="#/tab/aiDingZhi">
+    <a class="button button-clear"  ng-click="slideToPage1()" href="#/tab/aiDingZhi">
       <i class="icon ion-chevron-left"></i>
       返回
     </a>
@@ -9,7 +9,6 @@
     发布需求
   </ion-nav-title>
   <ion-content>
-
     <ion-slide-box show-pager="false">
 
       <ion-slide>
@@ -122,7 +121,7 @@
           <button class="button button-balanced button-outline" ng-click="slidePre()">
             上一步
           </button>
-          <button class="button button-balanced" style="width: 100px;" ng-click="slideNext()" >
+          <button class="button button-balanced" style="width: 100px;" ng-click="slideUpdate()" >
             提交
           </button>
         </div>

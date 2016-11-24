@@ -114,11 +114,7 @@ angular.module('starter',['ionic','starter.controllers','starter.services','ngCo
         templateUrl:"design/orderPay.html",
         controller:"OrderPayCtrl"
       })
-      .state("postNeed",{
-        url:"/postNeed",
-        templateUrl:"aiDingZhi/postNeed.html",
-        controller:"PostNeedCtrl"
-      })
+
 
  /*     .state("design_tabs.design_drawing",{
         url:"/design_drawing",
@@ -138,6 +134,19 @@ angular.module('starter',['ionic','starter.controllers','starter.services','ngCo
           }
         }
       })
+
+      .state("postNeed",{
+        url:"/postNeed",
+        templateUrl:"aiDingZhi/postNeed.html",
+        controller:"PostNeedCtrl"
+      })
+
+      .state("myDingZhi",{
+        url:"/myDingZhi",
+        templateUrl:"aiDingZhi/myDingZhi.html",
+        controller:"MyDingZhiCtrl"
+      })
+
       .state("tab.shopping",{
         url:"/shopping",
         views:{

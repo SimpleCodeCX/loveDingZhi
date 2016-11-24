@@ -276,7 +276,9 @@ angular.module("starter.controllers",[])
   }])
   .controller('PostNeedCtrl', ["$scope","$ionicModal","$ionicSlideBoxDelegate",
     function($scope,$ionicModal,$ionicSlideBoxDelegate) {
-
+    $scope.slideToPage1=function () {
+      $ionicSlideBoxDelegate.slide(0);
+    };
     $ionicModal.fromTemplateUrl("selectSjg_modal",{
       scope: $scope,
       animation: 'slide-in-up'
@@ -290,6 +292,7 @@ angular.module("starter.controllers",[])
     $scope.closeModal = function() {
       $scope.modal.hide();
     };
+
     $scope.viewSjsDetails = function() {
       $scope.modal.show();
     };
@@ -359,7 +362,15 @@ angular.module("starter.controllers",[])
     $scope.goToPostNeed=function () {
       $state.go("postNeed");
     }
+    $scope.goToMyDingZhi=function () {
+      $state.go("myDingZhi");
+    }
+
   }])
+
+  .controller('MyDingZhiCtrl', ["$scope","$state",function($scope,$state) {
+  }])
+
 
   .controller('AccountCtrl',["$scope","$state",function($scope,$state) {
     $scope.goToMyInformation=function () {
