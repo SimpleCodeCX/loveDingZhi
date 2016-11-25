@@ -1,3 +1,4 @@
+<!--<form action="http://10.200.14.208:8080/account/register" method="post">-->
 <ion-view>
   <ion-nav-title>
     注册
@@ -10,18 +11,18 @@
   <ion-content>
     <ion-list type="card">
       <ion-item>
-        <input type="text" placeholder="请输入手机号码">
+        <input type="text" placeholder="请输入手机号码" ng-model="userData.phoneNumber">
       </ion-item>
       <ion-item>
-        <input type="password" placeholder="请输入密码">
+        <input type="password" placeholder="请输入密码" ng-model="userData.password">
       </ion-item>
       <ion-item>
         <input type="password" placeholder="请确认密码">
       </ion-item>
       <ion-item>
-        <button class="button button-full button-balanced">注册</button>
+        <button class="button button-full button-balanced" ng-click="test()">注册{{d}}</button>
       </ion-item>
     </ion-list>
   </ion-content>
 </ion-view>
-
+<!--</form>-->

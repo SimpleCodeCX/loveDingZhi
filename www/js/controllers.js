@@ -358,14 +358,20 @@ angular.module("starter.controllers",[])
     }
   }])
 
-  .controller('AiDingZhiCtrl', ["$scope","$state",function($scope,$state) {
-    $scope.goToPostNeed=function () {
-      $state.go("postNeed");
-    }
-    $scope.goToMyDingZhi=function () {
-      $state.go("myDingZhi");
-    }
+  .controller('AiDingZhiCtrl', ["$scope","$state","getDataFactory"
+              ,function($scope,$state,getDataFactory) {
+      $scope.goToPostNeed=function () {
+        $state.go("postNeed");
+      };
+      $scope.goToMyDingZhi=function () {
+        $state.go("myDingZhi");
+      };
 
+   /*   getDataFactory.getData();
+      $scope.$on('PortalList.portalsUpdated', function() {
+        $scope.portalListData=getDataFactory.getArticles();
+        console.log(getDataFactory.getArticles());
+      });*/
   }])
 
   .controller('MyDingZhiCtrl', ["$scope","$state",function($scope,$state) {
@@ -385,7 +391,36 @@ angular.module("starter.controllers",[])
     $scope.goToMyShop=function () {
       $state.go("myShop");
     };
+    $scope.goToLogin=function () {
+      $state.go("login");
+    };
   }])
+  .controller('LoginCtrl', ["$scope","$state",function($scope,$state) {
+    $scope.test=function () {
+      alert("test");
+    }
+  }])
+
+  .controller('RegisterCtrl', ["$scope","$state","getDataByAjaxFactory",
+    function($scope,$state,getDataByAjaxFactory) {
+    //保存用户填写的注册信息
+    $scope.userData={
+      phoneNumber:"",
+      password:""
+    };
+
+    $scope.test=function () {
+      /*console.log(registerFactory.makeRegister());*/
+      getDataByAjaxFactory.getDataByAjax();
+      $scope.$on('getDataByAjaxFactory.getDataByAjax', function() {
+        console.log(getDataByAjaxFactory.getData());
+      });
+
+    }
+
+
+  }])
+
   .controller('MyInformationCtrl', ["$scope","$state",function($scope,$state) {
     $scope.goToUpdateTouXiang=function () {
       $state.go("update_touxiang");

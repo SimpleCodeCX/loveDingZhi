@@ -2,7 +2,7 @@
  * Created by simple on 2016/10/15.
  */
 
-angular.module('starter',['ionic','starter.controllers','starter.services','ngCordova'])
+angular.module('starter',['ionic','starter.controllers','starter.services','ngCordova','ngResource','starter.config'])
   .run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -275,12 +275,14 @@ angular.module('starter',['ionic','starter.controllers','starter.services','ngCo
 
       .state("login",{
         url:"/login",
-        templateUrl:"account/login.html"
+        templateUrl:"account/login.html",
+        controller:"LoginCtrl"
       })
 
       .state("register",{
         url:"/register",
-        templateUrl:"account/register.html"
+        templateUrl:"account/register.html",
+        controller:"RegisterCtrl"
       });
 
 
