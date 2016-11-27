@@ -395,28 +395,85 @@ angular.module("starter.controllers",[])
       $state.go("login");
     };
   }])
-  .controller('LoginCtrl', ["$scope","$state",function($scope,$state) {
+  .controller('LoginCtrl', ["$scope","$state","checkPhoneNumberFactory","loginFactory",
+    function($scope,$state,checkPhoneNumberFactory,loginFactory) {
+    //保存用户填写的登录信息
+    $scope.userData={
+      phoneNumber:"",
+      password:""
+    };
+    $scope.checkPhoneNumber=function () {
+      //检查手机号码是否存在
+      checkPhoneNumberFactory.phoneNumberIsExist($scope.userData.phoneNumber);
+      //获取检查结果
+      var onPhoneNumberIsExist= $scope.$on("checkPhoneNumberFactory.phoneNumberIsExist", function () {
+        onPhoneNumberIsExist();
+        $scope.isPhoneNumberExist = checkPhoneNumberFactory.getIsPhoneNumberExist();
+        if($scope.isPhoneNumberExist){
+          /*alert("手机号码已经存在");*/
+        }
+        else{
+          alert("手机号码不存在");
+        }
+
+      });
+    }
+    $scope.login=function () {
+      loginFactory.login($scope.userData);
+      var onLogin= $scope.$on("loginFactory.login",function () {
+        onLogin();//解除绑定
+        $scope.isLoginSuccess=loginFactory.getIsLoginSuccess();
+        if($scope.isLoginSuccess){
+          alert("登录成功");
+        }
+        else {
+          alert("登录失败");
+        }
+      });
+    }
     $scope.test=function () {
       alert("test");
     }
   }])
 
-  .controller('RegisterCtrl', ["$scope","$state","getDataByAjaxFactory",
-    function($scope,$state,getDataByAjaxFactory) {
+  .controller('RegisterCtrl', ["$scope","$state","registerFactory","checkPhoneNumberFactory",
+    function($scope,$state,registerFactory,checkPhoneNumberFactory) {
     //保存用户填写的注册信息
     $scope.userData={
       phoneNumber:"",
       password:""
     };
+    $scope.checkPhoneNumber=function () {
+      //检查手机号码是否存在
+      checkPhoneNumberFactory.phoneNumberIsExist($scope.userData.phoneNumber);
+      //获取检查结果
+      var onPhoneNumberIsExist= $scope.$on("checkPhoneNumberFactory.phoneNumberIsExist", function () {
+        $scope.isPhoneNumberExist = checkPhoneNumberFactory.getIsPhoneNumberExist();
+        onPhoneNumberIsExist();
+        if($scope.isPhoneNumberExist){
+          alert("手机号码已经存在");
+        }
+        else{
+          /*alert("手机号码不存在");*/
+        }
 
-    $scope.test=function () {
-      /*console.log(registerFactory.makeRegister());*/
-      getDataByAjaxFactory.getDataByAjax();
-      $scope.$on('getDataByAjaxFactory.getDataByAjax', function() {
-        console.log(getDataByAjaxFactory.getData());
       });
-
     }
+    //实现注册功能
+    $scope.register=function () {
+      registerFactory.register($scope.userData);
+      $scope.$on("registerFactory.makeRegister",function () {
+        if(registerFactory.getIsRegisterSuccess()==true){
+          alert("注册成功");
+          $state.go("login");
+        }
+        else {
+          alert("注册失败请重新注册");
+        }
+
+      });
+    }
+
 
 
   }])

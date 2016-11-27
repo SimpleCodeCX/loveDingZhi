@@ -3,6 +3,8 @@
  */
 var configModule=angular.module("starter.config",[]);
 configModule.constant("THEGLOBAL",{
-  "serviceAPI":"http://localhost:8080"//http://10.200.14.208:8080
+  /*"serviceAPI":"http://localhost:8080"*/
+  "serviceAPI":"http://10.200.14.208:8080"
+
 
 });

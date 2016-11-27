@@ -2,21 +2,83 @@
  * Created by simple on 2016/10/25.
  */
 angular.module("starter.services",[])
-  //实现用户登录功能
-  .factory("loginFactory",function (THEGLOBAL,$resource,$rootScope) {
 
+/**
+ * * Created by simple on 2016/11/27.
+ * 实现登录功能
+ * 调用接口：phoneNumberIsExist：
+ *            登录成功：flat=true
+ *                失败：flat=false
+ */
+  .factory("loginFactory",function (THEGLOBAL,$resource,$rootScope) {
+    var theUrl=THEGLOBAL.serviceAPI + "/account/login";
+    var isLoginSuccess;
+    var resource=$resource(theUrl);
+    return{
+      login:function (userData) {
+        resource.get({
+          phoneNumber:userData.phoneNumber,
+          password:userData.password
+        },function (data) {
+          isLoginSuccess=data.flat;
+          $rootScope.$broadcast("loginFactory.login");
+        });
+      },
+      getIsLoginSuccess:function () {
+        return isLoginSuccess;
+      }
+    }
   })
-  //实现用户注册功能
-  .factory("registerFactory",function (THEGLOBAL,$resource,$rootScope) {
-    var registerApi=THEGLOBAL.serviceAPI+"/account/register";
-    var resource=$resource(registerApi);
+
+  /**
+   * Created by simple on 2016/11/27.
+   * 检查数据库手机号码是否存在
+   * 调用接口：phoneNumberIsExist：
+   *            存在：flat=true
+   *            不存在：flat=false
+   */
+  .factory("checkPhoneNumberFactory",function (THEGLOBAL,$resource,$rootScope) {
+    var theUrl = THEGLOBAL.serviceAPI + "/account/phoneNumberIsExist";
+    var isPhoneNumberExist;//布尔类型，true代表手机号码存在
+    var resource=$resource(theUrl);
     return {
-      makeRegister:function () {
-        return resource.get({
-          a:"数据1",
-          b:"数据2"
+      phoneNumberIsExist:function (phoneNumber_) {
+         resource.get({phoneNumber:phoneNumber_},function (data) {
+          isPhoneNumberExist=data.flat;
+           // alert(data.flat);
+           $rootScope.$broadcast("checkPhoneNumberFactory.phoneNumberIsExist");
+        });
+      },
+      getIsPhoneNumberExist:function () {
+        return isPhoneNumberExist;
+      }
+    }
+  })
+  /**
+   * Created by simple on 2016/11/27.
+   * 实现用户注册功能
+   * 调用接口：register：
+   *           成功：flat=true
+   *           失败：flat=false
+   */
+  .factory("registerFactory",function (THEGLOBAL,$rootScope) {
+    var registerUrl=THEGLOBAL.serviceAPI+"/account/register";
+    var isRegisterSuccess;//布尔类型,是否注册成功,是则true
+    return {
+      register:function (userData) {
+        $.ajax({
+          type:"post",
+          url:registerUrl,
+          data:userData,
+          success:function (data) {
+            isRegisterSuccess=JSON.parse(data).flat;
+            $rootScope.$broadcast("registerFactory.makeRegister");
+          }
         });
 
+      },
+      getIsRegisterSuccess:function () {
+        return isRegisterSuccess;
       }
     }
   })

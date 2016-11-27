@@ -15,13 +15,13 @@
   <ion-content>
     <ion-list type="card">
       <ion-item>
-        <input type="text" placeholder="手机号码">
+        <input type="text" placeholder="手机号码" ng-model="userData.phoneNumber" ng-blur="checkPhoneNumber()">
       </ion-item>
       <ion-item>
-        <input type="password" placeholder="请输入密码">
+        <input type="password" placeholder="请输入密码" ng-model="userData.password">
       </ion-item>
       <ion-item class="item-input">
-        <button class="button button-full button-balanced" ng-click="test()">登录</button>
+        <button class="button button-full button-balanced" ng-click="login()">登录</button>
       </ion-item>
     </ion-list>
   </ion-content>
