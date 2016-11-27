@@ -14,14 +14,23 @@
   </ion-nav-buttons>
   <ion-content>
     <ion-list type="card">
-      <ion-item>
-        <input type="text" placeholder="手机号码" ng-model="userData.phoneNumber" ng-blur="checkPhoneNumber()">
+      <ion-item class="text-center" ng-if="errorRemindData.isDisplay">
+        <div class="assertive-bg padding">
+          <span >{{errorRemindData.message}}</span>
+        </div>
       </ion-item>
       <ion-item>
-        <input type="password" placeholder="请输入密码" ng-model="userData.password">
+        <input type="text" placeholder="手机号码" ng-model="userData.phoneNumber" ng-focus="clearErrorRemind()" ng-blur="checkPhoneNumber()">
+      </ion-item>
+      <ion-item>
+        <input type="password" placeholder="请输入密码" ng-model="userData.password" ng-focus="clearErrorRemind()">
       </ion-item>
       <ion-item class="item-input">
         <button class="button button-full button-balanced" ng-click="login()">登录</button>
+      </ion-item>
+      <ion-item>
+        <input type="button" id="btn1" value="Ajax请求login1">
+        <input type="button" id="btn2" value="Ajax请求login2">
       </ion-item>
     </ion-list>
   </ion-content>

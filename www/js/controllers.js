@@ -397,27 +397,78 @@ angular.module("starter.controllers",[])
   }])
   .controller('LoginCtrl', ["$scope","$state","checkPhoneNumberFactory","loginFactory",
     function($scope,$state,checkPhoneNumberFactory,loginFactory) {
+
+
+      $(document).ready(function(){
+        $("#btn1").click(function(){
+          $.ajax({
+            type:"post",
+            url: "http://10.200.14.208:8080/test/login1",
+            data:{a:"dong",b:18},
+            /*contentType:"application/json;",*/
+            success: function (data) {
+              alert(data);
+              console.log(data);
+
+            }
+          });
+
+        });
+        $("#btn2").click(function(){
+          $.ajax({
+            type:"post",
+            url: "http://10.200.14.208:8080/test/login2",
+            /*contentType:"application/json;",*/
+            success: function (data) {
+              alert(data);
+              console.log(data);
+
+            }
+          });
+        });
+      });
+
+
+
+
     //保存用户填写的登录信息
     $scope.userData={
       phoneNumber:"",
       password:""
     };
+    //错误提示信息，如账号不存在，密码错误等
+    $scope.errorRemindData={
+      isDisplay:false,
+      message:""
+    }
+    //清除错误信息提示
+    $scope.clearErrorRemind=function () {
+      $scope.errorRemindData.isDisplay=false;
+      $scope.errorRemindData.message="";
+    }
     $scope.checkPhoneNumber=function () {
       //检查手机号码是否存在
       checkPhoneNumberFactory.phoneNumberIsExist($scope.userData.phoneNumber);
       //获取检查结果
       var onPhoneNumberIsExist= $scope.$on("checkPhoneNumberFactory.phoneNumberIsExist", function () {
         onPhoneNumberIsExist();
-        $scope.isPhoneNumberExist = checkPhoneNumberFactory.getIsPhoneNumberExist();
+        $scope.isPhoneNumberExist = checkPhoneNumberFactory.getIsPhoneNumberExist();//账号是否存在
         if($scope.isPhoneNumberExist){
-          /*alert("手机号码已经存在");*/
+          $scope.errorRemindData.isDisplay=false;
+          $scope.errorRemindData.message="";
         }
-        else{
-          alert("手机号码不存在");
+        else{//账号不存在，显示错误信息
+          if($scope.userData.phoneNumber!=""){
+            $scope.errorRemindData.isDisplay=true;
+            $scope.errorRemindData.message="该手机号码还未注册";
+          }else {
+            $scope.errorRemindData.isDisplay=false;
+            $scope.errorRemindData.message="";
+          }
         }
-
       });
     }
+    //登录
     $scope.login=function () {
       loginFactory.login($scope.userData);
       var onLogin= $scope.$on("loginFactory.login",function () {
@@ -427,7 +478,8 @@ angular.module("starter.controllers",[])
           alert("登录成功");
         }
         else {
-          alert("登录失败");
+          $scope.errorRemindData.isDisplay=true;
+          $scope.errorRemindData.message="您输入的密码有误";
         }
       });
     }
@@ -443,6 +495,16 @@ angular.module("starter.controllers",[])
       phoneNumber:"",
       password:""
     };
+      //错误提示信息，如账号不存在，密码错误等
+      $scope.errorRemindData={
+        isDisplay:false,
+        message:""
+      }
+      //清除错误信息提示
+      $scope.clearErrorRemind=function () {
+        $scope.errorRemindData.isDisplay=false;
+        $scope.errorRemindData.message="";
+      }
     $scope.checkPhoneNumber=function () {
       //检查手机号码是否存在
       checkPhoneNumberFactory.phoneNumberIsExist($scope.userData.phoneNumber);
@@ -451,10 +513,12 @@ angular.module("starter.controllers",[])
         $scope.isPhoneNumberExist = checkPhoneNumberFactory.getIsPhoneNumberExist();
         onPhoneNumberIsExist();
         if($scope.isPhoneNumberExist){
-          alert("手机号码已经存在");
+          $scope.errorRemindData.isDisplay=true;
+          $scope.errorRemindData.message="此手机号已经注册";
         }
         else{
-          /*alert("手机号码不存在");*/
+          $scope.errorRemindData.isDisplay=false;
+          $scope.errorRemindData.message="";
         }
 
       });
@@ -468,7 +532,8 @@ angular.module("starter.controllers",[])
           $state.go("login");
         }
         else {
-          alert("注册失败请重新注册");
+          $scope.errorRemindData.isDisplay=true;
+          $scope.errorRemindData.message="注册失败请重新注册";
         }
 
       });
