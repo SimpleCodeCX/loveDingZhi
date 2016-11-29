@@ -395,42 +395,8 @@ angular.module("starter.controllers",[])
       $state.go("login");
     };
   }])
-  .controller('LoginCtrl', ["$scope","$state","checkPhoneNumberFactory","loginFactory",
-    function($scope,$state,checkPhoneNumberFactory,loginFactory) {
-
-
-      $(document).ready(function(){
-        $("#btn1").click(function(){
-          $.ajax({
-            type:"post",
-            url: "http://10.200.14.208:8080/test/login1",
-            data:{a:"dong",b:18},
-            /*contentType:"application/json;",*/
-            success: function (data) {
-              alert(data);
-              console.log(data);
-
-            }
-          });
-
-        });
-        $("#btn2").click(function(){
-          $.ajax({
-            type:"post",
-            url: "http://10.200.14.208:8080/test/login2",
-            /*contentType:"application/json;",*/
-            success: function (data) {
-              alert(data);
-              console.log(data);
-
-            }
-          });
-        });
-      });
-
-
-
-
+  .controller('LoginCtrl', ["$scope","$state","checkPhoneNumberFactory","loginFactory","userDataFactory",
+    function($scope,$state,checkPhoneNumberFactory,loginFactory,userDataFactory) {
     //保存用户填写的登录信息
     $scope.userData={
       phoneNumber:"",
@@ -476,6 +442,16 @@ angular.module("starter.controllers",[])
         $scope.isLoginSuccess=loginFactory.getIsLoginSuccess();
         if($scope.isLoginSuccess){
           alert("登录成功");
+
+          /*保存用户数据到全局变量userDataFactory*/
+          var username=$scope.userData.phoneNumber;
+          var islogin=true;
+          var realName="dong";
+          var phoneNumber="15767973362";
+          var address="惠州学院";
+          userDataFactory.setUserData(islogin,username,realName,phoneNumber,address);
+          console.log(userDataFactory.getUserData());
+
         }
         else {
           $scope.errorRemindData.isDisplay=true;

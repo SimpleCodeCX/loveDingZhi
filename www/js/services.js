@@ -20,7 +20,8 @@ angular.module("starter.services",[])
           phoneNumber:userData.phoneNumber,
           password:userData.password
         },function (data) {
-          isLoginSuccess=data.flat;
+          console.log(data);
+          isLoginSuccess=data.userData.isLogin;
           $rootScope.$broadcast("loginFactory.login");
         });
       },
