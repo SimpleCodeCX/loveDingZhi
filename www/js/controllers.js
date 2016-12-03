@@ -378,7 +378,21 @@ angular.module("starter.controllers",[])
   }])
 
 
-  .controller('AccountCtrl',["$scope","$state",function($scope,$state) {
+  .controller('AccountCtrl',["$scope","$state","userDataFactory",function($scope,$state,userDataFactory) {
+    //保存用户的数据
+    $scope.userDataView={
+      isLogin:null,//是否已经登录
+      userName:null,//用户名
+      realName:null,//真实姓名
+      phoneNumber:null,//手机号码
+      address:null,//收获地址
+      isDesigner:null,//是否为设计师
+      isBusiness:null,//是否为商家
+      touXiangUrl:null//头像url
+    };
+    //从config获取用户数据
+    $scope.userDataView=userDataFactory.getUserDataConfig();
+
     $scope.goToMyInformation=function () {
       $state.go("myInformation");
     };
@@ -397,8 +411,8 @@ angular.module("starter.controllers",[])
   }])
   .controller('LoginCtrl', ["$scope","$state","checkPhoneNumberFactory","loginFactory","userDataFactory",
     function($scope,$state,checkPhoneNumberFactory,loginFactory,userDataFactory) {
-    //保存用户填写的登录信息
-    $scope.userData={
+    //保存前端用户填写的登录信息
+    $scope.userDataView={
       phoneNumber:"",
       password:""
     };
@@ -413,18 +427,19 @@ angular.module("starter.controllers",[])
       $scope.errorRemindData.message="";
     }
     $scope.checkPhoneNumber=function () {
-      //检查手机号码是否存在
-      checkPhoneNumberFactory.phoneNumberIsExist($scope.userData.phoneNumber);
+      //调用服务层检查手机号码是否存在
+      checkPhoneNumberFactory.phoneNumberIsExist($scope.userDataView.phoneNumber);
       //获取检查结果
       var onPhoneNumberIsExist= $scope.$on("checkPhoneNumberFactory.phoneNumberIsExist", function () {
         onPhoneNumberIsExist();
         $scope.isPhoneNumberExist = checkPhoneNumberFactory.getIsPhoneNumberExist();//账号是否存在
         if($scope.isPhoneNumberExist){
+          //账号存在
           $scope.errorRemindData.isDisplay=false;
           $scope.errorRemindData.message="";
         }
         else{//账号不存在，显示错误信息
-          if($scope.userData.phoneNumber!=""){
+          if($scope.userDataView.phoneNumber!=""){
             $scope.errorRemindData.isDisplay=true;
             $scope.errorRemindData.message="该手机号码还未注册";
           }else {
@@ -436,22 +451,19 @@ angular.module("starter.controllers",[])
     }
     //登录
     $scope.login=function () {
-      loginFactory.login($scope.userData);
+      //调用服务层进行登录
+      loginFactory.login($scope.userDataView);
       var onLogin= $scope.$on("loginFactory.login",function () {
-        onLogin();//解除绑定
+        //解除绑定，否则每次点击登录，事件会叠加执行
+        onLogin();
+        //获得登录状态
         $scope.isLoginSuccess=loginFactory.getIsLoginSuccess();
         if($scope.isLoginSuccess){
-          alert("登录成功");
-
-          /*保存用户数据到全局变量userDataFactory*/
-          var username=$scope.userData.phoneNumber;
-          var islogin=true;
-          var realName="dong";
-          var phoneNumber="15767973362";
-          var address="惠州学院";
-          userDataFactory.setUserData(islogin,username,realName,phoneNumber,address);
-          console.log(userDataFactory.getUserData());
-
+          //登录成功
+          // 从服务层获取用户数据并保存到全局变量userDataFactory里,位于config文件
+          var userDataService=loginFactory.getUserDataService();
+          userDataFactory.setUserDataConfig(userDataService.isLogin,userDataService.userName,userDataService.realName,userDataService.phoneNumber,userDataService.address);
+          $state.go("tab.account");
         }
         else {
           $scope.errorRemindData.isDisplay=true;
@@ -467,7 +479,7 @@ angular.module("starter.controllers",[])
   .controller('RegisterCtrl', ["$scope","$state","registerFactory","checkPhoneNumberFactory",
     function($scope,$state,registerFactory,checkPhoneNumberFactory) {
     //保存用户填写的注册信息
-    $scope.userData={
+    $scope.userDataView={
       phoneNumber:"",
       password:""
     };
@@ -483,7 +495,7 @@ angular.module("starter.controllers",[])
       }
     $scope.checkPhoneNumber=function () {
       //检查手机号码是否存在
-      checkPhoneNumberFactory.phoneNumberIsExist($scope.userData.phoneNumber);
+      checkPhoneNumberFactory.phoneNumberIsExist($scope.userDataView.phoneNumber);
       //获取检查结果
       var onPhoneNumberIsExist= $scope.$on("checkPhoneNumberFactory.phoneNumberIsExist", function () {
         $scope.isPhoneNumberExist = checkPhoneNumberFactory.getIsPhoneNumberExist();
@@ -501,7 +513,7 @@ angular.module("starter.controllers",[])
     }
     //实现注册功能
     $scope.register=function () {
-      registerFactory.register($scope.userData);
+      registerFactory.register($scope.userDataView);
       $scope.$on("registerFactory.makeRegister",function () {
         if(registerFactory.getIsRegisterSuccess()==true){
           alert("注册成功");

@@ -7,68 +7,64 @@ configModule.constant("THEGLOBAL",{
   /*"serviceAPI":"http://10.200.14.208:8080"*/
 })
   .factory("userDataFactory",function (THEGLOBAL,$resource,$rootScope) {
-    var userData={
-      isLogin:null,
-      userName:null,
-      realName:null,
-      phoneNumber:null,
-      address:null
+    //用户信息
+    var userDataConfig={
+      isLogin:null,//是否已经登录
+      userName:null,//用户名
+      realName:null,//真实姓名
+      phoneNumber:null,//手机号码
+      address:null,//收获地址
+      isDesigner:true,//是否为设计师
+      isBusiness:true,//是否为商家
+      touXiangUrl:null//头像url
     };
     return{
-      setUserData:function (isLogin_, userName_, realName_, phoneNumber_, address_) {
-        userData.isLogin=isLogin_;
-        userData.userName=userName_;
-        userData.realName=realName_;
-        userData.phoneNumber=phoneNumber_;
-        userData.address=address_;
+      setUserDataConfig:function (isLogin_, userName_, realName_, phoneNumber_, address_) {
+        userDataConfig.isLogin=isLogin_;
+        userDataConfig.userName=userName_;
+        userDataConfig.realName=realName_;
+        userDataConfig.phoneNumber=phoneNumber_;
+        userDataConfig.address=address_;
       },
-      getUserData:function () {
-        return userData;
+      getUserDataConfig:function () {
+        return userDataConfig;
       },
       setIsLogin:function (isLogin_) {
-        isLogin=isLogin_;
+        userDataConfig.isLogin=isLogin_;
       },
       getIsLogin:function () {
-        return isLogin;
+        return userDataConfig.isLogin;
       },
       setUserName:function (userName_) {
-        userName=userName_;
+        userDataConfig.userName=userName_;
       },
       getUserName:function () {
-        return userName;
+        return userDataConfig.userName;
       },
       setRealName:function (realName_) {
-        realName=realName_;
+        userDataConfig.realName=realName_;
       },
       getRealName:function () {
-        return realName_;
+        return userDataConfig.realName;
       },
       setPhoneNumber:function (phoneNumber_) {
-        phoneNumber=phoneNumber_;
+        userDataConfig.phoneNumber=phoneNumber_;
       },
       getPhoneNumber:function () {
-        return phoneNumber;
+        return userDataConfig.phoneNumber;
       },
       setAddress:function (address_) {
-        address=address_;
+        userDataConfig.address=address_;
       },
       getAddress:function () {
-        return address;
+        return userDataConfig.address;
       }
 
     }
   })
-  .factory("configTest",function () {
-    /*登录成功返回的数据*/
-    var userData=
-    {
-      isLogin:true,
-      userName:"simple",
-      realName:"dong",
-      phoneNumber:"15767973362",
-      address:"惠州学院"
-    }
 
+
+  .factory("configTest",function () {
   })
 
 

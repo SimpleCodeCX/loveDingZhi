@@ -12,21 +12,37 @@ angular.module("starter.services",[])
  */
   .factory("loginFactory",function (THEGLOBAL,$resource,$rootScope) {
     var theUrl=THEGLOBAL.serviceAPI + "/account/login";
-    var isLoginSuccess;
+    var isLoginSuccess;//true代表登录成功
+    var userDataService={//保存用户数据
+      isLogin:null,
+      userName:null,
+      realName:null,
+      phoneNumber:null,
+      address:null
+    };
     var resource=$resource(theUrl);
     return{
-      login:function (userData) {
+      login:function (userData_) {
         resource.get({
-          phoneNumber:userData.phoneNumber,
-          password:userData.password
+          phoneNumber:userData_.phoneNumber,
+          password:userData_.password
         },function (data) {
-          console.log(data);
+          /*console.log(data);*/
+          userDataService.isLogin=data.userData.isLogin;
+          userDataService.userName=data.userData.userName;
+          userDataService.realName=data.userData.realName;
+          userDataService.phoneNumber=data.userData.phoneNumber;
+          userDataService.address=data.userData.address;
           isLoginSuccess=data.userData.isLogin;
+          /*console.log(userDataService);*/
           $rootScope.$broadcast("loginFactory.login");
         });
       },
       getIsLoginSuccess:function () {
         return isLoginSuccess;
+      },
+      getUserDataService:function () {
+        return userDataService;
       }
     }
   })
