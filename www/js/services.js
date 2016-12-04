@@ -10,31 +10,36 @@ angular.module("starter.services",[])
  *            登录成功：flat=true
  *                失败：flat=false
  */
-  .factory("loginFactory",function (THEGLOBAL,$resource,$rootScope) {
+  .factory("loginFactory",function (THEGLOBAL,$resource,$rootScope,$http) {
     var theUrl=THEGLOBAL.serviceAPI + "/account/login";
     var isLoginSuccess;//true代表登录成功
     var userDataService={//保存用户数据
       isLogin:null,
       userName:null,
+      accountNumber:null,
       realName:null,
       phoneNumber:null,
       address:null
     };
-    var resource=$resource(theUrl);
+    //withCredentials: true允许发送cookie，才能让服务器记住登录状态
+    var resource=$resource(theUrl,{},
+      {login_get: {method: 'GET', withCredentials: true}}
+      );
     return{
       login:function (userData_) {
-        resource.get({
-          phoneNumber:userData_.phoneNumber,
+        resource.login_get({
+          accountNumber:userData_.accountNumber,
           password:userData_.password
         },function (data) {
           /*console.log(data);*/
           userDataService.isLogin=data.userData.isLogin;
           userDataService.userName=data.userData.userName;
+          userDataService.accountNumber=data.userData.accountNumber;
           userDataService.realName=data.userData.realName;
           userDataService.phoneNumber=data.userData.phoneNumber;
           userDataService.address=data.userData.address;
-          isLoginSuccess=data.userData.isLogin;
           /*console.log(userDataService);*/
+          isLoginSuccess=data.userData.isLogin;
           $rootScope.$broadcast("loginFactory.login");
         });
       },
@@ -49,25 +54,26 @@ angular.module("starter.services",[])
 
   /**
    * Created by simple on 2016/11/27.
-   * 检查数据库手机号码是否存在
-   * 调用接口：phoneNumberIsExist：
+   * 检查数据库账号是否存在
+   * 调用接口：accountNumberIsExist：
    *            存在：flat=true
    *            不存在：flat=false
    */
-  .factory("checkPhoneNumberFactory",function (THEGLOBAL,$resource,$rootScope) {
-    var theUrl = THEGLOBAL.serviceAPI + "/account/phoneNumberIsExist";
-    var isPhoneNumberExist;//布尔类型，true代表手机号码存在
-    var resource=$resource(theUrl);
+  .factory("checkAccountNumberFactory",function (THEGLOBAL,$resource,$rootScope) {
+    var theUrl = THEGLOBAL.serviceAPI + "/account/accountNumberIsExist";
+    var isAccountNumberExist;//布尔类型，true代表手机号码存在
+    var resource=$resource(theUrl,{},
+      {accountNumberIsExist_get: {method: 'GET', withCredentials: true}});
     return {
-      phoneNumberIsExist:function (phoneNumber_) {
-         resource.get({phoneNumber:phoneNumber_},function (data) {
-          isPhoneNumberExist=data.flat;
+      accountNumberIsExist:function (accountNumber_) {
+         resource.accountNumberIsExist_get({accountNumber:accountNumber_},function (data) {
+           isAccountNumberExist=data.flat;
            // alert(data.flat);
-           $rootScope.$broadcast("checkPhoneNumberFactory.phoneNumberIsExist");
+           $rootScope.$broadcast("checkAccountNumberFactory.accountNumberIsExist");
         });
       },
-      getIsPhoneNumberExist:function () {
-        return isPhoneNumberExist;
+      getIsAccountNumberExist:function () {
+        return isAccountNumberExist;
       }
     }
   })
@@ -86,6 +92,9 @@ angular.module("starter.services",[])
         $.ajax({
           type:"post",
           url:registerUrl,
+          xhrFields: {
+            withCredentials: true
+          },
           data:userData,
           success:function (data) {
             isRegisterSuccess=JSON.parse(data).flat;
@@ -99,7 +108,42 @@ angular.module("starter.services",[])
       }
     }
   })
+  /**
+   * Created by simple on 2016/12/03.
+   * 实现修改用户名
+   * 调用接口：updateUserName：
+   *           成功：flat=true
+   *           失败：flat=false
+   */
+  .factory("updateUserNameFactory",function (THEGLOBAL,$rootScope) {
+    var theUrl=THEGLOBAL.serviceAPI+"/account/updateUserName_authority";
+    var isUpdateUserNameSucess;//布尔类型,是否修改成功,是则true
+    return {
+      updateUserName:function (accountNumber_,userName_) {
+        $.ajax({
+          type:"post",
+          url:theUrl,
+          xhrFields: {
+            withCredentials: true
+          },
+          data:{
+            accountNumber:accountNumber_,
+            userName:userName_
+          },
+          success:function (data) {
+            isUpdateUserNameSucess=JSON.parse(data).flat;
+            /*console.log(data);*/
+            $rootScope.$broadcast("updateUserNameFactory.updateUserName");
+          }
+        });
 
+      },
+      getIsUpdateUserNameSucess:function () {
+        return isUpdateUserNameSucess;
+        /*console.log(isUpdateUserNameSucess);*/
+      }
+    }
+  })
 
 
 

@@ -380,16 +380,7 @@ angular.module("starter.controllers",[])
 
   .controller('AccountCtrl',["$scope","$state","userDataFactory",function($scope,$state,userDataFactory) {
     //保存用户的数据
-    $scope.userDataView={
-      isLogin:null,//是否已经登录
-      userName:null,//用户名
-      realName:null,//真实姓名
-      phoneNumber:null,//手机号码
-      address:null,//收获地址
-      isDesigner:null,//是否为设计师
-      isBusiness:null,//是否为商家
-      touXiangUrl:null//头像url
-    };
+    $scope.userDataView={};
     //从config获取用户数据
     $scope.userDataView=userDataFactory.getUserDataConfig();
 
@@ -409,11 +400,11 @@ angular.module("starter.controllers",[])
       $state.go("login");
     };
   }])
-  .controller('LoginCtrl', ["$scope","$state","checkPhoneNumberFactory","loginFactory","userDataFactory",
-    function($scope,$state,checkPhoneNumberFactory,loginFactory,userDataFactory) {
+  .controller('LoginCtrl', ["$scope","$state","checkAccountNumberFactory","loginFactory","userDataFactory",
+    function($scope,$state,checkAccountNumberFactory,loginFactory,userDataFactory) {
     //保存前端用户填写的登录信息
     $scope.userDataView={
-      phoneNumber:"",
+      accountNumber:"",
       password:""
     };
     //错误提示信息，如账号不存在，密码错误等
@@ -426,20 +417,20 @@ angular.module("starter.controllers",[])
       $scope.errorRemindData.isDisplay=false;
       $scope.errorRemindData.message="";
     }
-    $scope.checkPhoneNumber=function () {
-      //调用服务层检查手机号码是否存在
-      checkPhoneNumberFactory.phoneNumberIsExist($scope.userDataView.phoneNumber);
+    $scope.checkAccountNumber=function () {
+      //调用服务层检查账号是否存在
+      checkAccountNumberFactory.accountNumberIsExist($scope.userDataView.accountNumber);
       //获取检查结果
-      var onPhoneNumberIsExist= $scope.$on("checkPhoneNumberFactory.phoneNumberIsExist", function () {
-        onPhoneNumberIsExist();
-        $scope.isPhoneNumberExist = checkPhoneNumberFactory.getIsPhoneNumberExist();//账号是否存在
-        if($scope.isPhoneNumberExist){
+      var onAccountNumberIsExist= $scope.$on("checkAccountNumberFactory.accountNumberIsExist", function () {
+        onAccountNumberIsExist();
+        $scope.isAccountNumberExist = checkAccountNumberFactory.getIsAccountNumberExist();//账号是否存在
+        if($scope.isAccountNumberExist){
           //账号存在
           $scope.errorRemindData.isDisplay=false;
           $scope.errorRemindData.message="";
         }
         else{//账号不存在，显示错误信息
-          if($scope.userDataView.phoneNumber!=""){
+          if($scope.userDataView.accountNumber!=""){
             $scope.errorRemindData.isDisplay=true;
             $scope.errorRemindData.message="该手机号码还未注册";
           }else {
@@ -462,7 +453,13 @@ angular.module("starter.controllers",[])
           //登录成功
           // 从服务层获取用户数据并保存到全局变量userDataFactory里,位于config文件
           var userDataService=loginFactory.getUserDataService();
-          userDataFactory.setUserDataConfig(userDataService.isLogin,userDataService.userName,userDataService.realName,userDataService.phoneNumber,userDataService.address);
+          userDataFactory.setUserDataConfig(userDataService.isLogin,
+            userDataService.userName,
+            userDataService.accountNumber,
+            userDataService.realName,
+            userDataService.phoneNumber,
+            userDataService.address);
+          /*console.log(userDataFactory.getUserDataConfig());*/
           $state.go("tab.account");
         }
         else {
@@ -473,14 +470,15 @@ angular.module("starter.controllers",[])
     }
     $scope.test=function () {
       alert("test");
+      /*console.log(userDataFactory.getUserDataConfig());*/
     }
   }])
 
-  .controller('RegisterCtrl', ["$scope","$state","registerFactory","checkPhoneNumberFactory",
-    function($scope,$state,registerFactory,checkPhoneNumberFactory) {
+  .controller('RegisterCtrl', ["$scope","$state","registerFactory","checkAccountNumberFactory",
+    function($scope,$state,registerFactory,checkAccountNumberFactory) {
     //保存用户填写的注册信息
     $scope.userDataView={
-      phoneNumber:"",
+      accountNumber:"",
       password:""
     };
       //错误提示信息，如账号不存在，密码错误等
@@ -493,14 +491,14 @@ angular.module("starter.controllers",[])
         $scope.errorRemindData.isDisplay=false;
         $scope.errorRemindData.message="";
       }
-    $scope.checkPhoneNumber=function () {
-      //检查手机号码是否存在
-      checkPhoneNumberFactory.phoneNumberIsExist($scope.userDataView.phoneNumber);
+    $scope.checkAccountNumber=function () {
+      //检查账号是否存在
+      checkAccountNumberFactory.accountNumberIsExist($scope.userDataView.accountNumber);
       //获取检查结果
-      var onPhoneNumberIsExist= $scope.$on("checkPhoneNumberFactory.phoneNumberIsExist", function () {
-        $scope.isPhoneNumberExist = checkPhoneNumberFactory.getIsPhoneNumberExist();
-        onPhoneNumberIsExist();
-        if($scope.isPhoneNumberExist){
+      var onAccountNumberIsExist= $scope.$on("checkAccountNumberFactory.accountNumberIsExist", function () {
+        $scope.isAccountNumberExist = checkAccountNumberFactory.getIsAccountNumberExist();
+        onAccountNumberIsExist();
+        if($scope.isAccountNumberExist){
           $scope.errorRemindData.isDisplay=true;
           $scope.errorRemindData.message="此手机号已经注册";
         }
@@ -531,7 +529,12 @@ angular.module("starter.controllers",[])
 
   }])
 
-  .controller('MyInformationCtrl', ["$scope","$state",function($scope,$state) {
+  .controller('MyInformationCtrl', ["$scope","$state","userDataFactory",function($scope,$state,userDataFactory) {
+    //保存用户的数据
+    $scope.userDataView={};
+    //从config文件获取用户数据
+    $scope.userDataView=userDataFactory.getUserDataConfig();
+
     $scope.goToUpdateTouXiang=function () {
       $state.go("update_touxiang");
     }
@@ -541,6 +544,12 @@ angular.module("starter.controllers",[])
     $scope.goToUpdateAddress=function () {
       $state.go("update_address");
     }
+
+    $scope.test=function () {
+      /*alert("test");*/
+    }
+
+
   }])
   .controller('MyCollectCtrl', ["$scope",'$state',function($scope,$state) {
     $scope.goToCollectSjg=function () {
@@ -650,7 +659,37 @@ angular.module("starter.controllers",[])
       };
   }])
 
-  .controller('Update_nameCtrl',["$scope","$state",function($scope,$state) {
+  .controller('Update_nameCtrl',["$scope","$state","userDataFactory","updateUserNameFactory",
+    function($scope,$state,userDataFactory,updateUserNameFactory) {
+
+    //保存用户的数据
+    $scope.userDataView={};
+    //从config获取用户数据
+    $scope.userDataView=userDataFactory.getUserDataConfig();
+      //点击保存触发函数
+    $scope.updateUserName=function () {
+      //调用service层的保存服务
+      updateUserNameFactory.updateUserName($scope.userDataView.accountNumber,$scope.userDataView.userName);
+      //获取保存结果
+      var onUpdateUserName=$scope.$on("updateUserNameFactory.updateUserName",function () {
+        onUpdateUserName();
+        var isUpdateUserNameSucess=updateUserNameFactory.getIsUpdateUserNameSucess();
+        if(isUpdateUserNameSucess){
+          $state.go("myInformation");
+        }
+        else {
+          alert("保存失败");
+        }
+
+      });
+    };
+      $scope.test=function () {
+        /*alert("test");*/
+        console.log(userDataFactory.getUserDataConfig());
+      };
+
+
+
   }])
 
   .controller('Update_addressCtrl',["$scope","$state",function($scope,$state) {

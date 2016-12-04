@@ -5,12 +5,12 @@
     </a>
   </ion-nav-buttons>
   <ion-nav-buttons side="right">
-    <button class="button button-clear" >保存</button>
+    <button class="button button-clear" ng-click="updateUserName()">保存</button>
   </ion-nav-buttons>
   <ion-content>
     <ion-list>
       <ion-item class="item-input" style="margin-top: 10px;">
-        <input type="text" value="simpleGuitar">
+        <input type="text" ng-model="userDataView.userName">
         <button class="button button-clear button-stable  icon ion-ios-close"></button>
       </ion-item>
     </ion-list>

@@ -20,10 +20,12 @@
         </div>
       </ion-item>
       <ion-item>
-        <input type="text" placeholder="手机号码" ng-model="userDataView.phoneNumber" ng-focus="clearErrorRemind()" ng-blur="checkPhoneNumber()">
+        <input type="text" placeholder="手机号码" ng-model="userDataView.accountNumber"
+               ng-focus="clearErrorRemind()" ng-blur="checkAccountNumber()">
       </ion-item>
       <ion-item>
-        <input type="password" placeholder="请输入密码" ng-model="userDataView.password" ng-focus="clearErrorRemind()">
+        <input type="password" placeholder="请输入密码" ng-model="userDataView.password"
+               ng-focus="clearErrorRemind()">
       </ion-item>
       <ion-item class="item-input padding">
         <button class="button button-full button-balanced" ng-click="login()">登录</button>
