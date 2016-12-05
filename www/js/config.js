@@ -28,17 +28,63 @@ configModule.constant("THEGLOBAL",{
       isBusiness:true,//是否为商家
       touXiangUrl:null//头像url
     };
+    //初始化为localStorage里存放的用户数据
+    /*console.log(window.localStorage.getItem("userData"));*/
+    if(window.localStorage.getItem("userData")!=null){
+      userDataConfig=JSON.parse(window.localStorage.getItem("userData"));
+    }
+
     return{
-      setUserDataConfig:function (isLogin_, userName_, accountNumber_,realName_, phoneNumber_, address_) {
+      setUserDataConfig:function (isLogin_, userName_, accountNumber_,realName_,
+                                  phoneNumber_, address_,isDesigner_,isBusiness_,touXiangUrl_) {
         userDataConfig.isLogin=isLogin_;
         userDataConfig.userName=userName_;
         userDataConfig.accountNumber=accountNumber_;
         userDataConfig.realName=realName_;
         userDataConfig.phoneNumber=phoneNumber_;
         userDataConfig.address=address_;
+        userDataConfig.isDesigner=isDesigner_;
+        userDataConfig.isBusiness=isBusiness_;
+        userDataConfig.touXiangUrl=touXiangUrl_;
       },
       getUserDataConfig:function () {
         return userDataConfig;
+      },
+      clearUserDataConfig:function () {
+        userDataConfig.isLogin=null;
+        userDataConfig.userName=null;
+        userDataConfig.accountNumber=null;
+        userDataConfig.realName=null;
+        userDataConfig.phoneNumber=null;
+        userDataConfig.address=null;
+        userDataConfig.isDesigner=null;
+        userDataConfig.isBusiness=null;
+        userDataConfig.touXiangUrl=null;
+      },
+      pullFromLocalStorage:function () {//从localStorage获取数据
+        //从localStorage获取数据是字符串，需要转化为json数据格式
+        if(window.localStorage.getItem("userData")!=null){
+          var userDataLocalStorage=JSON.parse(window.localStorage.getItem("userData"));
+          userDataConfig.isLogin=userDataLocalStorage.isLogin;
+          userDataConfig.userName=userDataLocalStorage.userName;
+          userDataConfig.accountNumber=userDataLocalStorage.accountNumber;
+          userDataConfig.realName=userDataLocalStorage.realName;
+          userDataConfig.phoneNumber=userDataLocalStorage.phoneNumber;
+          userDataConfig.address=userDataLocalStorage.address;
+          userDataConfig.isDesigner=userDataLocalStorage.isDesigner;
+          userDataConfig.isBusiness=userDataLocalStorage.isBusiness;
+          userDataConfig.touXiangUrl=userDataLocalStorage.touXiangUrl;
+
+        }
+      },
+      pushToLocalStorage:function () {//将userDataConfig数据更新至localStorage
+        // json变量转化成json字符串
+        var strUserDataConfig = JSON.stringify(userDataConfig);
+        //保存
+        window.localStorage.setItem("userData",strUserDataConfig);
+      },
+      removeLocalStorage:function () {
+        window.localStorage.removeItem("userData");
       },
       setIsLogin:function (isLogin_) {
         userDataConfig.isLogin=isLogin_;

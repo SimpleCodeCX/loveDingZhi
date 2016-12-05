@@ -378,12 +378,33 @@ angular.module("starter.controllers",[])
   }])
 
 
-  .controller('AccountCtrl',["$scope","$state","userDataFactory",function($scope,$state,userDataFactory) {
+  .controller('AccountCtrl',["$scope","$state","userDataFactory","loginOutFactory",
+    function($scope,$state,userDataFactory,loginOutFactory) {
     //保存用户的数据
     $scope.userDataView={};
     //从config获取用户数据
     $scope.userDataView=userDataFactory.getUserDataConfig();
+    /*  JSON.parse(window.localStorage.getItem("userData"));*/
 
+    //用户点击退出登录
+    $scope.loginOut=function () {
+      //调用service层发出退出请求
+      loginOutFactory.loginOut();
+      var onLoginOut= $scope.$on("loginOutFactory.loginOut",function () {
+        onLoginOut();
+        var isLoginOutSuccess=loginOutFactory.getIsLoginOutSuccess();
+        if(isLoginOutSuccess){
+          //用户已经退出
+          //清楚全局数据
+          userDataFactory.removeLocalStorage();
+          //清楚localStorage数据
+          userDataFactory.clearUserDataConfig();
+
+          $state.go("tab.account");
+        }
+      });
+
+    }
     $scope.goToMyInformation=function () {
       $state.go("myInformation");
     };
@@ -399,6 +420,7 @@ angular.module("starter.controllers",[])
     $scope.goToLogin=function () {
       $state.go("login");
     };
+
   }])
   .controller('LoginCtrl', ["$scope","$state","checkAccountNumberFactory","loginFactory","userDataFactory",
     function($scope,$state,checkAccountNumberFactory,loginFactory,userDataFactory) {
@@ -451,15 +473,30 @@ angular.module("starter.controllers",[])
         $scope.isLoginSuccess=loginFactory.getIsLoginSuccess();
         if($scope.isLoginSuccess){
           //登录成功
-          // 从服务层获取用户数据并保存到全局变量userDataFactory里,位于config文件
+
+          // 从服务层获取用户数据保存到config全局变量，并更新到缓存localStorage里
           var userDataService=loginFactory.getUserDataService();
-          userDataFactory.setUserDataConfig(userDataService.isLogin,
-            userDataService.userName,
-            userDataService.accountNumber,
-            userDataService.realName,
-            userDataService.phoneNumber,
-            userDataService.address);
-          /*console.log(userDataFactory.getUserDataConfig());*/
+           userDataFactory.setUserDataConfig(userDataService.isLogin,
+           userDataService.userName,
+           userDataService.accountNumber,
+           userDataService.realName,
+           userDataService.phoneNumber,
+           userDataService.address,
+           userDataService.isDesigner,
+           userDataService.isBusiness,
+           userDataService.touXiangUrl);
+          //将数据更新到localStorage
+          userDataFactory.pushToLocalStorage();
+
+
+          // 从服务层获取用户数据并保存到缓存localStorage里
+          // json变量转化成json字符串
+          /*var strUserData = JSON.stringify(loginFactory.getUserDataService());
+           //保存
+           window.localStorage.setItem("userData",strUserData);*/
+
+
+
           $state.go("tab.account");
         }
         else {
@@ -467,10 +504,9 @@ angular.module("starter.controllers",[])
           $scope.errorRemindData.message="您输入的密码有误";
         }
       });
-    }
+    };
     $scope.test=function () {
-      alert("test");
-      /*console.log(userDataFactory.getUserDataConfig());*/
+      /*console.log(JSON.parse(window.localStorage.getItem("userData")));*/
     }
   }])
 
@@ -529,11 +565,16 @@ angular.module("starter.controllers",[])
 
   }])
 
-  .controller('MyInformationCtrl', ["$scope","$state","userDataFactory",function($scope,$state,userDataFactory) {
-    //保存用户的数据
-    $scope.userDataView={};
-    //从config文件获取用户数据
-    $scope.userDataView=userDataFactory.getUserDataConfig();
+  .controller('MyInformationCtrl', ["$scope","$state","userDataFactory",
+    function($scope,$state,userDataFactory) {
+      //保存用户的数据
+      $scope.userDataView={};
+      //从config全局变量获取用户数据
+      $scope.userDataView=userDataFactory.getUserDataConfig();
+    /*  $scope.$on("$ionicView.enter", function(event, data){
+        //从localStorage获取用户数据
+        $scope.userDataView=JSON.parse(window.localStorage.getItem("userData"));
+      });*/
 
     $scope.goToUpdateTouXiang=function () {
       $state.go("update_touxiang");
@@ -659,13 +700,14 @@ angular.module("starter.controllers",[])
       };
   }])
 
-  .controller('Update_nameCtrl',["$scope","$state","userDataFactory","updateUserNameFactory",
-    function($scope,$state,userDataFactory,updateUserNameFactory) {
-
+  .controller('Update_nameCtrl',["$scope","$state","userDataFactory","updateUserNameFactory","$rootScope","$window",
+    function($scope,$state,userDataFactory,updateUserNameFactory,$rootScope,$window) {
     //保存用户的数据
     $scope.userDataView={};
     //从config获取用户数据
-    $scope.userDataView=userDataFactory.getUserDataConfig();
+      $scope.userDataView=userDataFactory.getUserDataConfig();
+      $scope.userName2=userDataFactory.getUserDataConfig().userName;
+    /*$scope.userDataView=JSON.parse(window.localStorage.getItem("userData"));*/
       //点击保存触发函数
     $scope.updateUserName=function () {
       //调用service层的保存服务
@@ -675,6 +717,8 @@ angular.module("starter.controllers",[])
         onUpdateUserName();
         var isUpdateUserNameSucess=updateUserNameFactory.getIsUpdateUserNameSucess();
         if(isUpdateUserNameSucess){
+          //将用户名的修改更新到localStorage
+          userDataFactory.pushToLocalStorage();
           $state.go("myInformation");
         }
         else {
@@ -683,9 +727,19 @@ angular.module("starter.controllers",[])
 
       });
     };
+    $scope.cancleUpdateUserName=function () {
+
+     /* userDataFactory.setUserName($scope.userName2);*/
+      /*userDataFactory.setUserName("ddddddd");
+      console.log($scope.userDataView);*/
+      userDataFactory.pullFromLocalStorage();
+      /*console.log(JSON.parse(window.localStorage.getItem("userData")));*/
+     /* console.log(userDataFactory.getUserDataConfig());*/
+      $state.go("myInformation");
+    }
       $scope.test=function () {
-        /*alert("test");*/
-        console.log(userDataFactory.getUserDataConfig());
+        $scope.item.number=55;
+        /*window.location.reload();*/
       };
 
 

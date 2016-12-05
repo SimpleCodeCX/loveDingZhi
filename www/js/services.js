@@ -6,20 +6,23 @@ angular.module("starter.services",[])
 /**
  * * Created by simple on 2016/11/27.
  * 实现登录功能
- * 调用接口：phoneNumberIsExist：
+ * 调用接口：account/login：
  *            登录成功：flat=true
  *                失败：flat=false
  */
-  .factory("loginFactory",function (THEGLOBAL,$resource,$rootScope,$http) {
+  .factory("loginFactory",function (THEGLOBAL,$resource,$rootScope) {
     var theUrl=THEGLOBAL.serviceAPI + "/account/login";
     var isLoginSuccess;//true代表登录成功
     var userDataService={//保存用户数据
-      isLogin:null,
-      userName:null,
-      accountNumber:null,
-      realName:null,
-      phoneNumber:null,
-      address:null
+      isLogin:null,//是否已经登录
+       userName:null,//用户名
+       accountNumber:null,//账号
+       realName:null,//真实姓名
+       phoneNumber:null,//手机号码
+       address:null,//收获地址
+       isDesigner:true,//是否为设计师
+       isBusiness:true,//是否为商家
+       touXiangUrl:null//头像url
     };
     //withCredentials: true允许发送cookie，才能让服务器记住登录状态
     var resource=$resource(theUrl,{},
@@ -38,6 +41,9 @@ angular.module("starter.services",[])
           userDataService.realName=data.userData.realName;
           userDataService.phoneNumber=data.userData.phoneNumber;
           userDataService.address=data.userData.address;
+          userDataService.isDesigner=data.userData.isDesigner;
+          userDataService.isBusiness=data.userData.isBusiness;
+          userDataService.touXiangUrl=data.userData.touXiangUrl;
           /*console.log(userDataService);*/
           isLoginSuccess=data.userData.isLogin;
           $rootScope.$broadcast("loginFactory.login");
@@ -51,11 +57,40 @@ angular.module("starter.services",[])
       }
     }
   })
+  /**
+   * * Created by simple on 2016/12/05.
+   * 实现退出登录功能
+   * 调用接口：account/loginOut_authority：
+   *         退出登录成功：flat=true
+   *                失败：flat=false
+   */
+  .factory("loginOutFactory",function (THEGLOBAL,$resource,$rootScope) {
+    var theUrl=THEGLOBAL.serviceAPI + "/account/loginOut_authority";
+    var isLoginOutSuccess;//true代表登录成功
+    //withCredentials: true允许发送cookie，才能让服务器记住登录状态
+    var resource=$resource(theUrl,{},
+      {loginOut_get: {method: 'GET', withCredentials: true}}
+    );
+    return{
+      loginOut:function (userData_) {
+        resource.loginOut_get({},function (data) {
+          isLoginOutSuccess=data.flat;
+          $rootScope.$broadcast("loginOutFactory.loginOut");
+        });
+      },
+      getIsLoginOutSuccess:function () {
+        return isLoginOutSuccess;
+      }
+    }
+  })
+
+
+
 
   /**
    * Created by simple on 2016/11/27.
    * 检查数据库账号是否存在
-   * 调用接口：accountNumberIsExist：
+   * 调用接口：account/accountNumberIsExist：
    *            存在：flat=true
    *            不存在：flat=false
    */
@@ -80,7 +115,7 @@ angular.module("starter.services",[])
   /**
    * Created by simple on 2016/11/27.
    * 实现用户注册功能
-   * 调用接口：register：
+   * 调用接口：account/register：
    *           成功：flat=true
    *           失败：flat=false
    */
@@ -111,7 +146,7 @@ angular.module("starter.services",[])
   /**
    * Created by simple on 2016/12/03.
    * 实现修改用户名
-   * 调用接口：updateUserName：
+   * 调用接口：account/updateUserName：
    *           成功：flat=true
    *           失败：flat=false
    */
@@ -131,8 +166,8 @@ angular.module("starter.services",[])
             userName:userName_
           },
           success:function (data) {
-            isUpdateUserNameSucess=JSON.parse(data).flat;
-            /*console.log(data);*/
+            var jsonData=JSON.parse(data);
+            isUpdateUserNameSucess=jsonData.flat;
             $rootScope.$broadcast("updateUserNameFactory.updateUserName");
           }
         });
