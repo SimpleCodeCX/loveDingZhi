@@ -3,7 +3,11 @@
  */
 
 angular.module('starter',['ionic','starter.controllers','starter.services','ngCordova','ngResource','starter.config'])
-  .run(function($ionicPlatform) {
+  .run(function($ionicPlatform,userDataFactory,firstOpenLoginFactory) {
+    //这里是首次运行就会运行
+    //app首次运行时，执行自动登录功能
+    firstOpenLoginFactory.autoLogin();
+
     $ionicPlatform.ready(function() {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)

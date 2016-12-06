@@ -12,6 +12,7 @@ configModule.constant("THEGLOBAL",{
       /*isLogin:null,//是否已经登录
       userName:null,//用户名
        accountNumber:null,//账号
+       password:123,//密码
       realName:null,//真实姓名
       phoneNumber:null,//手机号码
       address:null,//收获地址
@@ -21,6 +22,7 @@ configModule.constant("THEGLOBAL",{
       isLogin:false,//是否已经登录
       userName:"simple",//用户名
       accountNumber:15767973362,//账号
+      password:123,//密码
       realName:"陈旭东",//真实姓名
       phoneNumber:15767973362,//手机号码
       address:null,//收获地址
@@ -29,17 +31,18 @@ configModule.constant("THEGLOBAL",{
       touXiangUrl:null//头像url
     };
     //初始化为localStorage里存放的用户数据
-    /*console.log(window.localStorage.getItem("userData"));*/
+    /*console.log("初始化为localStorage里存放的用户数据");*/
     if(window.localStorage.getItem("userData")!=null){
       userDataConfig=JSON.parse(window.localStorage.getItem("userData"));
     }
 
     return{
-      setUserDataConfig:function (isLogin_, userName_, accountNumber_,realName_,
+      setUserDataConfig:function (isLogin_, userName_, accountNumber_,password_,realName_,
                                   phoneNumber_, address_,isDesigner_,isBusiness_,touXiangUrl_) {
         userDataConfig.isLogin=isLogin_;
         userDataConfig.userName=userName_;
         userDataConfig.accountNumber=accountNumber_;
+        userDataConfig.password=password_;
         userDataConfig.realName=realName_;
         userDataConfig.phoneNumber=phoneNumber_;
         userDataConfig.address=address_;
@@ -54,6 +57,7 @@ configModule.constant("THEGLOBAL",{
         userDataConfig.isLogin=null;
         userDataConfig.userName=null;
         userDataConfig.accountNumber=null;
+        userDataConfig.password=null;
         userDataConfig.realName=null;
         userDataConfig.phoneNumber=null;
         userDataConfig.address=null;
@@ -68,6 +72,7 @@ configModule.constant("THEGLOBAL",{
           userDataConfig.isLogin=userDataLocalStorage.isLogin;
           userDataConfig.userName=userDataLocalStorage.userName;
           userDataConfig.accountNumber=userDataLocalStorage.accountNumber;
+          userDataConfig.password=userDataLocalStorage.password;
           userDataConfig.realName=userDataLocalStorage.realName;
           userDataConfig.phoneNumber=userDataLocalStorage.phoneNumber;
           userDataConfig.address=userDataLocalStorage.address;

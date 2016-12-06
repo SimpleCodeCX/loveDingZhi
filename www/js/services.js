@@ -10,7 +10,7 @@ angular.module("starter.services",[])
  *            登录成功：flat=true
  *                失败：flat=false
  */
-  .factory("loginFactory",function (THEGLOBAL,$resource,$rootScope) {
+  .factory("loginFactory",function (THEGLOBAL,$resource,$rootScope,userDataFactory) {
     var theUrl=THEGLOBAL.serviceAPI + "/account/login";
     var isLoginSuccess;//true代表登录成功
     var userDataService={//保存用户数据
@@ -34,8 +34,28 @@ angular.module("starter.services",[])
           accountNumber:userData_.accountNumber,
           password:userData_.password
         },function (data) {
+          /*console.log(userDataService);*/
+          isLoginSuccess=data.userData.isLogin;
+
+          if(isLoginSuccess){
+            //登录成功
+
+            // 将用户数据保存到config全局变量，并更新到缓存localStorage里
+            userDataFactory.setUserDataConfig(data.userData.isLogin,
+              data.userData.userName,
+              data.userData.accountNumber,
+              userData_.password,//这个密码保存的是加密前的密码，下一次登录才能成功
+              data.userData.realName,
+              data.userData.phoneNumber,
+              data.userData.address,
+              data.userData.isDesigner,
+              data.userData.isBusiness,
+              data.userData.touXiangUrl);
+            //将数据更新到localStorage
+            userDataFactory.pushToLocalStorage();
+          }
           /*console.log(data);*/
-          userDataService.isLogin=data.userData.isLogin;
+         /* userDataService.isLogin=data.userData.isLogin;
           userDataService.userName=data.userData.userName;
           userDataService.accountNumber=data.userData.accountNumber;
           userDataService.realName=data.userData.realName;
@@ -43,9 +63,7 @@ angular.module("starter.services",[])
           userDataService.address=data.userData.address;
           userDataService.isDesigner=data.userData.isDesigner;
           userDataService.isBusiness=data.userData.isBusiness;
-          userDataService.touXiangUrl=data.userData.touXiangUrl;
-          /*console.log(userDataService);*/
-          isLoginSuccess=data.userData.isLogin;
+          userDataService.touXiangUrl=data.userData.touXiangUrl;*/
           $rootScope.$broadcast("loginFactory.login");
         });
       },
@@ -57,6 +75,66 @@ angular.module("starter.services",[])
       }
     }
   })
+
+  /**
+   * * Created by simple on 2016/12/06.
+   * 实现每次运行APP登录功能
+   * 调用接口：account/login：
+   *            登录成功：flat=true
+   *                失败：flat=false
+   */
+  .factory("firstOpenLoginFactory",function (THEGLOBAL,$resource,userDataFactory) {
+    var theUrl=THEGLOBAL.serviceAPI + "/account/login";
+    var resource=$resource(theUrl,{},
+      {login_get: {method: 'GET', withCredentials: true}}
+    );
+    return{
+      autoLogin:function () {
+        //通过缓存判断上一次关闭app之前是否为已登录状态，是的话进行app首次打开自动登录
+        var isLogin=userDataFactory.getUserDataConfig().isLogin;
+        if(isLogin){
+          //是登录状态，使用缓存进行登录
+          
+          var accountNumber_=userDataFactory.getUserDataConfig().accountNumber;
+          var password_=userDataFactory.getUserDataConfig().password;
+          resource.login_get({
+            accountNumber:accountNumber_,
+            password:password_
+          },function (data) {
+            /*console.log(userDataService);*/
+            if(data.userData.isLogin){
+              //登录成功
+              // 将用户数据保存到config全局变量，并更新到缓存localStorage里
+              userDataFactory.setUserDataConfig(data.userData.isLogin,
+                data.userData.userName,
+                data.userData.accountNumber,
+                password_,//这个密码保存的是加密前的密码，下一次登录才能成功
+                data.userData.realName,
+                data.userData.phoneNumber,
+                data.userData.address,
+                data.userData.isDesigner,
+                data.userData.isBusiness,
+                data.userData.touXiangUrl);
+              //将数据更新到localStorage
+              userDataFactory.pushToLocalStorage();
+            }
+            else {
+
+              //登录失败，删除localStorage的用户数据缓存以及清楚全局变量的用户数据
+              userDataFactory.removeLocalStorage();
+              userDataFactory.clearUserDataConfig();
+            }
+          });
+        }
+      }
+    }
+  })
+
+
+
+
+
+
   /**
    * * Created by simple on 2016/12/05.
    * 实现退出登录功能

@@ -473,30 +473,6 @@ angular.module("starter.controllers",[])
         $scope.isLoginSuccess=loginFactory.getIsLoginSuccess();
         if($scope.isLoginSuccess){
           //登录成功
-
-          // 从服务层获取用户数据保存到config全局变量，并更新到缓存localStorage里
-          var userDataService=loginFactory.getUserDataService();
-           userDataFactory.setUserDataConfig(userDataService.isLogin,
-           userDataService.userName,
-           userDataService.accountNumber,
-           userDataService.realName,
-           userDataService.phoneNumber,
-           userDataService.address,
-           userDataService.isDesigner,
-           userDataService.isBusiness,
-           userDataService.touXiangUrl);
-          //将数据更新到localStorage
-          userDataFactory.pushToLocalStorage();
-
-
-          // 从服务层获取用户数据并保存到缓存localStorage里
-          // json变量转化成json字符串
-          /*var strUserData = JSON.stringify(loginFactory.getUserDataService());
-           //保存
-           window.localStorage.setItem("userData",strUserData);*/
-
-
-
           $state.go("tab.account");
         }
         else {
