@@ -16,11 +16,11 @@
       <!--已经登录-->
       <div ng-if="userDataView.isLogin">
         <ion-item class="item-thumbnail-left " style="margin-top: 10px;" ng-click="goToMyInformation()">
-          <img src="../img/sjg/sjg1.jpg">
+          <img ng-src="{{userDataView.touXiangUrl}}">
 
           <div style="display: inline-block;vertical-align: middle;margin-top: 10px;">
-            <h2>Simple小东</h2>
-            <p>Nine Inch Nails</p>
+            <h2>{{userDataView.userName}}</h2>
+            <p>{{userDataView.nickname}}</p>
           </div>
           <div style="display: inline-block;vertical-align: middle;float: right;margin-top: 13px;" class="">
             <button class="button button-balanced button-large button-clear button-icon ion-chevron-right" >

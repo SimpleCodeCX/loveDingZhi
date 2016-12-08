@@ -22,7 +22,8 @@ angular.module("starter.services",[])
        address:null,//收获地址
        isDesigner:true,//是否为设计师
        isBusiness:true,//是否为商家
-       touXiangUrl:null//头像url
+       touXiangUrl:null,//头像url
+       nickname:null//昵称
     };
     //withCredentials: true允许发送cookie，才能让服务器记住登录状态
     var resource=$resource(theUrl,{},
@@ -50,7 +51,8 @@ angular.module("starter.services",[])
               data.userData.address,
               data.userData.isDesigner,
               data.userData.isBusiness,
-              data.userData.touXiangUrl);
+              data.userData.touXiangUrl,
+              data.userData.nickname);
             //将数据更新到localStorage
             userDataFactory.pushToLocalStorage();
           }
@@ -94,7 +96,6 @@ angular.module("starter.services",[])
         var isLogin=userDataFactory.getUserDataConfig().isLogin;
         if(isLogin){
           //是登录状态，使用缓存进行登录
-          
           var accountNumber_=userDataFactory.getUserDataConfig().accountNumber;
           var password_=userDataFactory.getUserDataConfig().password;
           resource.login_get({
@@ -114,7 +115,8 @@ angular.module("starter.services",[])
                 data.userData.address,
                 data.userData.isDesigner,
                 data.userData.isBusiness,
-                data.userData.touXiangUrl);
+                data.userData.touXiangUrl,
+                data.userData.nickname);
               //将数据更新到localStorage
               userDataFactory.pushToLocalStorage();
             }
@@ -150,7 +152,7 @@ angular.module("starter.services",[])
       {loginOut_get: {method: 'GET', withCredentials: true}}
     );
     return{
-      loginOut:function (userData_) {
+      loginOut:function () {
         resource.loginOut_get({},function (data) {
           isLoginOutSuccess=data.flat;
           $rootScope.$broadcast("loginOutFactory.loginOut");
@@ -258,7 +260,42 @@ angular.module("starter.services",[])
     }
   })
 
+  /**
+   * Created by simple on 2016/12/03.
+   * 实现修改用户头像
+   * 调用接口：account/updateUserTouXiang_authority：
+   *           成功：flat=true
+   *           失败：flat=false
+   */
+  .factory("updateUserTouXiangFactory",function (THEGLOBAL,$rootScope) {
+    var theUrl=THEGLOBAL.serviceAPI+"/account/updateUserTouXiang_authority";
+    var isUpdateUserTouXiangSucess;//布尔类型,是否修改成功,是则true
+    return {
+      updateUserTouXiang:function (accountNumber_,touXiang_) {
+        $.ajax({
+          type:"post",
+          url:theUrl,
+          xhrFields: {
+            withCredentials: true
+          },
+          data:{
+            accountNumber:accountNumber_,
+            touXiang:touXiang_
+          },
+          success:function (data) {
+            var jsonData=JSON.parse(data);
+            isUpdateUserTouXiangSucess=jsonData.flat;
+            $rootScope.$broadcast("updateUserTouXiangFactory.updateUserTouXiang");
+          }
+        });
 
+      },
+      getIsUpdateUserTouXiangSucess:function () {
+        return isUpdateUserTouXiangSucess;
+        /*console.log(isUpdateUserNameSucess);*/
+      }
+    }
+  })
 
 
 

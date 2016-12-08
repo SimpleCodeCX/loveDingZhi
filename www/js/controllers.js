@@ -390,7 +390,11 @@ angular.module("starter.controllers",[])
     $scope.loginOut=function () {
       //调用service层发出退出请求
       loginOutFactory.loginOut();
-      var onLoginOut= $scope.$on("loginOutFactory.loginOut",function () {
+      //清除全局数据
+      userDataFactory.removeLocalStorage();
+      //清除localStorage数据
+      userDataFactory.clearUserDataConfig();
+      /*var onLoginOut= $scope.$on("loginOutFactory.loginOut",function () {
         onLoginOut();
         var isLoginOutSuccess=loginOutFactory.getIsLoginOutSuccess();
         if(isLoginOutSuccess){
@@ -402,7 +406,7 @@ angular.module("starter.controllers",[])
 
           $state.go("tab.account");
         }
-      });
+      });*/
 
     }
     $scope.goToMyInformation=function () {
@@ -619,7 +623,16 @@ angular.module("starter.controllers",[])
 
   .controller('Update_touxiangCtrl',["$scope","$state",
     "$ionicActionSheet","$timeout","$cordovaImagePicker",
-    "$cordovaCamera", function($scope,$state,$ionicActionSheet,$timeout,$cordovaImagePicker,$cordovaCamera) {
+    "$cordovaCamera","userDataFactory", "updateUserTouXiangFactory",function($scope,$state,$ionicActionSheet,$timeout,$cordovaImagePicker,
+                               $cordovaCamera,userDataFactory,updateUserTouXiangFactory) {
+
+      //保存用户的数据
+      $scope.userDataView={};
+      //从config获取用户数据
+      $scope.userDataView=userDataFactory.getUserDataConfig();
+      /*$scope.test=function () {
+        $scope.userDataView.touXiangUrl="http://www.runoob.com/images/pulpit.jpg";
+      };*/
       $scope.show = function() {
 
         // Show the action sheet
@@ -633,37 +646,64 @@ angular.module("starter.controllers",[])
             // add cancel code..
           },
           buttonClicked: function(index) {
+            var options={};
             if(index==0)//拍照
             {
-              document.addEventListener("deviceready", function () {
+              options = {
+                /*quality: 100,*/
+                destinationType: Camera.DestinationType.DATA_URL,
+                sourceType: Camera.PictureSourceType.CAMERA
+                /*correctOrientation:true*/
+              };
 
-                var options = {
-                  quality: 50,
-                  destinationType: Camera.DestinationType.FILE_URI,
-                  sourceType: Camera.PictureSourceType.CAMERA,
-                  allowEdit: true,
-                  encodingType: Camera.EncodingType.JPEG,
-                  targetWidth: 100,
-                  targetHeight: 100,
-                  popoverOptions: CameraPopoverOptions,
-                  saveToPhotoAlbum: false,
-                  correctOrientation:true
-                };
-
-                $cordovaCamera.getPicture(options).then(function(imageData) {
-                  alert(imageData);
-                /*  var image = document.getElementById('myImage');
-                  image.src = "data:image/jpeg;base64," + imageData;*/
-                }, function(err) {
-                  alert(err);
-                  // error
-                });
-
-              }, false);
             }
             else {//从手机选择照片
-              alert("从手机获取相片");
+              //定义Camera的参数
+              options = {
+                /*quality: 100,*/
+                destinationType: Camera.DestinationType.DATA_URL,
+                sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+                /*correctOrientation:true*/
+                /*allowEdit: true,*/
+                /*encodingType: Camera.EncodingType.JPEG,*/
+                /*targetWidth: 100,
+                 targetHeight: 100,*/
+                /*popoverOptions: CameraPopoverOptions,*/
+                /*saveToPhotoAlbum: false,*/
+                /*correctOrientation:true*/
+              };
             }
+            //调用Camera
+            document.addEventListener("deviceready", function () {
+              $cordovaCamera.getPicture(options).then(function(imageData) {
+                $scope.userDataView.touXiangUrl="data:image/jpeg;base64,"+imageData;
+                //调用服务层将头像的base64发送到服务器
+                updateUserTouXiangFactory.updateUserTouXiang($scope.userDataView.accountNumber,imageData);
+                //获取修改头像结果
+                var onUpdateUserTouXiang=$scope.$on("updateUserTouXiangFactory.updateUserTouXiang",function () {
+                  onUpdateUserTouXiang();
+                  var isUpdateUserTouXiangSucess=updateUserTouXiangFactory.getIsUpdateUserTouXiangSucess();
+                  if(isUpdateUserTouXiangSucess){
+                    //将用户头像base64的修改更新到localStorage
+                    userDataFactory.pushToLocalStorage();
+                    $state.go("myInformation");
+                  }
+                  else {
+                    alert("保存失败");
+                  }
+
+                });
+
+                /*alert(imageData);*/
+
+                /*var image = document.getElementById('myImage');
+                 image.src = "data:image/jpeg;base64," + imageData;*/
+              }, function(err) {
+                alert(err);
+                // error
+              });
+            }, false);
+
             return true;
           }
         });

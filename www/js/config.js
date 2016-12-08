@@ -4,21 +4,12 @@
 var configModule=angular.module("starter.config",[]);
 configModule.constant("THEGLOBAL",{
   /*"serviceAPI":"http://localhost:8080"*/
-  "serviceAPI":"http://10.200.14.208:8080"
+  "serviceAPI":"http://10.200.14.208:8080"//宿舍的服务器ip
+  /*"serviceAPI":"http://192.168.1.103:8080"//5号楼的服务器ip*/
 })
   .factory("userDataFactory",function (THEGLOBAL,$resource,$rootScope) {
     //用户信息
     var userDataConfig={
-      /*isLogin:null,//是否已经登录
-      userName:null,//用户名
-       accountNumber:null,//账号
-       password:123,//密码
-      realName:null,//真实姓名
-      phoneNumber:null,//手机号码
-      address:null,//收获地址
-      isDesigner:true,//是否为设计师
-      isBusiness:true,//是否为商家
-      touXiangUrl:null//头像url*/
       isLogin:false,//是否已经登录
       userName:"simple",//用户名
       accountNumber:15767973362,//账号
@@ -28,7 +19,8 @@ configModule.constant("THEGLOBAL",{
       address:null,//收获地址
       isDesigner:true,//是否为设计师
       isBusiness:true,//是否为商家
-      touXiangUrl:null//头像url
+      touXiangUrl:null,//头像url
+      nickname:null//昵称
     };
     //初始化为localStorage里存放的用户数据
     /*console.log("初始化为localStorage里存放的用户数据");*/
@@ -38,7 +30,7 @@ configModule.constant("THEGLOBAL",{
 
     return{
       setUserDataConfig:function (isLogin_, userName_, accountNumber_,password_,realName_,
-                                  phoneNumber_, address_,isDesigner_,isBusiness_,touXiangUrl_) {
+                                  phoneNumber_, address_,isDesigner_,isBusiness_,touXiangUrl_,nickname_) {
         userDataConfig.isLogin=isLogin_;
         userDataConfig.userName=userName_;
         userDataConfig.accountNumber=accountNumber_;
@@ -49,6 +41,7 @@ configModule.constant("THEGLOBAL",{
         userDataConfig.isDesigner=isDesigner_;
         userDataConfig.isBusiness=isBusiness_;
         userDataConfig.touXiangUrl=touXiangUrl_;
+        userDataConfig.nickname=nickname_;
       },
       getUserDataConfig:function () {
         return userDataConfig;
@@ -64,6 +57,7 @@ configModule.constant("THEGLOBAL",{
         userDataConfig.isDesigner=null;
         userDataConfig.isBusiness=null;
         userDataConfig.touXiangUrl=null;
+        userDataConfig.nickname=null;
       },
       pullFromLocalStorage:function () {//从localStorage获取数据
         //从localStorage获取数据是字符串，需要转化为json数据格式
@@ -79,6 +73,7 @@ configModule.constant("THEGLOBAL",{
           userDataConfig.isDesigner=userDataLocalStorage.isDesigner;
           userDataConfig.isBusiness=userDataLocalStorage.isBusiness;
           userDataConfig.touXiangUrl=userDataLocalStorage.touXiangUrl;
+          userDataConfig.nickname=userDataLocalStorage.nickname;
 
         }
       },
