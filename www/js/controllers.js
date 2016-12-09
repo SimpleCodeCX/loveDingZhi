@@ -133,7 +133,11 @@ angular.module("starter.controllers",[])
                         "../img/sjg/sjg4.jpg",
                         "../img/sjg/sjg5.png"];
   }])
-  .controller('DesignerCtrl', ["$scope","$state",function($scope,$state) {
+  .controller('DesignerCtrl', ["$scope","$state","userDataFactory",function($scope,$state,userDataFactory) {
+    //保存用户的数据
+    $scope.userDataView={};
+    //从config获取用户数据
+    $scope.userDataView=userDataFactory.getUserDataConfig();
     $scope.design_datas=[{
       touxiang:"1.jpg",
       name:"ben",
@@ -165,11 +169,40 @@ angular.module("starter.controllers",[])
     }
   }])
   .controller('Apply_designerCtrl', ["$scope","$state","$cordovaImagePicker","$cordovaCamera",
-    function($scope,$state,$cordovaImagePicker,$cordovaCamera) {
+    "applyDesignerFactory","imageFactory",
+    function($scope,$state,$cordovaImagePicker,$cordovaCamera,applyDesignerFactory,imageFactory) {
 
+    //设计师的申请资料
+    $scope.applyData={
+      educationBackground:"",//学历
+      major:"",//专业
+      majorImg:"../img/sjg/sjg1.jpg",//专业证书
+      sjgImgs:["../img/sjg/sjg1.jpg","../img/sjg/sjg2.jpg"]//设计稿
+    };
+    //点击开通提交数据
+    $scope.applyDesigner=function () {
+      //将图片转化为base64数据
+      var majorImgBase64=imageFactory.getBase64Image(document.getElementById("majorImg"),"image/png");
+      //设计稿是多张图片，每张的图片的数据以&_&作为分隔符
+      var sjgImgsBase64=imageFactory.getBase64Image(document.getElementById("sjgImg0"),"image/png");
+      for(var i=1;i<$scope.applyData.sjgImgs.length;i++){
+        sjgImgsBase64=sjgImgsBase64+"&_&"+imageFactory.getBase64Image(document.getElementById("sjgImg"+i),"image/png");
+      }
+      //调用服务层，发送数据到服务器
+      applyDesignerFactory.applyDesigner($scope.applyData.educationBackground, $scope.applyData.major, majorImgBase64, sjgImgsBase64);
+      var onApplyDesigner=$scope.$on("applyDesignerFactory.applyDesigner",function () {
+        onApplyDesigner();
+        if(applyDesignerFactory.getIspplyDesignerSuccess()){
+          alert("提交成功，请等待审核");
+          $state.go("designer");
+        }
+
+      });
+
+    }
       //"../img/sjg/sjg1.jpg"
-      $scope.imgWorksSrc=[];
-
+      /*$scope.applyData.sjgImgs.push("../img/sjg/sjg1.jpg");
+      $scope.applyData.sjgImgs.push("../img/sjg/sjg2.jpg");*/
       //上传作品
       $scope.uploadImgWorks= function () {
         var options = {
@@ -183,14 +216,39 @@ angular.module("starter.controllers",[])
           //alert();
           $cordovaImagePicker.getPictures(options)
             .then(function (results) {
-              $scope.imgWorksSrc=results;
+              $scope.applyData.sjgImgs=results;
               /*$scope.imgWorksSrc=results;*/
             },function (error) {
               alert(error);
             });
         }, false);
       };
+      //上传专业证书
+      $scope.uploadImgMajor= function () {
+        var options = {
+          maximumImagesCount: 5,
+          width: 150,
+          height: 150,
+          quality: 80
+        };
+        /*当Cordova加载完成后才可以调用Cordova插件*/
+        document.addEventListener("deviceready", function () {
+          //alert();
+          $cordovaImagePicker.getPictures(options)
+            .then(function (results) {
+              $scope.applyData.majorImg=results[0];
+            },function (error) {
+              alert(error);
+            });
+        }, false);
+      };
+
+
+
   }])
+
+
+
   .controller('Upload_sjgCtrl', ["$scope",'$cordovaImagePicker','$ionicSlideBoxDelegate',
     function($scope,$cordovaImagePicker,$ionicSlideBoxDelegate) {
     $scope.imgWorks=[];

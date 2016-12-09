@@ -6,8 +6,9 @@
         返回
       </a>
     </ion-nav-buttons>
-    <ion-nav-buttons side="right">
-      <a class="button button-small button-balanced" href="#/apply_designer">
+    <ion-nav-buttons side="right" >
+      <a class="button button-small button-balanced" href="#/apply_designer"
+         ng-if="!userDataView.isDesigner">
         成为设计师
       </a>
     </ion-nav-buttons>

@@ -2,7 +2,8 @@
  * Created by simple on 2016/10/15.
  */
 
-angular.module('starter',['ionic','starter.controllers','starter.services','ngCordova','ngResource','starter.config'])
+angular.module('starter',['ionic','starter.controllers','starter.services','starter.accountServices',
+  'starter.designServices','starter.shoppingServices','starter.aiDingZhiServices','ngCordova','ngResource','starter.config'])
   .run(function($ionicPlatform,userDataFactory,firstOpenLoginFactory) {
     //这里是首次运行就会运行
     //app首次运行时，执行自动登录功能

@@ -122,6 +122,18 @@ configModule.constant("THEGLOBAL",{
       },
       getAddress:function () {
         return userDataConfig.address;
+      },
+      setIsDesigner:function (isDesigner_) {
+        userDataConfig.isDesigner=isDesigner_;
+      },
+      getIsDesigner:function () {
+        return userDataConfig.isDesigner;
+      },
+      setIsBusiness:function (isBusiness_) {
+        userDataConfig.isBusiness=isBusiness_;
+      },
+      getIsBusiness:function () {
+        return userDataConfig.isBusiness;
       }
 
     }

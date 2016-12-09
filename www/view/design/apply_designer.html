@@ -11,13 +11,16 @@
   <ion-content>
     <ion-list class="" type="list-inset" style="padding-bottom: 0;margin-top: 30px;">
       <ion-item class="" style="">
-        <input type="text" placeholder="学历">
+        <input type="text" placeholder="学历" ng-model="applyData.educationBackground">
       </ion-item>
       <ion-item class="" style="" >
-        <input type="text" placeholder="专业">
+        <input type="text" placeholder="专业" ng-model="applyData.major">
       </ion-item>
       <ion-item class="">
-        <img style="margin-top: 10px;" src="{{imgMajorSrc}}">
+        <div ng-if="applyData.majorImg">
+          <img id="majorImg" style="margin-top: 10px;height: 150px;width: 50%;"  ng-src="{{applyData.majorImg}}">
+        </div>
+
         <br/>
         <button class="button button-dark button-clear button-outline" ng-click="uploadImgMajor()" >
           <i class="icon ion-plus"></i>上传专业证书
@@ -37,14 +40,17 @@
       </ion-item>
       <ion-item>
         <div class="row row-wrap">
-          <div ng-repeat="imgWords in imgWorksSrc" class="col col-50">
-            <img style="height: 150px;width: 100%;" src="{{imgWords}}">
+          <div ng-repeat="sjgImg in applyData.sjgImgs" class="col col-50">
+            <img id="sjgImg{{$index}}" style="height: 150px;width: 100%;" ng-src="{{sjgImg}}">
           </div>
         </div>
       </ion-item>
+      <ion-item class="" style="" >
+        <div class="padding">
+          <button class="button button-full button-balanced" ng-click="applyDesigner()">开通</button>
+        </div>
+      </ion-item>
     </ion-list>
-    <div class="padding">
-      <button class="button button-full button-balanced">开通</button>
-    </div>
+<div style="height: 500px;"></div>
   </ion-content>
 </ion-view>
