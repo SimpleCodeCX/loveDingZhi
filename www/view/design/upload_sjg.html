@@ -15,17 +15,17 @@
     </ion-nav-title>
     <ion-content class="">
       <ion-list  type="card" style="padding-bottom: 0;margin-top: 10px;">
-        <ion-item class="item-divider" style="">
+        <ion-item class="item-divider" style="" >
           作品标题
         </ion-item>
         <ion-item class="" style="">
-          <input type="text" placeholder="：">
+          <input type="text" placeholder="：" ng-model="sjgData.caption">
         </ion-item>
         <ion-item class="item-divider" style="">
           灵感描述
         </ion-item>
         <ion-item class="" style="">
-         <textarea style="width: 100%;"cols="" rows="10" >
+         <textarea style="width: 100%;"cols="" rows="10" ng-model="sjgData.introduction">
 
          </textarea>
         </ion-item>
@@ -36,10 +36,15 @@
         </ion-item>
         <ion-item>
           <ion-slide-box   auto-play="true" does-continue="true" show-pager="true" slide-interval="1000">
-            <ion-slide ng-repeat="sjg in imgWorks" class="">
-              <img style=" height: 300px;width: 100%;" src="{{sjg}}">
+            <ion-slide ng-repeat="sjg in sjgData.sjgImgs" >
+              <img id="sjgImg{{$index}}" style=" height: 300px;width: 100%;" ng-src="{{sjg}}">
             </ion-slide>
           </ion-slide-box>
+        </ion-item>
+        <ion-item class="" style="" >
+          <div class="padding">
+            <button class="button button-full button-balanced" ng-click="uploadToService()">上传</button>
+          </div>
         </ion-item>
         <div style="height: 300px;">
 

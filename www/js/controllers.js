@@ -250,8 +250,14 @@ angular.module("starter.controllers",[])
 
 
   .controller('Upload_sjgCtrl', ["$scope",'$cordovaImagePicker','$ionicSlideBoxDelegate',
-    function($scope,$cordovaImagePicker,$ionicSlideBoxDelegate) {
-    $scope.imgWorks=[];
+    "designerUploadSjsFactory","imageFactory",
+    function($scope,$cordovaImagePicker,$ionicSlideBoxDelegate,designerUploadSjsFactory,imageFactory) {
+      //设计稿数据，从前端获取
+      $scope.sjgData={
+        caption:"",//设计稿标题
+        introduction:"",//设计稿介绍或灵感
+        sjgImgs:["../img/sjg/sjg1.jpg","../img/sjg/sjg2.jpg"]//设计稿
+      };
     $scope.uploadWorks=function () {
       var options = {
         maximumImagesCount: 5,
@@ -262,14 +268,31 @@ angular.module("starter.controllers",[])
       document.addEventListener("deviceready", function () {
         $cordovaImagePicker.getPictures(options)
           .then(function (results) {
-            $scope.imgWorks=results;
+            $scope.sjgData.sjgImgs=results;
             $ionicSlideBoxDelegate.update();
           },function (error) {
             alert(error);
           });
       }, false);
-
+    };
+    //调用服务器层发送数据到服务器
+    $scope.uploadToService=function () {
+      //设计稿是多张图片，每张图片的数据以&_&作为分隔符
+      var sjgImgsBase64=imageFactory.getBase64Image(document.getElementById("sjgImg0"),"image/png");
+      for(var i=1;i<$scope.sjgData.sjgImgs.length;i++){
+        sjgImgsBase64=sjgImgsBase64+"&_&"+imageFactory.getBase64Image(document.getElementById("sjgImg"+i),"image/png");
+      }
+      designerUploadSjsFactory.designerUploadSjs($scope.sjgData.caption,$scope.sjgData.introduction,sjgImgsBase64);
+      var onDesignerUploadSjs=$scope.$on("designerUploadSjsFactory.designerUploadSjs",function () {
+        onDesignerUploadSjs();
+        if(designerUploadSjsFactory.getIsDesignerUploadSjsSuccess())
+        {
+          alert("设计师上传设计稿成功");
+        }
+      });
     }
+
+
   }])
   .controller('Upload_logoCtrl', ["$scope","$ionicSlideBoxDelegate","$cordovaImagePicker",
     function($scope,$ionicSlideBoxDelegate,$cordovaImagePicker) {

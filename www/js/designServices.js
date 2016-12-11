@@ -46,3 +46,44 @@ angular.module("starter.designServices",[])
       }
     }
   })
+
+
+  /**
+   * * Created by simple on 2016/12/11.
+   * 设计师上传设计稿
+   * 调用接口：design/designerUploadSjs_authority：
+   *            上传成功：flat=true
+   *                失败：flat=false
+   */
+  .factory("designerUploadSjsFactory",function (THEGLOBAL,$resource,$rootScope,userDataFactory) {
+    var theUrl=THEGLOBAL.serviceAPI + "/design/designerUploadSjs_authority";
+    var isDesignerUploadSjsSuccess;//true代表上传成功
+    return{
+      designerUploadSjs:function (caption_,introduction_,sjgImgs_) {
+
+        //账号
+        var accountNumber_=userDataFactory.getUserDataConfig().accountNumber;
+        $.ajax({
+          type:"post",
+          url:theUrl,
+          xhrFields: {
+            withCredentials: true
+          },
+          data:{
+            accountNumber:accountNumber_,
+            caption:caption_,
+            introduction:introduction_,
+            sjgImgs:sjgImgs_
+          },
+          success:function (data) {
+            var jsonData=JSON.parse(data);
+            isDesignerUploadSjsSuccess=jsonData.flat;
+            $rootScope.$broadcast("designerUploadSjsFactory.designerUploadSjs");
+          }
+        });
+      },
+      getIsDesignerUploadSjsSuccess:function () {
+        return isDesignerUploadSjsSuccess;
+      }
+    }
+  })
