@@ -87,3 +87,47 @@ angular.module("starter.designServices",[])
       }
     }
   })
+
+  /**
+   * * Created by simple on 2016/12/11.
+   * 获取设计师列表数据
+   * 调用接口：design/getDesignerList：
+   *返回设计师列表数据：
+   [{
+     userId:21，//用户id
+     userName:"simple", //用户名
+     nickname:"擅长衣服设计",//个性签名
+     worksCount:20，//作品数
+     touXiangUrl："images/touXiang/123.jpg"//头像url
+     }]
+   */
+  .factory("getDesignerListFactory",function (THEGLOBAL,$resource,$rootScope) {
+    var theUrl=THEGLOBAL.serviceAPI + "/design/getDesignerList";
+    var isGetDesignerListSuccess;//true代表成功
+    var designerList=[];
+    return{
+      //请求服务器获取数据
+      getDesignerListFromService:function () {
+        $.ajax({
+          type:"get",
+          url:theUrl,
+          xhrFields: {
+            withCredentials: true
+          },
+          success:function (data) {
+            /*var jsonData=JSON.parse(data);*/
+            designerList=data;
+            for(i=0;i<designerList.length;i++){
+              designerList[0].touXiangUrl=THEGLOBAL.serviceAPI+"/"+designerList[0].touXiangUrl;
+            }
+            $rootScope.$broadcast("getDesignerListFactory.getDesignerListFromService");
+          }
+        });
+      },
+      //返回数据
+      getDesignerList:function () {
+        return designerList;
+      }
+
+    }
+  })

@@ -18,19 +18,16 @@
     </ion-nav-title>
 
     <ion-content class="stable-bg">
-
-
-
         <div class="row row-wrap" >
-          <div class="col col-50"  ng-repeat="design in design_datas" ng-click="goToDesignDetails()">
+          <div class="col col-50"  ng-repeat="designer in designerList" ng-click="goToDesignDetails()">
             <div class="" style="padding: 0;text-align: center;">
               <a class="button button-balanced" style="border-radius: 30px;">
                 <img class="button" style="height: 130px;width: 120px;
-                           border-radius: 100px;" src="../img/touxiang/{{design.touxiang}}">
+                           border-radius: 100px;" ng-src="{{designer.touXiangUrl}}">
               </a>
               <div style="margin-top: 10px;">
-                <p class="" style="margin: 0px;">{{design.name}}    擅长衣服设计</p>
-                <p class="">作品数：{{design.works}}</p>
+                <p class="" style="margin: 0px;">{{designer.userName}}    {{designer.nickname}}</p>
+                <p class="">作品数：{{designer.worksCount}}</p>
               </div>
             </div>
           </div>

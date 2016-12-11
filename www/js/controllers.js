@@ -133,32 +133,51 @@ angular.module("starter.controllers",[])
                         "../img/sjg/sjg4.jpg",
                         "../img/sjg/sjg5.png"];
   }])
-  .controller('DesignerCtrl', ["$scope","$state","userDataFactory",function($scope,$state,userDataFactory) {
-    //保存用户的数据
-    $scope.userDataView={};
-    //从config获取用户数据
-    $scope.userDataView=userDataFactory.getUserDataConfig();
-    $scope.design_datas=[{
-      touxiang:"1.jpg",
-      name:"ben",
-      works:20
-    },{
-      touxiang:"2.png",
-      name:"max",
-      works:21
-    },{
-      touxiang:"3.png",
-      name:"mike",
-      works:23
-    },{
-      touxiang:"4.png",
-      name:"adam",
-      works:25
-    },{
-      touxiang:"5.png",
-      name:"perry",
-      works:12
-    }];
+  .controller('DesignerCtrl', ["$scope","$state","userDataFactory","getDesignerListFactory",
+    function($scope,$state,userDataFactory,getDesignerListFactory) {
+
+      $scope.designerList=[{
+        touXiangUrl:"../img/touxiang/1.jpg",
+        userName:"ben",
+        worksCount:20,
+        nickname:"擅长衣服设计"
+      },{
+        touXiangUrl:"../img/touxiang/2.png",
+        userName:"max",
+        worksCount:21,
+        nickname:"擅长衣服设计"
+      },{
+        touXiangUrl:"../img/touxiang/3.png",
+        userName:"mike",
+        worksCount:23,
+        nickname:"擅长衣服设计"
+      },{
+        touXiangUrl:"../img/touxiang/4.png",
+        userName:"adam",
+        worksCount:25,
+        nickname:"擅长衣服设计"
+      },{
+        touXiangUrl:"../img/touxiang/5.png",
+        userName:"perry",
+        worksCount:12,
+        nickname:"擅长衣服设计"
+      }];
+
+      /*自动加载数据*/
+      /*getDesignerListFactory.getDesignerListFromService();
+      var onGetDesignerListFromService=$scope.$on("getDesignerListFactory.getDesignerListFromService",function () {
+        onGetDesignerListFromService();
+        $scope.designerList= getDesignerListFactory.getDesignerList();
+      });*/
+      $scope.test=function () {
+        getDesignerListFactory.getDesignerListFromService();
+        var onGetDesignerListFromService=$scope.$on("getDesignerListFactory.getDesignerListFromService",function () {
+          onGetDesignerListFromService();
+          $scope.designerList= getDesignerListFactory.getDesignerList();
+        });
+      }
+
+
     $scope.goToDesignDetails=function () {
       $state.go("designer_details");
     }
@@ -256,14 +275,14 @@ angular.module("starter.controllers",[])
       $scope.sjgData={
         caption:"",//设计稿标题
         introduction:"",//设计稿介绍或灵感
-        sjgImgs:["../img/sjg/sjg1.jpg","../img/sjg/sjg2.jpg"]//设计稿
+        sjgImgs:[]//设计稿
       };
     $scope.uploadWorks=function () {
       var options = {
         maximumImagesCount: 5,
         width: 150,
         height: 150,
-        quality: 80
+        quality: 100
       };
       document.addEventListener("deviceready", function () {
         $cordovaImagePicker.getPictures(options)
