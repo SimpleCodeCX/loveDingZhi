@@ -86,7 +86,7 @@ angular.module('starter',['ionic','starter.controllers','starter.services','star
 
 
       .state("designer_details",{
-        url:"/designer_details",
+        url:"/designer_details/:userId",
         templateUrl:"design/designer_details.html",
         controller:"Designer_detailsCtrl"
       })

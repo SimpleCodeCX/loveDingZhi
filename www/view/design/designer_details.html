@@ -17,7 +17,7 @@
           <div class="light-bg" style="padding: 0;text-align: center;">
             <a class="button button-balanced" style="border-radius: 30px;">
               <img class="button" style="height: 150px;width: 150px;
-                           border-radius: 180px;" src="../img/ben.png">
+                           border-radius: 180px;"  ng-src="{{designerDetails.touXiangUrl}}">
             </a>
           </div>
         </ion-item>
@@ -29,10 +29,7 @@
           </div>
         </ion-item>-->
         <ion-item class="item-body">
-          灵感：首先介绍你的灵感来源，以及这一灵感在你的设计中的体现（或是主题在你的设计中的体现），
-          在设计中采用了什么样的材质，款式，及特殊的手法，通过这些方面表达了设计者什么样的情感或想法。
-          灵感：首先介绍你的灵感来源，以及这一灵感在你的设计中的体现（或是主题在你的设计中的体现），
-          在设计中采用了什么样的材质，款式，及特殊的手法，通过这些方面表达了设计者什么样的情感或想法。
+          {{designerDetails.introduction}}
         </ion-item>
         <ion-item class="item-divider" style="margin-bottom: 20px;">
           作品
@@ -40,17 +37,18 @@
       </ion-list>
 
       <div class="">
-        <div class="row" ng-repeat="i in [1,2,3,4,5,6,7]">
-          <div class="col col-50" style=""  ng-click="goToSjg_details()">
+        <div class="row row-wrap" >
+          <div class="col col-50"  ng-repeat="sjg in designerDetails.sjgs"
+               ng-click="goToSjg_details()">
             <div class="">
-              <img src="../img/sjg/sjg2.jpg">
+              <img ng-src="{{sjg.sjgImg}}">
             </div>
             <div class="">
               <i class=" icon ion-ios-heart-outline"></i>
-              成熟风格
+              {{sjg.sjgCaption}}
             </div>
           </div>
-          <div class="col col-50 ">
+     <!--     <div class="col col-50 ">
             <div class="">
               <img src="../img/sjg/sjg1.jpg">
             </div>
@@ -58,7 +56,7 @@
               <i class=" icon ion-ios-heart-outline"></i>
               成熟风格
             </div>
-          </div>
+          </div>-->
         </div>
       </div>
     </ion-content>

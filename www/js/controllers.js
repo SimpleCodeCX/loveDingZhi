@@ -135,7 +135,10 @@ angular.module("starter.controllers",[])
   }])
   .controller('DesignerCtrl', ["$scope","$state","userDataFactory","getDesignerListFactory",
     function($scope,$state,userDataFactory,getDesignerListFactory) {
-
+      //保存用户的数据
+      $scope.userDataView={};
+      //从config获取用户数据
+      $scope.userDataView=userDataFactory.getUserDataConfig();
       $scope.designerList=[{
         touXiangUrl:"../img/touxiang/1.jpg",
         userName:"ben",
@@ -164,11 +167,11 @@ angular.module("starter.controllers",[])
       }];
 
       /*自动加载数据*/
-      /*getDesignerListFactory.getDesignerListFromService();
+      getDesignerListFactory.getDesignerListFromService();
       var onGetDesignerListFromService=$scope.$on("getDesignerListFactory.getDesignerListFromService",function () {
         onGetDesignerListFromService();
         $scope.designerList= getDesignerListFactory.getDesignerList();
-      });*/
+      });
       $scope.test=function () {
         getDesignerListFactory.getDesignerListFromService();
         var onGetDesignerListFromService=$scope.$on("getDesignerListFactory.getDesignerListFromService",function () {
@@ -178,11 +181,26 @@ angular.module("starter.controllers",[])
       }
 
 
-    $scope.goToDesignDetails=function () {
-      $state.go("designer_details");
+    $scope.goToDesignDetails=function (userId_) {
+      // userId_为设计师的userId
+      $state.go("designer_details",{userId:userId_});
     }
   }])
-  .controller('Designer_detailsCtrl', ["$scope","$state",function($scope,$state) {
+
+  .controller('Designer_detailsCtrl', ["$scope","$state","$stateParams","getDesignerDetailsFactory",function($scope,$state,$stateParams,getDesignerDetailsFactory) {
+    //获得设计师的用户id
+    var designerUserId=$stateParams["userId"];
+    $scope.designerDetails={};
+    //加载数据
+    getDesignerDetailsFactory.getDesignerDetailsFromService(designerUserId);
+    var onGetDesignerDetailsFromService=$scope.$on("getDesignerDetailsFactory.getDesignerDetailsFromService",function () {
+      $scope.designerDetails = getDesignerDetailsFactory.getDesignerDetails();
+
+    });
+    $scope.test=function () {
+      getDesignerDetailsFactory.getDesignerDetailsFromService(designerUserId);
+    }
+
     $scope.goToSjg_details=function () {
       $state.go("sjg_details");
     }

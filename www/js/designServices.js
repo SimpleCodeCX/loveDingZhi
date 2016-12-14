@@ -118,7 +118,7 @@ angular.module("starter.designServices",[])
             /*var jsonData=JSON.parse(data);*/
             designerList=data;
             for(i=0;i<designerList.length;i++){
-              designerList[0].touXiangUrl=THEGLOBAL.serviceAPI+"/"+designerList[0].touXiangUrl;
+              designerList[i].touXiangUrl=THEGLOBAL.serviceAPI+"/"+designerList[i].touXiangUrl;
             }
             $rootScope.$broadcast("getDesignerListFactory.getDesignerListFromService");
           }
@@ -127,6 +127,77 @@ angular.module("starter.designServices",[])
       //返回数据
       getDesignerList:function () {
         return designerList;
+      }
+
+    }
+  })
+
+
+  /**
+   * * Created by simple on 2016/12/14.
+   * 获取一个设计师的详情数据
+   * 调用接口：design/getDesignerDetails
+   * 返回设计师的详情数据:DesignerVo数据结构
+   */
+  .factory("getDesignerDetailsFactory",function (THEGLOBAL,$resource,$rootScope) {
+    var theUrl=THEGLOBAL.serviceAPI + "/design/getDesignerDetails";
+    var isGetDesignerDetailsSuccess;//true代表成功
+    var designerDetails={
+      userId:null,//用户id
+      userName:null,
+      touXiangUrl:null,
+      introduction:"",//介绍
+      sjgs:[{
+        sjgId:null,
+        sjgImg:null,
+        sjgCaption:null
+      },{
+        sjgId:null,
+        sjgImg:null,
+        sjgCaption:null
+      }]//设计稿集
+    };
+    return{
+      //请求服务器获取数据
+      getDesignerDetailsFromService:function (userId_) {
+        $.ajax({
+          type:"get",
+          url:theUrl,
+          xhrFields: {
+            withCredentials: true
+          },
+          data:{
+            userId:userId_
+          },
+          success:function (data) {
+            // 清空
+            designerDetails={};
+            designerDetails.sjgs=[];
+
+
+            /*var jsonData=JSON.parse(data);*/
+            designerDetails.userId=data.userId;
+            designerDetails.introduction=data.introduction;
+            designerDetails.userName=data.user.userName;
+            var sjg={};
+            for(i=0;i<data.designDrawingExtendList.length;i++){
+              designerDetails.sjgs[i]={
+                sjgId:data.designDrawingExtendList[i].id,
+                sjgCaption:data.designDrawingExtendList[i].caption,
+                sjgImg:THEGLOBAL.serviceAPI+"/"+data.designDrawingExtendList[i].firstImgUrl
+              };
+            };
+            designerDetails.touXiangUrl=THEGLOBAL.serviceAPI+"/"+data.user.touXiangUrl;
+
+            console.log(designerDetails);
+
+            $rootScope.$broadcast("getDesignerDetailsFactory.getDesignerDetailsFromService");
+          }
+        });
+      },
+      //返回数据
+      getDesignerDetails:function () {
+        return designerDetails;
       }
 
     }
