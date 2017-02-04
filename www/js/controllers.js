@@ -166,12 +166,15 @@ angular.module("starter.controllers",[])
         nickname:"擅长衣服设计"
       }];
 
-      /*自动加载数据*/
-      getDesignerListFactory.getDesignerListFromService();
-      var onGetDesignerListFromService=$scope.$on("getDesignerListFactory.getDesignerListFromService",function () {
-        onGetDesignerListFromService();
-        $scope.designerList= getDesignerListFactory.getDesignerList();
+      $scope.$on("$ionicView.enter", function(event, data){
+        /*自动加载数据*/
+        getDesignerListFactory.getDesignerListFromService();
+        var onGetDesignerListFromService=$scope.$on("getDesignerListFactory.getDesignerListFromService",function () {
+          onGetDesignerListFromService();
+          $scope.designerList= getDesignerListFactory.getDesignerList();
+        });
       });
+
       $scope.test=function () {
         getDesignerListFactory.getDesignerListFromService();
         var onGetDesignerListFromService=$scope.$on("getDesignerListFactory.getDesignerListFromService",function () {
