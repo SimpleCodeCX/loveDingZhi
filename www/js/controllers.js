@@ -4,7 +4,17 @@
 
 angular.module("starter.controllers",[])
 
-.controller('Design_drawingCtrl', ["$scope","$ionicModal","$state",function($scope,$ionicModal,$state) {
+.controller('Design_drawingCtrl', ["$scope","$ionicModal","$state","getSjgListFactory",function($scope,$ionicModal,$state,getSjgListFactory) {
+
+  $scope.sjgList=[];
+  getSjgListFactory.getSjgListFromService(1);
+  var onGetSjgListFromService=$scope.$on("getSjgListFactory.getSjgListFromService",function () {
+    onGetSjgListFromService();
+    $scope.sjgList=getSjgListFactory.getSjgList();
+    console.log($scope.sjgList);
+  });
+
+
   $ionicModal.fromTemplateUrl("drawing_details",{
     scope: $scope,
     animation: "slide-in-down"

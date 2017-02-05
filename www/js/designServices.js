@@ -132,6 +132,45 @@ angular.module("starter.designServices",[])
     }
   })
 
+  /**
+   * * Created by simple on 2016/12/11.
+   * 获取设计稿列表数据
+   * 调用接口：design/getSjgList：
+   * 返回设计稿列表数据：List<DesignDrawing>
+   */
+  .factory("getSjgListFactory",function (THEGLOBAL,$resource,$rootScope) {
+    var theUrl=THEGLOBAL.serviceAPI + "/design/getSjgList";
+    var isGetSjgListSuccess;//true代表成功
+    var sjgList=[];
+    return{
+      //请求服务器获取数据
+      getSjgListFromService:function (page_) {
+        $.ajax({
+          type:"get",
+          url:theUrl,
+          xhrFields: {
+            withCredentials: true
+          },
+          data:{page:page_},
+          success:function (data) {
+            sjgList=data;
+            for(i=0;i<sjgList.length;i++){
+              sjgList[i].firstImgUrl=THEGLOBAL.serviceAPI+"/"+sjgList[i].firstImgUrl;
+            }
+            $rootScope.$broadcast("getSjgListFactory.getSjgListFromService");
+          }
+        });
+      },
+      //返回数据
+      getSjgList:function () {
+        return sjgList;
+      }
+
+    }
+  })
+
+
+
 
   /**
    * * Created by simple on 2016/12/14.
