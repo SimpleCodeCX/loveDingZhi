@@ -5,12 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9d4bf990-fc45-4a7f-a9d1-f12466d03f85" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/www/view/account/mySjg_details.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/js/accountServices.js" afterPath="$PROJECT_DIR$/www/js/accountServices.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/js/app.js" afterPath="$PROJECT_DIR$/www/js/app.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/js/controllers.js" afterPath="$PROJECT_DIR$/www/js/controllers.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/view/account/myLogo.html" afterPath="$PROJECT_DIR$/www/view/account/myLogo.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/view/account/mySjg.html" afterPath="$PROJECT_DIR$/www/view/account/mySjg.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/view/design/designer.html" afterPath="$PROJECT_DIR$/www/view/design/designer.html" />
     </list>
     <ignored path="loveDingZhi.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,21 +32,41 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="controllers.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="controllers.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="167">
-              <caret line="800" column="131" selection-start-line="800" selection-start-column="131" selection-end-line="800" selection-end-column="131" />
+            <state relative-caret-position="344">
+              <caret line="815" column="6" selection-start-line="815" selection-start-column="6" selection-end-line="815" selection-end-column="6" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="myLogo.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/www/js/app.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="344">
+              <caret line="268" column="34" selection-start-line="268" selection-start-column="34" selection-end-line="268" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="mySjg_details.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/www/view/account/mySjg_details.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="9" column="22" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="myLogo.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/view/account/myLogo.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
-              <caret line="39" column="16" selection-start-line="39" selection-start-column="16" selection-end-line="39" selection-end-column="16" />
+            <state relative-caret-position="204">
+              <caret line="36" column="22" selection-start-line="36" selection-start-column="22" selection-end-line="36" selection-end-column="22" />
               <folding>
                 <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#div#0;n#ion-content#0;n#ion-view#0;n#div#0;n#!!top" expanded="true" />
                 <marker date="1486303176869" expanded="false" signature="679:707" ph="..." />
@@ -60,8 +79,8 @@
       <file leaf-file-name="accountServices.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/js/accountServices.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="321">
-              <caret line="424" column="13" selection-start-line="424" selection-start-column="13" selection-end-line="424" selection-end-column="13" />
+            <state relative-caret-position="322">
+              <caret line="399" column="13" selection-start-line="399" selection-start-column="13" selection-end-line="399" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -71,12 +90,23 @@
         <entry file="file://$PROJECT_DIR$/www/view/account/mySjg.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="135">
-              <caret line="41" column="95" selection-start-line="41" selection-start-column="67" selection-end-line="41" selection-end-column="95" />
+              <caret line="41" column="70" selection-start-line="41" selection-start-column="54" selection-end-line="41" selection-end-column="70" />
               <folding>
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#ion-content#0;n#ion-view#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#ion-content#0;n#ion-view#0;n#div#0;n#!!top" expanded="true" />
-                <marker date="1486302059439" expanded="false" signature="700:728" ph="..." />
-                <marker date="1486302059439" expanded="false" signature="903:931" ph="..." />
+                <marker date="1486305465005" expanded="false" signature="700:728" ph="..." />
+                <marker date="1486305465005" expanded="false" signature="903:931" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="designer_details.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/www/view/design/designer_details.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="225">
+              <caret line="44" column="15" selection-start-line="44" selection-start-column="15" selection-end-line="44" selection-end-column="51" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -97,7 +127,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/www/view/shopping/shangJia_details.html" />
         <option value="$PROJECT_DIR$/www/view/design/dingzhi.html" />
         <option value="$PROJECT_DIR$/www/view/account/setting.html" />
         <option value="$PROJECT_DIR$/www/view/account/myShangCheng.html" />
@@ -138,16 +167,17 @@
         <option value="$PROJECT_DIR$/www/view/design/upload_sjg.html" />
         <option value="$PROJECT_DIR$/www/view/design/design.html" />
         <option value="$PROJECT_DIR$/www/view/design/designer_details.html" />
-        <option value="$PROJECT_DIR$/www/js/app.js" />
         <option value="$PROJECT_DIR$/www/view/design/sjg_details.html" />
         <option value="$PROJECT_DIR$/www/js/designServices.js" />
         <option value="$PROJECT_DIR$/www/view/design/design_drawing.html" />
         <option value="$PROJECT_DIR$/www/js/config.js" />
         <option value="$PROJECT_DIR$/www/view/design/designer.html" />
-        <option value="$PROJECT_DIR$/www/view/account/mySjg.html" />
-        <option value="$PROJECT_DIR$/www/js/controllers.js" />
         <option value="$PROJECT_DIR$/www/js/accountServices.js" />
         <option value="$PROJECT_DIR$/www/view/account/myLogo.html" />
+        <option value="$PROJECT_DIR$/www/js/app.js" />
+        <option value="$PROJECT_DIR$/www/view/account/mySjg_details.html" />
+        <option value="$PROJECT_DIR$/www/view/account/mySjg.html" />
+        <option value="$PROJECT_DIR$/www/js/controllers.js" />
       </list>
     </option>
   </component>
@@ -264,6 +294,28 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="design" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="loveDingZhi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="loveDingZhi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="www" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="view" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="account" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -305,19 +357,19 @@
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://G:/loveDingZhi/www/js/config.js" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="G:\loveDingZhi\www\js" />
-      <recent name="G:\loveDingZhi\www\test" />
-      <recent name="G:\loveDingZhi\www\lib\angular-resource" />
-      <recent name="G:\loveDingZhi\www\lib\js" />
-      <recent name="G:\loveDingZhi\www\img\shangcheng\cloth" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="G:\loveDingZhi\www\img\shangcheng\cloth" />
       <recent name="G:\loveDingZhi\www2" />
       <recent name="G:\loveDingZhi\www\view" />
       <recent name="G:\loveDingZhi\www" />
       <recent name="G:\loveDingZhi\www\view\account" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="G:\loveDingZhi\www\view\account" />
+      <recent name="G:\loveDingZhi\www\js" />
+      <recent name="G:\loveDingZhi\www\test" />
+      <recent name="G:\loveDingZhi\www\lib\angular-resource" />
+      <recent name="G:\loveDingZhi\www\lib\js" />
     </key>
   </component>
   <component name="RunManager" selected="JavaScript Debug.test3.html">
@@ -454,12 +506,12 @@
       <workItem from="1481711095531" duration="7927000" />
       <workItem from="1482196352493" duration="2601000" />
       <workItem from="1485147134272" duration="107000" />
-      <workItem from="1486197781547" duration="18981000" />
+      <workItem from="1486197781547" duration="20682000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="538008000" />
+    <option name="totallyTimeSpent" value="539709000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -501,9 +553,9 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295082" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.80491805" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.8032787" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24924925" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24851191" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295082" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25375375" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -530,13 +582,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/www/view/home/home2.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/view/home/index2.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -798,17 +843,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/view/design/designer_details.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="44" column="39" selection-start-line="44" selection-start-column="25" selection-end-line="44" selection-end-column="39" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#ion-item#0;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#div#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#ion-item#0;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#div#0;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/view/design/sjg_details.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="322">
@@ -843,14 +877,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="95" column="36" selection-start-line="95" selection-start-column="36" selection-end-line="95" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/js/designServices.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1334">
@@ -877,10 +903,46 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
+    <entry file="file://$PROJECT_DIR$/www/view/design/designer_details.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="800" column="131" selection-start-line="800" selection-start-column="131" selection-end-line="800" selection-end-column="131" />
+        <state relative-caret-position="225">
+          <caret line="44" column="15" selection-start-line="44" selection-start-column="15" selection-end-line="44" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/view/account/myLogo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="36" column="22" selection-start-line="36" selection-start-column="22" selection-end-line="36" selection-end-column="22" />
+          <folding>
+            <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#div#0;n#ion-content#0;n#ion-view#0;n#div#0;n#!!top" expanded="true" />
+            <marker date="1486303176869" expanded="false" signature="679:707" ph="..." />
+            <marker date="1486303176869" expanded="false" signature="882:910" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/accountServices.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="399" column="13" selection-start-line="399" selection-start-column="13" selection-end-line="399" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="344">
+          <caret line="268" column="34" selection-start-line="268" selection-start-column="34" selection-end-line="268" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/view/account/mySjg_details.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="22" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
           <folding />
         </state>
       </provider>
@@ -888,32 +950,21 @@
     <entry file="file://$PROJECT_DIR$/www/view/account/mySjg.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
-          <caret line="41" column="95" selection-start-line="41" selection-start-column="67" selection-end-line="41" selection-end-column="95" />
+          <caret line="41" column="70" selection-start-line="41" selection-start-column="54" selection-end-line="41" selection-end-column="70" />
           <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#ion-content#0;n#ion-view#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#ion-content#0;n#ion-view#0;n#div#0;n#!!top" expanded="true" />
-            <marker date="1486302059439" expanded="false" signature="700:728" ph="..." />
-            <marker date="1486302059439" expanded="false" signature="903:931" ph="..." />
+            <marker date="1486305465005" expanded="false" signature="700:728" ph="..." />
+            <marker date="1486305465005" expanded="false" signature="903:931" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/accountServices.js">
+    <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
-          <caret line="424" column="13" selection-start-line="424" selection-start-column="13" selection-end-line="424" selection-end-column="13" />
+        <state relative-caret-position="344">
+          <caret line="815" column="6" selection-start-line="815" selection-start-column="6" selection-end-line="815" selection-end-column="6" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/view/account/myLogo.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="39" column="16" selection-start-line="39" selection-start-column="16" selection-end-line="39" selection-end-column="16" />
-          <folding>
-            <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#div#0;n#ion-content#0;n#ion-view#0;n#div#0;n#!!top" expanded="true" />
-            <marker date="1486303176869" expanded="false" signature="679:707" ph="..." />
-            <marker date="1486303176869" expanded="false" signature="882:910" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>

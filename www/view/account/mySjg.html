@@ -39,8 +39,8 @@
 
 
       <div class="row row-wrap sjg_show">
-          <div class="col col-50 " style="" ng-click="openModal()" ng-repeat="mySjg in mySjgList">
-            <div class="img_div">
+          <div class="col col-50 " style="" ng-click="goToMySjgDetails(mySjg.id)" ng-repeat="mySjg in mySjgList">
+            <div class="img_div" style="border: 1px solid #69717d;">
               <!--<img src="../img/shangcheng/cloth/1.jpg"  style="  height: 150px;width: 100%;">-->
               <img ng-src="{{mySjg.firstImgUrl}}"  style="  height: 150px;width: 100%;">
             </div>

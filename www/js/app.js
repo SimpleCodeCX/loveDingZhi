@@ -265,6 +265,11 @@ angular.module('starter',['ionic','starter.controllers','starter.services','star
         templateUrl:"account/mySjg.html",
         controller:"MySjgCtrl"
       })
+      .state("mySjg_details",{
+        url:"/mySjg_details/:sjgId",
+        templateUrl:"account/mySjg_details.html",
+        controller:"MySjg_detailsCtrl"
+      })
 
       .state("myLogo",{
         url:"/myLogo",

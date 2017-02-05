@@ -780,7 +780,7 @@ angular.module("starter.controllers",[])
   .controller('Collect_logoCtrl', ["$scope",function($scope) {
   }])
 
-  .controller('MySjgCtrl', ["$scope","getMySjgListFactory","userDataFactory",function($scope,getMySjgListFactory,userDataFactory) {
+  .controller('MySjgCtrl', ["$scope","$state","getMySjgListFactory","userDataFactory",function($scope,$state,getMySjgListFactory,userDataFactory) {
 
     //保存用户的数据
     $scope.userDataView={};
@@ -794,8 +794,29 @@ angular.module("starter.controllers",[])
       $scope.mySjgList = getMySjgListFactory.getMySjgList();
     });
 
+    $scope.goToMySjgDetails=function (sjgId_) {
+      // sjgId_为设计稿的sjgId
+      $state.go("mySjg_details",{sjgId:sjgId_});
+    }
+  }])
 
-
+  .controller('MySjg_detailsCtrl', ["$scope","$state","getSjgDetailsFactory","$stateParams",function($scope,$state,getSjgDetailsFactory,$stateParams) {
+    //获得设计稿id
+    var sjgId=$stateParams["sjgId"];
+    $scope.sjgDetails={};
+    //根据设计稿id获得sjg详情数据
+    getSjgDetailsFactory.getSjgDetailsFromService(sjgId);
+    var onGetSjgDetailsFromService=$scope.$on("getSjgDetailsFactory.getSjgDetailsFromService",function () {
+      onGetSjgDetailsFromService();
+      $scope.sjgDetails=getSjgDetailsFactory.getSjgDetails();
+    });
+    /*console.log($scope.sjgDetails);//这样访问不到数据，但是实际上数据是存在的*/
+    $scope.test=function () {
+      alert(sjgId);
+    };
+    $scope.goToMySjg=function () {
+      $state.go("mySjg");
+    }
   }])
 
   .controller('MyLogoCtrl', ["$scope","getMyLogoListFactory","userDataFactory",function($scope,getMyLogoListFactory,userDataFactory) {
