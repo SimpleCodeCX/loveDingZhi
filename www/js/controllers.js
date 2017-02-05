@@ -780,10 +780,37 @@ angular.module("starter.controllers",[])
   .controller('Collect_logoCtrl', ["$scope",function($scope) {
   }])
 
-  .controller('MySjgCtrl', ["$scope",function($scope) {
+  .controller('MySjgCtrl', ["$scope","getMySjgListFactory","userDataFactory",function($scope,getMySjgListFactory,userDataFactory) {
+
+    //保存用户的数据
+    $scope.userDataView={};
+    //从config获取用户数据
+    $scope.userDataView=userDataFactory.getUserDataConfig();
+    //我的设计稿列表
+    $scope.mySjgList=[];
+    getMySjgListFactory.getMySjgListFromService($scope.userDataView.userName);
+    var onGetMySjgListFromService=$scope.$on("getMySjgListFactory.getMySjgListFromService",function () {
+      onGetMySjgListFromService();
+      $scope.mySjgList = getMySjgListFactory.getMySjgList();
+    });
+
+
+
   }])
 
-  .controller('MyLogoCtrl', ["$scope",function($scope) {
+  .controller('MyLogoCtrl', ["$scope","getMyLogoListFactory","userDataFactory",function($scope,getMyLogoListFactory,userDataFactory) {
+    //保存用户的数据
+    $scope.userDataView={};
+    //从config获取用户数据
+    $scope.userDataView=userDataFactory.getUserDataConfig();
+    //我的logo列表
+    $scope.myLogoList=[];
+    getMyLogoListFactory.getMyLogoListFromService($scope.userDataView.userName);
+    var onGetMyLogoListFromService=$scope.$on("getMyLogoListFactory.getMyLogoListFromService",function () {
+      onGetMyLogoListFromService();
+      $scope.myLogoList = getMyLogoListFactory.getMyLogoList();
+    });
+
   }])
 
   .controller('UpdateInfoCtrl',["$scope","$state",function($scope,$state) {

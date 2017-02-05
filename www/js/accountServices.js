@@ -296,10 +296,144 @@ angular.module("starter.accountServices",[])
       }
     }
   })
+  /**
+   * * Created by simple on 2017/02/05.
+   * 获取我的设计稿列表数据（注意：是我的）
+   * 调用接口：design/getMySjgList：
+   * 返回设计稿列表数据：List<DesignDrawing>
+   */
+  .factory("getMySjgListFactory",function (THEGLOBAL,$resource,$rootScope) {
+    var theUrl=THEGLOBAL.serviceAPI + "/account/getMySjgList";
+    var isGetSjgListSuccess;//true代表成功
+    var mySjgList=[
+      {
+        id:null,
+        caption:"",
+        introduction:"",
+        author:null,
+        price:null,
+        firstImgUrl:""
+      }
+    ];
+    return{
+      //请求服务器获取数据
+      getMySjgListFromService:function (userName_) {
+        $.ajax({
+          type:"get",
+          url:theUrl,
+          xhrFields: {
+            withCredentials: true
+          },
+          data:{userName:userName_},
+          success:function (data) {
+            mySjgList=data;
+            for(i=0;i<mySjgList.length;i++){
+              mySjgList[i].firstImgUrl=THEGLOBAL.serviceAPI+"/"+mySjgList[i].firstImgUrl;
+            }
+            $rootScope.$broadcast("getMySjgListFactory.getMySjgListFromService");
+          }
+        });
+      },
+      //返回数据
+      getMySjgList:function () {
+        return mySjgList;
+      }
+
+    }
+  })
 
 
+  /**
+   * * Created by simple on 2017/02/05.
+   * 获取我的设计稿列表数据（注意：是我的）
+   * 调用接口：account/getMySjgList：
+   * 返回设计稿列表数据：List<DesignDrawing>
+   */
+  .factory("getMySjgListFactory",function (THEGLOBAL,$resource,$rootScope) {
+    var theUrl=THEGLOBAL.serviceAPI + "/account/getMySjgList";
+    var isGetSjgListSuccess;//true代表成功
+    var mySjgList=[
+      {
+        id:null,
+        caption:"",
+        introduction:"",
+        author:null,
+        price:null,
+        firstImgUrl:""
+      }
+    ];
+    return{
+      //请求服务器获取数据
+      getMySjgListFromService:function (userName_) {
+        $.ajax({
+          type:"get",
+          url:theUrl,
+          xhrFields: {
+            withCredentials: true
+          },
+          data:{userName:userName_},
+          success:function (data) {
+            mySjgList=data;
+            for(i=0;i<mySjgList.length;i++){
+              mySjgList[i].firstImgUrl=THEGLOBAL.serviceAPI+"/"+mySjgList[i].firstImgUrl;
+            }
+            $rootScope.$broadcast("getMySjgListFactory.getMySjgListFromService");
+          }
+        });
+      },
+      //返回数据
+      getMySjgList:function () {
+        return mySjgList;
+      }
 
+    }
+  })
 
+  /**
+   * * Created by simple on 2017/02/05.
+   * 获取我的logo列表数据（注意：是我的）
+   * 调用接口：account/getMyLogoList：
+   * 返回logo列表数据：List<DesignerLogo>
+   */
+  .factory("getMyLogoListFactory",function (THEGLOBAL,$resource,$rootScope) {
+    var theUrl=THEGLOBAL.serviceAPI + "/account/getMyLogoList";
+    var isGetLogoListSuccess;//true代表成功
+    var myLogoList=[
+      {
+        id:null,
+        caption:"",
+        introduction:"",
+        imgUrl:"",
+        author:null
+      }
+    ];
+    return{
+      //请求服务器获取数据
+      getMyLogoListFromService:function (userName_) {
+        $.ajax({
+          type:"get",
+          url:theUrl,
+          xhrFields: {
+            withCredentials: true
+          },
+          data:{userName:userName_},
+          success:function (data) {
+            console.log(data);
+            myLogoList=data;
+            for(i=0;i<myLogoList.length;i++){
+              myLogoList[i].imgUrl=THEGLOBAL.serviceAPI+"/"+myLogoList[i].imgUrl;
+            }
+            $rootScope.$broadcast("getMyLogoListFactory.getMyLogoListFromService");
+          }
+        });
+      },
+      //返回数据
+      getMyLogoList:function () {
+        return myLogoList;
+      }
+
+    }
+  })
 
 
 
