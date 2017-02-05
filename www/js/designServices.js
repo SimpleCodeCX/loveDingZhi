@@ -141,7 +141,16 @@ angular.module("starter.designServices",[])
   .factory("getSjgListFactory",function (THEGLOBAL,$resource,$rootScope) {
     var theUrl=THEGLOBAL.serviceAPI + "/design/getSjgList";
     var isGetSjgListSuccess;//true代表成功
-    var sjgList=[];
+    var sjgList=[
+      {
+        id:null,
+        caption:"",
+        introduction:"",
+        author:null,
+        price:null,
+        firstImgUrl:""
+      }
+    ];
     return{
       //请求服务器获取数据
       getSjgListFromService:function (page_) {
@@ -153,6 +162,7 @@ angular.module("starter.designServices",[])
           },
           data:{page:page_},
           success:function (data) {
+            console.log(data)
             sjgList=data;
             for(i=0;i<sjgList.length;i++){
               sjgList[i].firstImgUrl=THEGLOBAL.serviceAPI+"/"+sjgList[i].firstImgUrl;

@@ -4,21 +4,33 @@
 
 angular.module("starter.controllers",[])
 
-.controller('Design_drawingCtrl', ["$scope","$ionicModal","$state","getSjgListFactory",function($scope,$ionicModal,$state,getSjgListFactory) {
+.controller('Design_drawingCtrl', ["$scope","$ionicModal","$state","getSjgListFactory","getSjgDetailsFactory"
+  ,function($scope,$ionicModal,$state,getSjgListFactory,getSjgDetailsFactory) {
 
   $scope.sjgList=[];
   getSjgListFactory.getSjgListFromService(1);
   var onGetSjgListFromService=$scope.$on("getSjgListFactory.getSjgListFromService",function () {
     onGetSjgListFromService();
     $scope.sjgList=getSjgListFactory.getSjgList();
-    console.log($scope.sjgList);
   });
 
+  $scope.getSjgDetails=function (sjgId) {
+    //根据设计稿id获得sjg详情数据
+    getSjgDetailsFactory.getSjgDetailsFromService(sjgId);
+    var onGetSjgDetailsFromService=$scope.$on("getSjgDetailsFactory.getSjgDetailsFromService",function () {
+      onGetSjgDetailsFromService();
+      $scope.sjgDetails=getSjgDetailsFactory.getSjgDetails();
+      $scope.modal.show();
+      console.log($scope.sjgDetails);
+    });
+
+  }
 
   $ionicModal.fromTemplateUrl("drawing_details",{
     scope: $scope,
     animation: "slide-in-down"
   }).then (function(modal) {
+
     $scope.modal = modal;
   });
   $scope.openModal = function() {
