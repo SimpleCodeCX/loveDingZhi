@@ -19,6 +19,9 @@
               <img class="button" style="height: 150px;width: 150px;
                            border-radius: 180px;"  ng-src="{{designerDetails.touXiangUrl}}">
             </a>
+            <div style="text-align: center;margin-top: 10px;font-size: larger;">
+              {{designerDetails.userName}}
+            </div>
           </div>
         </ion-item>
      <!--   <ion-item class="item-thumbnail-left item-icon-right">
@@ -39,7 +42,7 @@
       <div class="">
         <div class="row row-wrap" >
           <div class="col col-50"  ng-repeat="sjg in designerDetails.sjgs"
-               ng-click="goToSjg_details()">
+               ng-click="goToSjgDetails(sjg.sjgId)">
             <div class="">
               <img ng-src="{{sjg.sjgImg}}">
             </div>

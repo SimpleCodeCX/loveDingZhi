@@ -194,9 +194,10 @@ angular.module("starter.controllers",[])
     //获得设计师的用户id
     var designerUserId=$stateParams["userId"];
     $scope.designerDetails={};
-    //加载数据
+    //根据设计师的用户id获取设计师详情数据
     getDesignerDetailsFactory.getDesignerDetailsFromService(designerUserId);
     var onGetDesignerDetailsFromService=$scope.$on("getDesignerDetailsFactory.getDesignerDetailsFromService",function () {
+      onGetDesignerDetailsFromService();
       $scope.designerDetails = getDesignerDetailsFactory.getDesignerDetails();
 
     });
@@ -204,9 +205,32 @@ angular.module("starter.controllers",[])
       getDesignerDetailsFactory.getDesignerDetailsFromService(designerUserId);
     }
 
-    $scope.goToSjg_details=function () {
-      $state.go("sjg_details");
+    $scope.goToSjgDetails=function (sjgId_) {
+      // sjgId_为设计稿的sjgId
+      $state.go("sjg_details",{sjgId:sjgId_});
     }
+  }])
+
+  .controller('Sjg_detailsCtrl', ["$scope","$state","$stateParams","getSjgDetailsFactory", function($scope,$state,$stateParams,getSjgDetailsFactory) {
+    //获得设计师的用户id
+    var sjgId=$stateParams["sjgId"];
+    $scope.sjgDetails={};
+    //根据设计稿id获得sjg详情数据
+    getSjgDetailsFactory.getSjgDetailsFromService(sjgId);
+    var onGetSjgDetailsFromService=$scope.$on("getSjgDetailsFactory.getSjgDetailsFromService",function () {
+      onGetSjgDetailsFromService();
+      $scope.sjgDetails=getSjgDetailsFactory.getSjgDetails();
+    });
+    /*console.log($scope.sjgDetails);//这样访问不到数据，但是实际上数据是存在的*/
+    $scope.test=function () {
+      alert(sjgId);
+    };
+
+    $scope.goToDesignDetails=function (userId_) {
+      // userId_为设计师的userId
+      $state.go("designer_details",{userId:userId_});
+    }
+
   }])
   .controller('Apply_designerCtrl', ["$scope","$state","$cordovaImagePicker","$cordovaCamera",
     "applyDesignerFactory","imageFactory",
@@ -328,6 +352,7 @@ angular.module("starter.controllers",[])
         if(designerUploadSjsFactory.getIsDesignerUploadSjsSuccess())
         {
           alert("设计师上传设计稿成功");
+          alert("跳转到我的作品的我的设计稿。");
         }
       });
     }

@@ -1,7 +1,7 @@
 
 <ion-view hide-back-button="true">
   <ion-nav-buttons side="left" >
-    <a class="button button-clear " href="#/designer_details">
+    <a class="button button-clear " ng-click="goToDesignDetails(sjgDetails.designer)">
       <i class="icon ion-chevron-left"></i>
       返回
     </a>
@@ -16,17 +16,19 @@
         <ion-list>
 
           <ion-item class="item-image" style="text-align: center;">
-            <img style="width: 100%;" src="../img/sjg/sjg1.jpg">
+            <!--<img style="width: 100%;" src="../img/sjg/sjg1.jpg">-->
+            <img style="width: 100%;" ng-src="{{sjgDetails.sjgFirstImg}}">
           </ion-item>
           <ion-item class="item-body item-borderless" style="padding-bottom: 0px;">
-            灵感：首先介绍你的灵感来源，以及这一灵感在你的设计中的体现（或是主题在你的设计中的体现），
+            {{sjgDetails.introduction}}
+            <!--灵感：首先介绍你的灵感来源，以及这一灵感在你的设计中的体现（或是主题在你的设计中的体现），
             在设计中采用了什么样的材质，款式，及特殊的手法，通过这些方面表达了设计者什么样的情感或想法。
             灵感：首先介绍你的灵感来源，以及这一灵感在你的设计中的体现（或是主题在你的设计中的体现），
-            在设计中采用了什么样的材质，款式，及特殊的手法，通过这些方面表达了设计者什么样的情感或想法。
+            在设计中采用了什么样的材质，款式，及特殊的手法，通过这些方面表达了设计者什么样的情感或想法。-->
           </ion-item>
           <ion-item class="item-divider" style="text-align: center;">
             <div style="vertical-align: middle;display: inline-block;">
-              价格：￥90  团购价：￥50
+              价格：￥{{sjgDetails.price}}  团购价：￥50
             </div>
             <i class="button button-balanced button-small button-clear icon ion-chatbubble"></i>
           </ion-item>

@@ -91,8 +91,9 @@ angular.module('starter',['ionic','starter.controllers','starter.services','star
         controller:"Designer_detailsCtrl"
       })
       .state("sjg_details",{
-        url:"/sjg_details",
-        templateUrl:"design/sjg_details.html"
+        url:"/sjg_details/:sjgId",
+        templateUrl:"design/sjg_details.html",
+        controller:"Sjg_detailsCtrl"
       })
       .state("upload_logo",{
         url:"/upload_logo",

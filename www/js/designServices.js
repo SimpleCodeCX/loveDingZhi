@@ -189,7 +189,7 @@ angular.module("starter.designServices",[])
             };
             designerDetails.touXiangUrl=THEGLOBAL.serviceAPI+"/"+data.user.touXiangUrl;
 
-            console.log(designerDetails);
+            /*console.log(designerDetails);*/
 
             $rootScope.$broadcast("getDesignerDetailsFactory.getDesignerDetailsFromService");
           }
@@ -198,6 +198,58 @@ angular.module("starter.designServices",[])
       //返回数据
       getDesignerDetails:function () {
         return designerDetails;
+      }
+
+    }
+  })
+
+  /**
+   * * Created by simple on 2017/02/05.
+   * 获取一个设计稿的详情数据
+   * 调用接口：design/getSjgDetails
+   * 返回设计师的详情数据:DesignDrawing数据结构
+   */
+  .factory("getSjgDetailsFactory",function (THEGLOBAL,$resource,$rootScope) {
+    var theUrl=THEGLOBAL.serviceAPI + "/design/getSjgDetails";
+    var isGetSjgDetailsSuccess;//true代表成功
+    var sjgDetails={
+      sjgId:null,//用户id
+      caption:null,
+      introduction:"",//介绍
+      designer:null,
+      price:null,
+      sjgFirstImg:""//设计稿封面
+    };
+    return{
+      //请求服务器获取数据
+      getSjgDetailsFromService:function (sjgId_) {
+        $.ajax({
+          type:"get",
+          url:theUrl,
+          xhrFields: {
+            withCredentials: true
+          },
+          data:{
+            sjgId:sjgId_
+          },
+          success:function (data) {
+          /*  // 清空
+            designerDetails={};
+            designerDetails.sjgs=[];*/
+            /*var jsonData=JSON.parse(data);*/
+            sjgDetails.sjgId=data.id;
+            sjgDetails.caption=data.caption;
+            sjgDetails.introduction=data.introduction;
+            sjgDetails.designer=data.author;
+            sjgDetails.price=data.price;
+            sjgDetails.sjgFirstImg=THEGLOBAL.serviceAPI+"/"+data.firstImgUrl;
+            $rootScope.$broadcast("getSjgDetailsFactory.getSjgDetailsFromService");
+          }
+        });
+      },
+      //返回数据
+      getSjgDetails:function () {
+        return sjgDetails;
       }
 
     }
