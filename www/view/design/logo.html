@@ -7,9 +7,9 @@
       </a>
     </ion-nav-buttons>
     <ion-nav-buttons side="right">
-      <a class="button button-small button-balanced  " href="#/upload_logo">
+      <!--<a class="button button-small button-balanced  " href="#/upload_logo">
         上传Logo
-      </a>
+      </a>-->
     </ion-nav-buttons>
     <ion-nav-title class="">
       <i class="icon ion-paper-airplane"></i>
@@ -19,13 +19,14 @@
     <ion-content class="stable-bg">
       <div class="" style="margin-top: 5px;">
         <div class="row row-wrap" >
-          <div class="col col-50"  ng-repeat="data in logoDatas" ng-click="openLogoDetailsModal()">
+          <div class="col col-50"  ng-repeat="designerLogo in designerLogoList" ng-click="openLogoDetailsModal()">
             <div class="" style="border-right: 1px solid #888888;box-shadow: 1px 1px 1px #888888;">
-              <img src="../img/logo/{{data.logo}}">
+              <!--<img src="../img/logo/{{data.imgUrl}}">-->
+              <img ng-src="{{designerLogo.imgUrl}}">
             </div>
             <div class="" style="margin-top: 10px;">
               <i class=" icon ion-ios-heart-outline"></i>
-              {{data.name}}
+              {{designerLogo.caption}}
             </div>
           </div>
         </div>

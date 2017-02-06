@@ -162,7 +162,6 @@ angular.module("starter.designServices",[])
           },
           data:{page:page_},
           success:function (data) {
-            console.log(data)
             sjgList=data;
             for(i=0;i<sjgList.length;i++){
               sjgList[i].firstImgUrl=THEGLOBAL.serviceAPI+"/"+sjgList[i].firstImgUrl;
@@ -178,7 +177,52 @@ angular.module("starter.designServices",[])
 
     }
   })
+  /**
+   * * Created by simple on 2016/12/11.
+   * 获取设计师的logo列表数据
+   * 调用接口：design/getDesignerLogoList：
+   * 返回设计稿列表数据：List<DesignerLogo>
+   */
+  .factory("getDesignerLogoListFactory",function (THEGLOBAL,$resource,$rootScope) {
+    var theUrl=THEGLOBAL.serviceAPI + "/design/getDesignerLogoList";
+    var isGetDesignerLogoListSuccess;//true代表成功
+    var designerLogoList=[
+      {
+        id:null,
+        caption:"",
+        introduction:"",
+        author:null,
+        imgUrl:""
+      }
+    ];
+    return{
+      //请求服务器获取数据
+      getDesignerLogoListFromService:function (page_) {
+        $.ajax({
+          type:"get",
+          url:theUrl,
+          xhrFields: {
+            withCredentials: true
+          },
+          data:{page:page_},
+          success:function (data) {
 
+            /*console.log(data);*/
+            designerLogoList=data;
+            for(i=0;i<designerLogoList.length;i++){
+              designerLogoList[i].imgUrl=THEGLOBAL.serviceAPI+"/"+designerLogoList[i].imgUrl;
+            }
+            $rootScope.$broadcast("getDesignerLogoListFactory.getDesignerLogoListFromService");
+          }
+        });
+      },
+      //返回数据
+      getDesignerLogoList:function () {
+        return designerLogoList;
+      }
+
+    }
+  })
 
 
 

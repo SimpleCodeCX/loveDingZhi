@@ -404,26 +404,32 @@ angular.module("starter.controllers",[])
     }
   }])
 
-  .controller('LogoCtrl', ["$scope","$state","$ionicModal",function($scope,$state,$ionicModal) {
-    $scope.logoDatas=[{
-      logo:"logo1.png",
-      name:"logo1"
+  .controller('LogoCtrl', ["$scope","$state","$ionicModal","getDesignerLogoListFactory",function($scope,$state,$ionicModal,getDesignerLogoListFactory) {
+    /*$scope.logoDatas=[{
+      imgUrl:"logo1.png",
+      caption:"logo1"
        }, {
-        logo:"logo2.png",
-        name:"logo2"
+      imgUrl:"logo2.png",
+      caption:"logo2"
       }, {
-      logo:"logo3.png",
-      name:"logo3"
+      imgUrl:"logo3.png",
+      caption:"logo3"
     }, {
-      logo:"logo4.png",
-      name:"logo4"
+      imgUrl:"logo4.png",
+      caption:"logo4"
     }, {
-      logo:"logo5.png",
-      name:"logo5"
+      imgUrl:"logo5.png",
+      caption:"logo5"
     }, {
-      logo:"logo6.png",
-      name:"logo6"
-    }];
+      imgUrl:"logo6.png",
+      caption:"logo6"
+    }];*/
+    $scope.designerLogoList=[];
+    getDesignerLogoListFactory.getDesignerLogoListFromService(1);
+    var onGetDesignerLogoListFromService=$scope.$on("getDesignerLogoListFactory.getDesignerLogoListFromService",function () {
+      onGetDesignerLogoListFromService();
+      $scope.designerLogoList=getDesignerLogoListFactory.getDesignerLogoList();
+    });
       $ionicModal.fromTemplateUrl("logo_details",{
         scope: $scope,
         animation: "slide-in-down"
