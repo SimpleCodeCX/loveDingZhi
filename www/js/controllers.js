@@ -344,11 +344,12 @@ angular.module("starter.controllers",[])
         introduction:"",//设计稿介绍或灵感
         sjgImgs:[]//设计稿
       };
+      //点击上传我的作品
     $scope.uploadWorks=function () {
       var options = {
         maximumImagesCount: 5,
-        width: 150,
-        height: 150,
+       /* width: 150,
+        height: 150,*/
         quality: 100
       };
       document.addEventListener("deviceready", function () {
@@ -381,20 +382,26 @@ angular.module("starter.controllers",[])
 
 
   }])
-  .controller('Upload_logoCtrl', ["$scope","$ionicSlideBoxDelegate","$cordovaImagePicker",
-    function($scope,$ionicSlideBoxDelegate,$cordovaImagePicker) {
-    $scope.imgLogos=[];
+  .controller('Upload_logoCtrl', ["$scope","$ionicSlideBoxDelegate","$cordovaImagePicker","imageFactory","designerUploadLogoFactory",
+    function($scope,$ionicSlideBoxDelegate,$cordovaImagePicker,imageFactory,designerUploadLogoFactory) {
+      //设计师logo数据，从前端获取
+      $scope.logoData={
+        caption:"",//logo标题
+        introduction:"",//logo介绍或灵感
+        logoImgs:[]//logo图片
+      };
     $scope.uploadWorks=function () {
       var options = {
-        maximumImagesCount: 5,
-        width: 150,
-        height: 150,
-        quality: 80
+        maximumImagesCount: 1,
+        /*width: 150,
+        height: 150,*/
+        quality: 100
       };
       document.addEventListener("deviceready", function () {
         $cordovaImagePicker.getPictures(options)
           .then(function (results) {
-            $scope.imgLogos=results;
+            $scope.logoData.logoImgs[0]=results[0];
+            /*$scope.imgLogos=results;*/
             $ionicSlideBoxDelegate.update();
           },function (error) {
             alert(error);
@@ -402,6 +409,21 @@ angular.module("starter.controllers",[])
       }, false);
 
     }
+
+      $scope.uploadDesignerLogoToService=function () {
+        var logoImgBase64=imageFactory.getBase64Image(document.getElementById("logoImg"),"image/png");
+        designerUploadLogoFactory.designerUploadLogo($scope.logoData.caption,$scope.logoData.introduction,logoImgBase64);
+        var onDesignerUploadLogo=$scope.$on("designerUploadLogoFactory.designerUploadLogo",function () {
+          onDesignerUploadLogo();
+          if(designerUploadLogoFactory.getIsDesignerUploadSjsSuccess()){
+            alert("设计师上传logo成功");
+            alert("跳转到我的作品的我的logo。");
+          }
+        });
+      }
+
+
+
   }])
 
   .controller('LogoCtrl', ["$scope","$state","$ionicModal","getDesignerLogoListFactory",function($scope,$state,$ionicModal,getDesignerLogoListFactory) {

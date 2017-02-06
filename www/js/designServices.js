@@ -88,6 +88,49 @@ angular.module("starter.designServices",[])
     }
   })
 
+
+  /**
+   * * Created by simple on 2017/02/05.
+   * 设计师上传logo
+   * 调用接口：design/designerUploadLogo_authority：
+   *            上传成功：flat=true
+   *                失败：flat=false
+   */
+  .factory("designerUploadLogoFactory",function (THEGLOBAL,$resource,$rootScope,userDataFactory) {
+    var theUrl=THEGLOBAL.serviceAPI + "/design/designerUploadLogo_authority";
+    var isDesignerUploadLogoSuccess;//true代表上传成功
+    return{
+      designerUploadLogo:function (caption_,introduction_,logoImgs_) {
+
+        //账号
+        var accountNumber_=userDataFactory.getUserDataConfig().accountNumber;
+        $.ajax({
+          type:"post",
+          url:theUrl,
+          xhrFields: {
+            withCredentials: true
+          },
+          data:{
+            accountNumber:accountNumber_,
+            caption:caption_,
+            introduction:introduction_,
+            logoImgs:logoImgs_
+          },
+          success:function (data) {
+            var jsonData=JSON.parse(data);
+            isDesignerUploadLogoSuccess=jsonData.flat;
+            $rootScope.$broadcast("designerUploadLogoFactory.designerUploadLogo");
+          }
+        });
+      },
+      getIsDesignerUploadSjsSuccess:function () {
+        return isDesignerUploadLogoSuccess;
+      }
+    }
+  })
+
+
+
   /**
    * * Created by simple on 2016/12/11.
    * 获取设计师列表数据
