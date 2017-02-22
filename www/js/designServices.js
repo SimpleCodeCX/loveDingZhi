@@ -390,3 +390,58 @@ angular.module("starter.designServices",[])
 
     }
   })
+
+
+  /**
+   * * Created by simple on 2017/02/05.
+   * 根据logo的id获得一个logo的详情数据
+   * 调用接口：design/getDesignerLogoDetails
+   * 返回设计师的详情数据:DesignerLogoVo的数据结构
+   */
+  .factory("getDesignerLogoDetailsFactory",function (THEGLOBAL,$resource,$rootScope) {
+    var theUrl=THEGLOBAL.serviceAPI + "/design/getDesignerLogoDetails";
+    var isGetDesignerLogoDetailsSuccess;//true代表成功
+    var designerLogoDetails={
+      designerLogoId:null,//用户id
+      caption:null,
+      introduction:"",//介绍
+      designerId:null,//设计师id
+      designerName:"",//设计师用户名
+      designerTouXiangUrl:"",//设计师头像
+      logoImg:""//logo图片
+    };
+    return{
+      //请求服务器获取数据
+      getDesignerLogoDetailsFromService:function (designerLogoId_) {
+        $.ajax({
+          type:"get",
+          url:theUrl,
+          xhrFields: {
+            withCredentials: true
+          },
+          data:{
+            designerLogoId:designerLogoId_
+          },
+          success:function (data) {
+
+            /*  // 清空
+            /*var jsonData=JSON.parse(data);*/
+            designerLogoDetails.designerLogoId=data.id;
+            designerLogoDetails.caption=data.caption;
+            designerLogoDetails.introduction=data.introduction;
+            designerLogoDetails.designerId=data.author;
+            designerLogoDetails.designerName=data.user.userName;
+            designerLogoDetails.designerTouXiangUrl=THEGLOBAL.serviceAPI+"/"+ data.user.touXiangUrl;
+            designerLogoDetails.logoImg=THEGLOBAL.serviceAPI+"/"+data.imgUrl;
+            console.log(designerLogoDetails);
+            $rootScope.$broadcast("getDesignerLogoDetailsFactory.getDesignerLogoDetailsFromService");
+          }
+        });
+      },
+      //返回数据
+      getDesignerLogoDetails:function () {
+        return designerLogoDetails;
+      }
+
+    }
+  })

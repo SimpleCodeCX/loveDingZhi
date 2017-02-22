@@ -426,7 +426,7 @@ angular.module("starter.controllers",[])
 
   }])
 
-  .controller('LogoCtrl', ["$scope","$state","$ionicModal","getDesignerLogoListFactory",function($scope,$state,$ionicModal,getDesignerLogoListFactory) {
+  .controller('LogoCtrl', ["$scope","$state","$ionicModal","getDesignerLogoListFactory","getDesignerLogoDetailsFactory", function($scope,$state,$ionicModal,getDesignerLogoListFactory,getDesignerLogoDetailsFactory) {
     /*$scope.logoDatas=[{
       imgUrl:"logo1.png",
       caption:"logo1"
@@ -447,7 +447,8 @@ angular.module("starter.controllers",[])
       caption:"logo6"
     }];*/
     $scope.designerLogoList=[];
-    getDesignerLogoListFactory.getDesignerLogoListFromService(1);
+    $scope.designerLogoDetails={};//一个logo详情
+    getDesignerLogoListFactory.getDesignerLogoListFromService(1);//获取第一页
     var onGetDesignerLogoListFromService=$scope.$on("getDesignerLogoListFactory.getDesignerLogoListFromService",function () {
       onGetDesignerLogoListFromService();
       $scope.designerLogoList=getDesignerLogoListFactory.getDesignerLogoList();
@@ -458,7 +459,12 @@ angular.module("starter.controllers",[])
       }).then (function(modal) {
         $scope.modal = modal;
       });
-      $scope.openLogoDetailsModal = function() {
+      $scope.openLogoDetailsModal = function(designerLogoId) {
+        getDesignerLogoDetailsFactory.getDesignerLogoDetailsFromService(designerLogoId);
+        var onGetDesignerLogoDetailsFromService=$scope.$on("getDesignerLogoDetailsFactory.getDesignerLogoDetailsFromService",function () {
+          onGetDesignerLogoDetailsFromService();
+          $scope.designerLogoDetails=getDesignerLogoDetailsFactory.getDesignerLogoDetails();
+        });
         $scope.modal.show();
       };
       $scope.closeLogoDetailsModal = function() {
