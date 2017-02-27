@@ -192,6 +192,11 @@ angular.module('starter',['ionic','starter.controllers','starter.services','star
         templateUrl:"shopping/shangjia_upload.html",
         controller:"Shangjia_uploadCtrl"
       })
+      .state("apply_shangjia",{
+        url:"/apply_shangjia",
+        templateUrl:"shopping/apply_shangjia.html",
+        controller:"Apply_shangjiaCtrl"
+      })
 
 
 

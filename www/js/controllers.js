@@ -142,7 +142,49 @@ angular.module("starter.controllers",[])
   }])
 
 
+  .controller('Apply_shangjiaCtrl', ["$scope","$state","$cordovaImagePicker","$cordovaCamera","imageFactory","applyBusinessFactory"
+    ,function($scope,$state,$cordovaImagePicker,$cordovaCamera,imageFactory,applyBusinessFactory) {
+    //商家的申请资料
+   $scope.applyShangjiaData={
+     businessLicenseImg:"../img/sjg/sjg1.jpg"
+   };
+   //点击提交开通数据
+   $scope.applyShangjia=function () {
+     //将图片转化为base64数据
+     var businessLicenseImgBase64=imageFactory.getBase64Image(document.getElementById("majorImg"),"image/png");
+     //调用服务层，发送数据到服务器
+     applyBusinessFactory.applyBusiness(businessLicenseImgBase64);
+     var onApplyBusiness=$scope.$on("applyBusinessFactory.applyBusiness",function () {
+       onApplyBusiness();
+       if(applyBusinessFactory.getIspplyBusinessSuccess()){
+         alert("提交成功，请等待审核");
+         /*$state.go("designer");*/
+       }
 
+     });
+   }
+    //上传营业执照
+    $scope.uploadImgBusinessLicense= function () {
+      var options = {
+        maximumImagesCount: 5,
+        width: 150,
+        height: 150,
+        quality: 80
+      };
+      /*当Cordova加载完成后才可以调用Cordova插件*/
+      document.addEventListener("deviceready", function () {
+        //alert();
+        $cordovaImagePicker.getPictures(options)
+          .then(function (results) {
+            $scope.applyShangjiaData.businessLicenseImg=results[0];
+          },function (error) {
+            alert(error);
+          });
+      }, false);
+    };
+
+
+  }])
   .controller('ShangJia_detailsCtrl', ["$scope","$state",function($scope,$state) {
 
   }])

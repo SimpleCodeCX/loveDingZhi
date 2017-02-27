@@ -7,7 +7,8 @@ configModule.constant("THEGLOBAL",{
   /*"serviceAPI":"http://10.200.14.208:8080"//宿舍的服务器ip*/
   /*"serviceAPI":"http://192.168.0.106:8080"//家里的服务器ip*/
   /*"serviceAPI":"http://192.168.1.103:8080"//5号楼的服务器ip*/
-  "serviceAPI":"http://172.19.8.95:8080"//公司的服务器ip
+  /*"serviceAPI":"http://172.19.8.95:8080"//公司宿舍的服务器ip*/
+  "serviceAPI":"http://10.219.91.216:8080"//公司的服务器ip
 })
   .factory("userDataFactory",function (THEGLOBAL,$resource,$rootScope) {
     //用户信息

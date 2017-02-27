@@ -3,7 +3,12 @@
     <ion-nav-title class="">
       商城
     </ion-nav-title>
-
+    <ion-nav-buttons side="right" >
+      <a class="button button-small button-balanced" href="#/apply_shangjia"
+         ng-if="!userDataView.isDesigner">
+        成为商家
+      </a>
+    </ion-nav-buttons>
     <ion-content class="stable-bg">
       <div class="sjg_show">
         <div class="row" ng-repeat="i in [1,2,3,4,5]">

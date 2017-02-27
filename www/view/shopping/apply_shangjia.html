@@ -1,0 +1,32 @@
+<ion-view hide-back-button="true">
+  <ion-nav-title>
+    开通商家功能
+  </ion-nav-title>
+  <ion-nav-buttons side="left" >
+    <a class="button button-clear " ui-sref="tab.shopping">
+      <i class="icon ion-chevron-left"></i>
+      返回
+    </a>
+  </ion-nav-buttons>
+  <ion-content>
+    <ion-list class="" type="list-inset" style="padding-bottom: 0;margin-top: 30px;">
+      <ion-item class="">
+        <div ng-if="applyShangjiaData.businessLicenseImg">
+          <img id="majorImg" style="margin-top: 10px;height: 150px;width: 50%;"  ng-src="{{applyShangjiaData.businessLicenseImg}}">
+        </div>
+
+        <br/>
+        <button class="button button-dark button-clear button-outline" ng-click="uploadImgBusinessLicense()" >
+          <i class="icon ion-plus"></i>上传专业证书
+        </button>
+
+      </ion-item>
+      <ion-item class="" style="" >
+        <div class="padding">
+          <button class="button button-full button-balanced" ng-click="applyShangjia()">开通</button>
+        </div>
+      </ion-item>
+    </ion-list>
+    <div style="height: 500px;"></div>
+  </ion-content>
+</ion-view>
