@@ -51,7 +51,12 @@ angular.module("starter.controllers",[])
 
   }
 }])
-  .controller('ShoppingCtrl', ["$scope","$ionicModal","$state",function($scope,$ionicModal,$state) {
+  .controller('ShoppingCtrl', ["$scope","$ionicModal","$state","userDataFactory",function($scope,$ionicModal,$state,userDataFactory) {
+    //保存用户的数据
+    $scope.userDataView={};
+    //从config获取用户数据
+    $scope.userDataView=userDataFactory.getUserDataConfig();
+
     $ionicModal.fromTemplateUrl("shopping_details",{
       scope: $scope,
       animation: "slide-in-down"
@@ -83,7 +88,7 @@ angular.module("starter.controllers",[])
   }])
 
   .controller('Shangjia_uploadCtrl', ["$scope","$ionicSlideBoxDelegate",
-       "$cordovaImagePicker",function($scope,$ionicSlideBoxDelegate,$cordovaImagePicker) {
+       "$cordovaImagePicker","$ionicActionSheet",function($scope,$ionicSlideBoxDelegate,$cordovaImagePicker,$ionicActionSheet) {
     $scope.slideCloth=function () {
       $ionicSlideBoxDelegate.previous();
     };
@@ -91,28 +96,70 @@ angular.module("starter.controllers",[])
       $ionicSlideBoxDelegate.next();
     };
 
+
+    //此函数实现从相册中挑选一张照片，imgType取值为logo或cloth
+    function selectImg(imgType) {
+      if(imgType=="logo"){
+        //选择logo图片
+        var titleMessage="请从相册挑选一个logo图片进行上传";
+
+      }
+      else {
+        //选择衣服图片
+        var titleMessage="请从相册挑选一件衣服图片进行上传";
+      }
+      var options = {
+        maximumImagesCount: 1,
+        width: 150,
+        height: 150,
+        quality: 80
+      };
+      /*当Cordova加载完成后才可以调用Cordova插件*/
+      document.addEventListener("deviceready", function () {
+        //alert();
+        $cordovaImagePicker.getPictures(options)
+          .then(function (results) {
+            if(imgType=="logo"){
+              //选择logo图片
+              $scope.imgLogoSrc=results[0];
+            }
+            else {
+              //选择衣服图片
+              $scope.imgClothSrc=results[0];
+            }
+
+          },function (error) {
+
+          });
+      }, false);
+    }
+
       //衣服
       $scope.imgClothSrc="";
 
 
       //上传衣服
       $scope.uploadCloth= function () {
-        var options = {
-          maximumImagesCount: 1,
-          width: 150,
-          height: 150,
-          quality: 80
-        };
-        /*当Cordova加载完成后才可以调用Cordova插件*/
-        document.addEventListener("deviceready", function () {
-          //alert();
-          $cordovaImagePicker.getPictures(options)
-            .then(function (results) {
-              $scope.imgClothSrc=results[0];
-            },function (error) {
+        // Show the action sheet
+        var hideSheet= $ionicActionSheet.show({
+          cancelOnStateChange:true,
+          cssClass:'action_s',
+          titleText: "<b>请从相册挑选一件衣服进行上传</b>",
+          buttons: [
+            { text: "相册" }
+          ],
+          buttonClicked: function() {
+            alert("调用相册接口，因为是在公司，无法进行手机测试");
+            return true;
+          },
+          cancelText: "取消",
+          cancel: function() {
+            // add cancel code..
+            console.log('执行了取消操作');
+            return true;
+          }
+        });
 
-            });
-        }, false);
       };
 
       //Logo
@@ -158,7 +205,7 @@ angular.module("starter.controllers",[])
        onApplyBusiness();
        if(applyBusinessFactory.getIspplyBusinessSuccess()){
          alert("提交成功，请等待审核");
-         /*$state.go("designer");*/
+         $state.go("myShop");
        }
 
      });

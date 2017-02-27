@@ -31,7 +31,7 @@ angular.module("starter.shoppingServices",[])
             ispplyBusinessSuccess=jsonData.flat;
             if(ispplyBusinessSuccess){
               //申请成功 修改缓存里的数据
-              userDataFactory.setIsDesigner(true);
+              userDataFactory.setIsBusiness(true);
               userDataFactory.pushToLocalStorage();
             }
             $rootScope.$broadcast("applyBusinessFactory.applyBusiness");
