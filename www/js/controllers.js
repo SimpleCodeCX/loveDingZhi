@@ -96,18 +96,13 @@ angular.module("starter.controllers",[])
       $ionicSlideBoxDelegate.next();
     };
 
-
-    //此函数实现从相册中挑选一张照片，imgType取值为logo或cloth
+     //保存衣服图片
+      $scope.imgClothSrc="";
+      //保存Logo图片
+      $scope.imgLogoSrc="";
+    //此函数实现从相册中挑选一张照片，imgType取值为logo或cloth，当imgType为logo时，图片保存在$scope.imgLogoSrc，当imgType为cloth时，图片保存在$scope.imgClothSrc
     function selectImg(imgType) {
-      if(imgType=="logo"){
-        //选择logo图片
-        var titleMessage="请从相册挑选一个logo图片进行上传";
-
-      }
-      else {
-        //选择衣服图片
-        var titleMessage="请从相册挑选一件衣服图片进行上传";
-      }
+      alert("调用相册接口，因为是在公司，无法进行手机测试");
       var options = {
         maximumImagesCount: 1,
         width: 150,
@@ -133,37 +128,51 @@ angular.module("starter.controllers",[])
           });
       }, false);
     }
+    //此函数实现显示一个ActionSheet，提示用户选择从相册上传照片，imgType取值为logo或cloth，当imgType为logo时，提示用户上传logo，当imgType为cloth时，提示用户上传衣服
+    function uploadImg(imgType) {
+      if(imgType=="logo"){
+        //选择logo图片
+        var titleMessage="请从相册挑选一个logo图片进行上传";
 
-      //衣服
-      $scope.imgClothSrc="";
+      }
+      else {
+        //选择衣服图片
+        var titleMessage="请从相册挑选一件衣服图片进行上传";
+      }
+      // Show the action sheet
+      var hideSheet= $ionicActionSheet.show({
+        cancelOnStateChange:true,
+        cssClass:'action_s',
+        titleText: "<b>"+titleMessage+"</b>",
+        buttons: [
+          { text: "相册" }
+        ],
+        buttonClicked: function() {
+          selectImg(imgType);
+          return true;
+        },
+        cancelText: "取消",
+        cancel: function() {
+          // add cancel code..
+          console.log('执行了取消操作');
+          return true;
+        }
+      });
 
 
-      //上传衣服
-      $scope.uploadCloth= function () {
-        // Show the action sheet
-        var hideSheet= $ionicActionSheet.show({
-          cancelOnStateChange:true,
-          cssClass:'action_s',
-          titleText: "<b>请从相册挑选一件衣服进行上传</b>",
-          buttons: [
-            { text: "相册" }
-          ],
-          buttonClicked: function() {
-            alert("调用相册接口，因为是在公司，无法进行手机测试");
-            return true;
-          },
-          cancelText: "取消",
-          cancel: function() {
-            // add cancel code..
-            console.log('执行了取消操作');
-            return true;
-          }
-        });
+
+    }
+
+
+
+
+      //上传衣服,imgType取值为logo或cloth,当imgType为logo时，上传logo，当imgType为cloth时上传衣服
+      $scope.uploadCloth= function (imgType) {
+        uploadImg(imgType);
 
       };
 
-      //Logo
-      $scope.imgLogoSrc="";
+
 
 
       //上传Logo
