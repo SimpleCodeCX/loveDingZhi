@@ -436,7 +436,7 @@ angular.module("starter.accountServices",[])
   })
 
   /**
-   * * Created by simple on 2017/02/05.
+   * * Created by simple on 2017/03/01.
    * 获得我的商城的衣服列表数据（注意：是我的）
    * 调用接口：account/getMyShangChengClothList_authority：
    * 返回衣服商品列表数据：List<BusinessCloth>
@@ -482,6 +482,53 @@ angular.module("starter.accountServices",[])
   })
 
 
+
+
+
+  /**
+   * * Created by simple on 2017/03/01.
+   * 获得我的商城的衣服列表数据（注意：是我的）
+   * 调用接口：account/getMyShangChengLogoList_authority：
+   * 返回衣服商品列表数据：List<BusinessLogo>
+   */
+  .factory("getMyShangChengLogoListFactory",function (THEGLOBAL,$resource,$rootScope) {
+    var theUrl=THEGLOBAL.serviceAPI + "/account/getMyShangChengLogoList_authority";
+    var isGetMyShangChengLogoListSuccess;//true代表成功
+    var myShangChengLogoList=[
+      {
+        id:null,
+        caption:"",
+        introduction:"",
+        businesser:null,
+        imgUrl:""
+      }
+    ];
+    return{
+      //请求服务器获取数据
+      getMyShangChengLogoListFromService:function (userName_) {
+        $.ajax({
+          type:"get",
+          url:theUrl,
+          xhrFields: {
+            withCredentials: true
+          },
+          data:{userName:userName_},
+          success:function (data) {
+            myShangChengLogoList=data;
+            for(i=0;i<myShangChengLogoList.length;i++){
+              myShangChengLogoList[i].imgUrl=THEGLOBAL.serviceAPI+"/"+myShangChengLogoList[i].imgUrl;
+            }
+            $rootScope.$broadcast("getMyShangChengLogoListFactory.getMyShangChengLogoListFromService");
+          }
+        });
+      },
+      //返回数据
+      getShangChengLogoList:function () {
+        return myShangChengLogoList;
+      }
+
+    }
+  })
 
 
 

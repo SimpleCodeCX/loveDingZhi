@@ -978,7 +978,6 @@ angular.module("starter.controllers",[])
     var onGetMyShangChengClothListFromService=$scope.$on("getMyShangChengClothListFactory.getMyShangChengClothListFromService",function () {
       onGetMyShangChengClothListFromService();
       $scope.myShangChengClothList=getMyShangChengClothListFactory.getShangChengClothList();
-      console.log($scope.myShangChengClothList);
     })
 
     $scope.openModal=function () {
@@ -988,8 +987,29 @@ angular.module("starter.controllers",[])
 
   }])
 
-  .controller('MyShangCheng_logoCtrl', ["$scope",function($scope) {
+  .controller('MyShangCheng_logoCtrl', ["$scope","getMyShangChengLogoListFactory","userDataFactory",function($scope,getMyShangChengLogoListFactory,userDataFactory) {
+    //保存用户的数据
+    $scope.userDataView={};
+    //从config获取用户数据
+    $scope.userDataView=userDataFactory.getUserDataConfig();
 
+    $scope.myShangChengLogoList={
+      id:null,
+      caption:"",
+      introduction:"",
+      businesser:null,
+      imgUrl:""
+    };
+    getMyShangChengLogoListFactory.getMyShangChengLogoListFromService($scope.userDataView.userName);
+    var onGetMyShangChengLogoListFromService=$scope.$on("getMyShangChengLogoListFactory.getMyShangChengLogoListFromService",function () {
+      onGetMyShangChengLogoListFromService();
+      $scope.myShangChengLogoList=getMyShangChengLogoListFactory.getShangChengLogoList();
+      console.log($scope.myShangChengLogoList);
+    })
+
+    $scope.openModal=function () {
+      alert("查看详情");
+    }
   }])
   .controller('Collect_sjgCtrl', ["$scope",function($scope) {
   }])
