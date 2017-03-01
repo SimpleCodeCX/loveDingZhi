@@ -51,12 +51,25 @@ angular.module("starter.controllers",[])
 
   }
 }])
-  .controller('ShoppingCtrl', ["$scope","$ionicModal","$state","userDataFactory",function($scope,$ionicModal,$state,userDataFactory) {
-    //保存用户的数据
+  .controller('ShoppingCtrl', ["$scope","$ionicModal","$state","userDataFactory","getShangChengClothListFactory",function($scope,$ionicModal,$state,userDataFactory,getShangChengClothListFactory) {
+
+    //保存用户的数据(需要用到用户的数据，前端判断是否为商家)
     $scope.userDataView={};
     //从config获取用户数据
     $scope.userDataView=userDataFactory.getUserDataConfig();
-
+    $scope.shangChengClothList={
+      id:null,
+      caption:"",
+      introduction:"",
+      businesser:null,
+      price:null,
+      imgUrl:""
+    };
+    getShangChengClothListFactory.getGetShangChengClothListService(1);
+    var onGetGetShangChengClothListService=$scope.$on("getShangChengClothListFactory.getGetShangChengClothListService",function () {
+      onGetGetShangChengClothListService();
+      $scope.shangChengClothList=getShangChengClothListFactory.getShangChengClothList();
+      });
     $ionicModal.fromTemplateUrl("shopping_details",{
       scope: $scope,
       animation: "slide-in-down"
@@ -80,6 +93,7 @@ angular.module("starter.controllers",[])
   }])
 
   .controller('Shangjia_clothCtrl', ["$scope",function($scope) {
+
 
   }])
 

@@ -123,3 +123,50 @@ angular.module("starter.shoppingServices",[])
       }
     }
   })
+
+  /**
+   * * Created by simple on 2016/12/11.
+   * 获得商城的衣服商品列表数据
+   * 调用接口：shopping/getShangChengClothList：
+   * 返回衣服商品列表数据：List<BusinessCloth>
+   */
+  .factory("getShangChengClothListFactory",function (THEGLOBAL,$resource,$rootScope) {
+    var theUrl=THEGLOBAL.serviceAPI + "/shopping/getShangChengClothList";
+    var isGetShangChengClothListSuccess;//true代表成功
+    var shangChengClothList=[
+      {
+        id:null,
+        caption:"",
+        introduction:"",
+        businesser:null,
+        price:null,
+        imgUrl:""
+      }
+    ];
+    return{
+      //请求服务器获取数据
+      getGetShangChengClothListService:function (page_) {
+        $.ajax({
+          type:"get",
+          url:theUrl,
+          xhrFields: {
+            withCredentials: true
+          },
+          data:{page:page_},
+          success:function (data) {
+            shangChengClothList=data;
+            console.log(shangChengClothList);
+            for(i=0;i<shangChengClothList.length;i++){
+              shangChengClothList[i].imgUrl=THEGLOBAL.serviceAPI+"/"+shangChengClothList[i].imgUrl;
+            }
+            $rootScope.$broadcast("getShangChengClothListFactory.getGetShangChengClothListService");
+          }
+        });
+      },
+      //返回数据
+      getShangChengClothList:function () {
+        return shangChengClothList;
+      }
+
+    }
+  })
