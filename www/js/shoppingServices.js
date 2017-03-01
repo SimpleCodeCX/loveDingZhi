@@ -80,7 +80,46 @@ angular.module("starter.shoppingServices",[])
         });
       },
       getIsShangjiaUploadClothSuccess:function () {
-        return isDesignerUploadSjsSuccess;
+        return isShangjiaUploadClothSuccess;
+      }
+    }
+  })
+
+  /**
+   * Created by simple on 2017/03/01.
+   * 上传商家衣服商品
+   * 调用接口：shopping/shangjiaUploadLogo_authority：
+   *            上传成功：flat=true
+   *                失败：flat=false
+   */
+  .factory("shangjiaUploadLogoFactory",function (THEGLOBAL,$resource,$rootScope,userDataFactory) {
+    var theUrl=THEGLOBAL.serviceAPI + "/shopping/shangjiaUploadLogo_authority";
+    var isShangjiaUploadLogoSuccess;//true代表上传成功
+    return{
+      shangjiaUploadLogo:function (caption_,introduction_,shangjiaLogoImg_) {
+        //账号
+        var accountNumber_=userDataFactory.getUserDataConfig().accountNumber;
+        $.ajax({
+          type:"post",
+          url:theUrl,
+          xhrFields: {
+            withCredentials: true
+          },
+          data:{
+            accountNumber:accountNumber_,
+            caption:caption_,
+            introduction:introduction_,
+            shangjiaLogoImg:shangjiaLogoImg_
+          },
+          success:function (data) {
+            var jsonData=JSON.parse(data);
+            isShangjiaUploadLogoSuccess=jsonData.flat;
+            $rootScope.$broadcast("shangjiaUploadLogoFactory.shangjiaUploadLogo");
+          }
+        });
+      },
+      getIsShangjiaUploadLogoSuccess:function () {
+        return isShangjiaUploadLogoSuccess;
       }
     }
   })

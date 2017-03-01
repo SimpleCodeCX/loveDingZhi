@@ -247,7 +247,7 @@ angular.module("starter.controllers",[])
   .controller('Shangjia_upload_clothCtrl', ["$scope","$state","shangjiaUploadClothFactory","imageFactory",function($scope,$state,shangjiaUploadClothFactory,imageFactory) {
 
     $scope.shangjiaClothData={
-      caption:"111",
+      caption:"",
       price:null,
       introduction:""
     }
@@ -269,7 +269,28 @@ angular.module("starter.controllers",[])
 
 
   }])
-  .controller('Shangjia_upload_logoCtrl', ["$scope","$state",function($scope,$state) {
+  .controller('Shangjia_upload_logoCtrl', ["$scope","$state","imageFactory","shangjiaUploadLogoFactory",function($scope,$state,imageFactory,shangjiaUploadLogoFactory) {
+
+    $scope.shangjiaLogoData={
+      caption:"",
+      introduction:""
+    }
+    //调用服务器层发送数据到服务器
+    $scope.uploadToService=function () {
+
+      //从前端获得商家衣服商品的图片，并转化为base64的格式
+      var shangjiaLogoImgBase64=imageFactory.getBase64Image(document.getElementById("shangjiaLogoImg"),"image/png");
+      shangjiaUploadLogoFactory.shangjiaUploadLogo($scope.shangjiaLogoData.caption,$scope.shangjiaLogoData.introduction,shangjiaLogoImgBase64);
+      var onShangjiaUploadLogo=$scope.$on("shangjiaUploadLogoFactory.shangjiaUploadLogo",function () {
+        onShangjiaUploadLogo();
+        if(shangjiaUploadLogoFactory.getIsShangjiaUploadLogoSuccess())
+        {
+          alert("商家上传衣服商品成功");
+          alert("跳转到我的商城的我的商品。");
+        }
+      });
+
+    }
 
   }])
 
