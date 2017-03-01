@@ -92,14 +92,7 @@ angular.module("starter.controllers",[])
     }
   }])
 
-  .controller('Shangjia_clothCtrl', ["$scope",function($scope) {
 
-
-  }])
-
-  .controller('Shangjia_logoCtrl', ["$scope",function($scope) {
-
-  }])
 
   .controller('Shangjia_uploadCtrl', ["$scope","$ionicSlideBoxDelegate", "$cordovaImagePicker","$ionicActionSheet","$state",
     function($scope,$ionicSlideBoxDelegate,$cordovaImagePicker,$ionicActionSheet,$state) {
@@ -958,16 +951,46 @@ angular.module("starter.controllers",[])
   .controller('MyShopCtrl', ["$scope","$state",function($scope,$state) {
 
     $scope.goToShangjia_cloth=function () {
-      $state.go("shangjia_cloth");
+      $state.go("myShangCheng_cloth");
     };
     $scope.goToShangjia_logo=function () {
-      $state.go("shangjia_logo");
+      $state.go("myShangCheng_logo");
     };
     $scope.goToShangjia_upload=function () {
       $state.go("shangjia_upload");
     };
   }])
+  .controller('MyShangCheng_clothCtrl', ["$scope","getMyShangChengClothListFactory","userDataFactory",function($scope,getMyShangChengClothListFactory,userDataFactory) {
+    //保存用户的数据
+    $scope.userDataView={};
+    //从config获取用户数据
+    $scope.userDataView=userDataFactory.getUserDataConfig();
 
+    $scope.myShangChengClothList={
+      id:null,
+      caption:"",
+      introduction:"",
+      businesser:null,
+      price:null,
+      imgUrl:""
+    };
+    getMyShangChengClothListFactory.getMyShangChengClothListFromService($scope.userDataView.userName);
+    var onGetMyShangChengClothListFromService=$scope.$on("getMyShangChengClothListFactory.getMyShangChengClothListFromService",function () {
+      onGetMyShangChengClothListFromService();
+      $scope.myShangChengClothList=getMyShangChengClothListFactory.getShangChengClothList();
+      console.log($scope.myShangChengClothList);
+    })
+
+    $scope.openModal=function () {
+      alert("查看详情");
+    }
+
+
+  }])
+
+  .controller('MyShangCheng_logoCtrl', ["$scope",function($scope) {
+
+  }])
   .controller('Collect_sjgCtrl', ["$scope",function($scope) {
   }])
 

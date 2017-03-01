@@ -175,17 +175,7 @@ angular.module('starter',['ionic','starter.controllers','starter.services','star
         controller:"ShangJia_detailsCtrl"
       })
 
-      .state("shangjia_cloth",{
-        url:"/shangjia_cloth",
-        templateUrl:"shopping/shangjia_cloth.html",
-        controller:"Shangjia_clothCtrl"
-      })
 
-      .state("shangjia_logo",{
-        url:"/shangjia_logo",
-        templateUrl:"shopping/shangjia_logo.html",
-        controller:"Shangjia_logoCtrl"
-      })
 
       .state("shangjia_upload",{
         url:"/shangjia_upload",
@@ -240,6 +230,17 @@ angular.module('starter',['ionic','starter.controllers','starter.services','star
         url:"/myShop",
         templateUrl:"account/myShop.html",
         controller:"MyShopCtrl"
+      })
+      .state("myShangCheng_cloth",{
+        url:"/myShangCheng_cloth",
+        templateUrl:"account/myShangCheng_cloth.html",
+        controller:"MyShangCheng_clothCtrl"
+      })
+
+      .state("myShangCheng_logo",{
+        url:"/myShangCheng_logo",
+        templateUrl:"account/myShangCheng_logo.html",
+        controller:"MyShangCheng_logoCtrl"
       })
       .state("updateInfo",{
         url:"/updateInfo",
