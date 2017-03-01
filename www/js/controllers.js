@@ -87,8 +87,8 @@ angular.module("starter.controllers",[])
 
   }])
 
-  .controller('Shangjia_uploadCtrl', ["$scope","$ionicSlideBoxDelegate",
-       "$cordovaImagePicker","$ionicActionSheet",function($scope,$ionicSlideBoxDelegate,$cordovaImagePicker,$ionicActionSheet) {
+  .controller('Shangjia_uploadCtrl', ["$scope","$ionicSlideBoxDelegate", "$cordovaImagePicker","$ionicActionSheet","$state",
+    function($scope,$ionicSlideBoxDelegate,$cordovaImagePicker,$ionicActionSheet,$state) {
     $scope.slideCloth=function () {
       $ionicSlideBoxDelegate.previous();
     };
@@ -103,6 +103,13 @@ angular.module("starter.controllers",[])
     //此函数实现从相册中挑选一张照片，imgType取值为logo或cloth，当imgType为logo时，图片保存在$scope.imgLogoSrc，当imgType为cloth时，图片保存在$scope.imgClothSrc
     function selectImg(imgType) {
       alert("调用相册接口，因为是在公司，无法进行手机测试");
+      if(imgType=="cloth"){
+        $state.go("shangjia_upload_cloth");
+      }
+      else {
+        $state.go("shangjia_upload_logo");
+      }
+
       var options = {
         maximumImagesCount: 1,
         width: 150,
@@ -117,10 +124,12 @@ angular.module("starter.controllers",[])
             if(imgType=="logo"){
               //选择logo图片
               $scope.imgLogoSrc=results[0];
+              $state.go("shangjia_upload_logo");
             }
             else {
               //选择衣服图片
               $scope.imgClothSrc=results[0];
+              $state.go("shangjia_upload_cloth");
             }
 
           },function (error) {
@@ -158,22 +167,13 @@ angular.module("starter.controllers",[])
           return true;
         }
       });
-
-
-
     }
-
-
-
 
       //上传衣服,imgType取值为logo或cloth,当imgType为logo时，上传logo，当imgType为cloth时上传衣服
       $scope.uploadCloth= function (imgType) {
         uploadImg(imgType);
 
       };
-
-
-
 
       //上传Logo
       $scope.uploadLogo= function () {
@@ -244,7 +244,34 @@ angular.module("starter.controllers",[])
   .controller('ShangJia_detailsCtrl', ["$scope","$state",function($scope,$state) {
 
   }])
+  .controller('Shangjia_upload_clothCtrl', ["$scope","$state","shangjiaUploadClothFactory","imageFactory",function($scope,$state,shangjiaUploadClothFactory,imageFactory) {
 
+    $scope.shangjiaClothData={
+      caption:"111",
+      price:null,
+      introduction:""
+    }
+    //调用服务器层发送数据到服务器
+    $scope.uploadToService=function () {
+      //从前端获得商家衣服商品的图片，并转化为base64的格式
+      var shangjiaClothImgBase64=imageFactory.getBase64Image(document.getElementById("shangjiaClothImg"),"image/png");
+      shangjiaUploadClothFactory.shangjiaUploadCloth($scope.shangjiaClothData.caption,$scope.shangjiaClothData.price,$scope.shangjiaClothData.introduction,shangjiaClothImgBase64);
+      var onShangjiaUploadCloth=$scope.$on("shangjiaUploadClothFactory.shangjiaUploadCloth",function () {
+        onShangjiaUploadCloth();
+        if(shangjiaUploadClothFactory.getIsShangjiaUploadClothSuccess())
+        {
+          alert("商家上传衣服商品成功");
+          alert("跳转到我的商城的我的商品。");
+        }
+      });
+
+    }
+
+
+  }])
+  .controller('Shangjia_upload_logoCtrl', ["$scope","$state",function($scope,$state) {
+
+  }])
 
   .controller('DesignCtrl', ["$scope",function($scope) {
     $scope.designDatas=["../img/sjg/sjg1.jpg",

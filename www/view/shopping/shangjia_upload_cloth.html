@@ -1,0 +1,54 @@
+<div class="design_details_page">
+  <ion-view   hide-back-button="true">
+    <ion-nav-buttons side="left" >
+      <a class="button button-clear " href="#/shangjia_upload">
+        <i class="icon ion-chevron-left"></i>
+        返回
+      </a>
+    </ion-nav-buttons>
+    <ion-nav-title class="">
+      上传衣服
+    </ion-nav-title>
+
+    <ion-content class="stable-bg">
+
+        <div style="height: 220px;width: 80%;margin:auto;margin-top:5px;">
+          <img id="shangjiaClothImg" src="../../img/shangcheng/cloth/1.jpg" style="height: 100%;width: 100%;">
+        </div>
+      <ion-list type="card">
+        <ion-item class="item-divider">
+          给你的商品起一个容易记住的标题吧：
+        </ion-item>
+        <ion-item>
+          <input type="text" placeholder="标题" style="width: 90%" ng-model="shangjiaClothData.caption">
+        </ion-item>
+        <ion-item class="item-divider">
+          定价：
+        </ion-item>
+        <ion-item class="item-icon-left " style="margin-bottom: 0px;">
+          <i class="icon  ion-social-yen" style="font-size: 22px;"></i>
+          <input type="text" ng-model="shangjiaClothData.price">
+        </ion-item>
+        <ion-item class="item-divider" style="">
+          描述
+        </ion-item>
+        <ion-item class="" style="">
+         <textarea style="width: 100%;"cols="" rows="7" ng-model="shangjiaClothData.introduction">
+
+         </textarea>
+        </ion-item>
+        <ion-item style="margin-top: 0px;">
+          <button class="button button-full button-balanced" style="margin-top: 0px;margin-bottom: 0px;" ng-click="uploadToService()">发布商品</button>
+        </ion-item>
+        </ion-list>
+    </ion-content>
+  </ion-view>
+</div>
+
+
+
+
+
+
+
+
