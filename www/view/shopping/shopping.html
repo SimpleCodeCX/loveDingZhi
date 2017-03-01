@@ -11,22 +11,48 @@
     </ion-nav-buttons>
     <ion-content class="stable-bg">
       <div class="sjg_show">
-        <div class="row" ng-repeat="i in [1,2,3,4,5]">
+        <div class="row row-wrap"  style="margin-top: 15px;">
+          <div class="col col-50 " ng-repeat="shangChengCloth in shangChengClothList" style="" ng-click="openModal()">
+
+            <div class="img_div">
+              <img ng-src="{{shangChengCloth.imgUrl}}"  style="  height: 150px;width: 100%;">
+            </div>
+            <div style="text-align: center;">
+              {{shangChengCloth.caption}}
+            </div>
+            <div style="text-align: center;">
+              商家：simple
+            </div>
+            <div style="text-align: center;">
+              ￥{{shangChengCloth.price}}   <span style="margin-left: 16px;">销量：90</span>
+            </div>
+          </div>
+        </div>
+     <!--   <div class="row" ng-repeat="i in [1,2,3,4,5]" style="margin-top: 15px;">
           <div class="col col-50 " style="" ng-click="openModal()">
+
             <div class="img_div">
               <img src="../img/shangcheng/cloth/1.jpg"  style="  height: 150px;width: 100%;">
             </div>
-
-
+            <div style="text-align: center;">
+              聚会t恤文化广告衫
+            </div>
+            <div style="text-align: center;">
+              ￥90   <span style="margin-left: 16px;">销量：90</span>
+            </div>
           </div>
           <div class="col col-50 ">
             <div class="img_div">
-              <img src="../img/shangcheng/cloth/2-1.jpg" style="  height: 150px;width: 100%;">
+              <img src="../img/shangcheng/cloth/1.jpg" style="  height: 150px;width: 100%;">
             </div>
-
-
+            <div style="text-align: center;">
+              聚会t恤文化广告衫
+            </div>
+            <div style="text-align: center;">
+              ￥90   <span style="margin-left: 16px;">销量：90</span>
+            </div>
           </div>
-        </div>
+        </div>-->
       </div>
       <script id="shopping_details" type="text/ng-template">
         <ion-modal-view  class="dark-bg ion_modal_view">

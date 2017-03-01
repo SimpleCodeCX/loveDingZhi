@@ -35,12 +35,12 @@ color: #666;
 .design_drawing_page .row .col{
   text-align: center;
   line-height: 20px;
-  height: 185px;
+  height: 230px;
 }
 .design_drawing_page .row .col .img_div img{
   border: 1px solid black;
   box-shadow: 1px 1px 1px;
-  height: 140px;
+  height: 200px;
 }
 .design_drawing_page .row .col img{
   height: 136px;

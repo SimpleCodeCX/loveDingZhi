@@ -51,12 +51,25 @@ angular.module("starter.controllers",[])
 
   }
 }])
-  .controller('ShoppingCtrl', ["$scope","$ionicModal","$state","userDataFactory",function($scope,$ionicModal,$state,userDataFactory) {
-    //保存用户的数据
+  .controller('ShoppingCtrl', ["$scope","$ionicModal","$state","userDataFactory","getShangChengClothListFactory",function($scope,$ionicModal,$state,userDataFactory,getShangChengClothListFactory) {
+
+    //保存用户的数据(需要用到用户的数据，前端判断是否为商家)
     $scope.userDataView={};
     //从config获取用户数据
     $scope.userDataView=userDataFactory.getUserDataConfig();
-
+    $scope.shangChengClothList={
+      id:null,
+      caption:"",
+      introduction:"",
+      businesser:null,
+      price:null,
+      imgUrl:""
+    };
+    getShangChengClothListFactory.getGetShangChengClothListService(1);
+    var onGetGetShangChengClothListService=$scope.$on("getShangChengClothListFactory.getGetShangChengClothListService",function () {
+      onGetGetShangChengClothListService();
+      $scope.shangChengClothList=getShangChengClothListFactory.getShangChengClothList();
+      });
     $ionicModal.fromTemplateUrl("shopping_details",{
       scope: $scope,
       animation: "slide-in-down"
@@ -79,16 +92,10 @@ angular.module("starter.controllers",[])
     }
   }])
 
-  .controller('Shangjia_clothCtrl', ["$scope",function($scope) {
 
-  }])
 
-  .controller('Shangjia_logoCtrl', ["$scope",function($scope) {
-
-  }])
-
-  .controller('Shangjia_uploadCtrl', ["$scope","$ionicSlideBoxDelegate",
-       "$cordovaImagePicker","$ionicActionSheet",function($scope,$ionicSlideBoxDelegate,$cordovaImagePicker,$ionicActionSheet) {
+  .controller('Shangjia_uploadCtrl', ["$scope","$ionicSlideBoxDelegate", "$cordovaImagePicker","$ionicActionSheet","$state",
+    function($scope,$ionicSlideBoxDelegate,$cordovaImagePicker,$ionicActionSheet,$state) {
     $scope.slideCloth=function () {
       $ionicSlideBoxDelegate.previous();
     };
@@ -96,18 +103,20 @@ angular.module("starter.controllers",[])
       $ionicSlideBoxDelegate.next();
     };
 
-
-    //此函数实现从相册中挑选一张照片，imgType取值为logo或cloth
+     //保存衣服图片
+      $scope.imgClothSrc="";
+      //保存Logo图片
+      $scope.imgLogoSrc="";
+    //此函数实现从相册中挑选一张照片，imgType取值为logo或cloth，当imgType为logo时，图片保存在$scope.imgLogoSrc，当imgType为cloth时，图片保存在$scope.imgClothSrc
     function selectImg(imgType) {
-      if(imgType=="logo"){
-        //选择logo图片
-        var titleMessage="请从相册挑选一个logo图片进行上传";
-
+      alert("调用相册接口，因为是在公司，无法进行手机测试");
+      if(imgType=="cloth"){
+        $state.go("shangjia_upload_cloth");
       }
       else {
-        //选择衣服图片
-        var titleMessage="请从相册挑选一件衣服图片进行上传";
+        $state.go("shangjia_upload_logo");
       }
+
       var options = {
         maximumImagesCount: 1,
         width: 150,
@@ -122,10 +131,12 @@ angular.module("starter.controllers",[])
             if(imgType=="logo"){
               //选择logo图片
               $scope.imgLogoSrc=results[0];
+              $state.go("shangjia_upload_logo");
             }
             else {
               //选择衣服图片
               $scope.imgClothSrc=results[0];
+              $state.go("shangjia_upload_cloth");
             }
 
           },function (error) {
@@ -133,38 +144,43 @@ angular.module("starter.controllers",[])
           });
       }, false);
     }
+    //此函数实现显示一个ActionSheet，提示用户选择从相册上传照片，imgType取值为logo或cloth，当imgType为logo时，提示用户上传logo，当imgType为cloth时，提示用户上传衣服
+    function uploadImg(imgType) {
+      if(imgType=="logo"){
+        //选择logo图片
+        var titleMessage="请从相册挑选一个logo图片进行上传";
 
-      //衣服
-      $scope.imgClothSrc="";
+      }
+      else {
+        //选择衣服图片
+        var titleMessage="请从相册挑选一件衣服图片进行上传";
+      }
+      // Show the action sheet
+      var hideSheet= $ionicActionSheet.show({
+        cancelOnStateChange:true,
+        cssClass:'action_s',
+        titleText: "<b>"+titleMessage+"</b>",
+        buttons: [
+          { text: "相册" }
+        ],
+        buttonClicked: function() {
+          selectImg(imgType);
+          return true;
+        },
+        cancelText: "取消",
+        cancel: function() {
+          // add cancel code..
+          console.log('执行了取消操作');
+          return true;
+        }
+      });
+    }
 
-
-      //上传衣服
-      $scope.uploadCloth= function () {
-        // Show the action sheet
-        var hideSheet= $ionicActionSheet.show({
-          cancelOnStateChange:true,
-          cssClass:'action_s',
-          titleText: "<b>请从相册挑选一件衣服进行上传</b>",
-          buttons: [
-            { text: "相册" }
-          ],
-          buttonClicked: function() {
-            alert("调用相册接口，因为是在公司，无法进行手机测试");
-            return true;
-          },
-          cancelText: "取消",
-          cancel: function() {
-            // add cancel code..
-            console.log('执行了取消操作');
-            return true;
-          }
-        });
+      //上传衣服,imgType取值为logo或cloth,当imgType为logo时，上传logo，当imgType为cloth时上传衣服
+      $scope.uploadCloth= function (imgType) {
+        uploadImg(imgType);
 
       };
-
-      //Logo
-      $scope.imgLogoSrc="";
-
 
       //上传Logo
       $scope.uploadLogo= function () {
@@ -235,7 +251,55 @@ angular.module("starter.controllers",[])
   .controller('ShangJia_detailsCtrl', ["$scope","$state",function($scope,$state) {
 
   }])
+  .controller('Shangjia_upload_clothCtrl', ["$scope","$state","shangjiaUploadClothFactory","imageFactory",function($scope,$state,shangjiaUploadClothFactory,imageFactory) {
 
+    $scope.shangjiaClothData={
+      caption:"",
+      price:null,
+      introduction:""
+    }
+    //调用服务器层发送数据到服务器
+    $scope.uploadToService=function () {
+      //从前端获得商家衣服商品的图片，并转化为base64的格式
+      var shangjiaClothImgBase64=imageFactory.getBase64Image(document.getElementById("shangjiaClothImg"),"image/png");
+      shangjiaUploadClothFactory.shangjiaUploadCloth($scope.shangjiaClothData.caption,$scope.shangjiaClothData.price,$scope.shangjiaClothData.introduction,shangjiaClothImgBase64);
+      var onShangjiaUploadCloth=$scope.$on("shangjiaUploadClothFactory.shangjiaUploadCloth",function () {
+        onShangjiaUploadCloth();
+        if(shangjiaUploadClothFactory.getIsShangjiaUploadClothSuccess())
+        {
+          alert("商家上传衣服商品成功");
+          alert("跳转到我的商城的我的商品。");
+        }
+      });
+
+    }
+
+
+  }])
+  .controller('Shangjia_upload_logoCtrl', ["$scope","$state","imageFactory","shangjiaUploadLogoFactory",function($scope,$state,imageFactory,shangjiaUploadLogoFactory) {
+
+    $scope.shangjiaLogoData={
+      caption:"",
+      introduction:""
+    }
+    //调用服务器层发送数据到服务器
+    $scope.uploadToService=function () {
+
+      //从前端获得商家衣服商品的图片，并转化为base64的格式
+      var shangjiaLogoImgBase64=imageFactory.getBase64Image(document.getElementById("shangjiaLogoImg"),"image/png");
+      shangjiaUploadLogoFactory.shangjiaUploadLogo($scope.shangjiaLogoData.caption,$scope.shangjiaLogoData.introduction,shangjiaLogoImgBase64);
+      var onShangjiaUploadLogo=$scope.$on("shangjiaUploadLogoFactory.shangjiaUploadLogo",function () {
+        onShangjiaUploadLogo();
+        if(shangjiaUploadLogoFactory.getIsShangjiaUploadLogoSuccess())
+        {
+          alert("商家上传衣服商品成功");
+          alert("跳转到我的商城的我的商品。");
+        }
+      });
+
+    }
+
+  }])
 
   .controller('DesignCtrl', ["$scope",function($scope) {
     $scope.designDatas=["../img/sjg/sjg1.jpg",
@@ -887,16 +951,66 @@ angular.module("starter.controllers",[])
   .controller('MyShopCtrl', ["$scope","$state",function($scope,$state) {
 
     $scope.goToShangjia_cloth=function () {
-      $state.go("shangjia_cloth");
+      $state.go("myShangCheng_cloth");
     };
     $scope.goToShangjia_logo=function () {
-      $state.go("shangjia_logo");
+      $state.go("myShangCheng_logo");
     };
     $scope.goToShangjia_upload=function () {
       $state.go("shangjia_upload");
     };
   }])
+  .controller('MyShangCheng_clothCtrl', ["$scope","getMyShangChengClothListFactory","userDataFactory",function($scope,getMyShangChengClothListFactory,userDataFactory) {
+    //保存用户的数据
+    $scope.userDataView={};
+    //从config获取用户数据
+    $scope.userDataView=userDataFactory.getUserDataConfig();
 
+    $scope.myShangChengClothList={
+      id:null,
+      caption:"",
+      introduction:"",
+      businesser:null,
+      price:null,
+      imgUrl:""
+    };
+    getMyShangChengClothListFactory.getMyShangChengClothListFromService($scope.userDataView.userName);
+    var onGetMyShangChengClothListFromService=$scope.$on("getMyShangChengClothListFactory.getMyShangChengClothListFromService",function () {
+      onGetMyShangChengClothListFromService();
+      $scope.myShangChengClothList=getMyShangChengClothListFactory.getShangChengClothList();
+    })
+
+    $scope.openModal=function () {
+      alert("查看详情");
+    }
+
+
+  }])
+
+  .controller('MyShangCheng_logoCtrl', ["$scope","getMyShangChengLogoListFactory","userDataFactory",function($scope,getMyShangChengLogoListFactory,userDataFactory) {
+    //保存用户的数据
+    $scope.userDataView={};
+    //从config获取用户数据
+    $scope.userDataView=userDataFactory.getUserDataConfig();
+
+    $scope.myShangChengLogoList={
+      id:null,
+      caption:"",
+      introduction:"",
+      businesser:null,
+      imgUrl:""
+    };
+    getMyShangChengLogoListFactory.getMyShangChengLogoListFromService($scope.userDataView.userName);
+    var onGetMyShangChengLogoListFromService=$scope.$on("getMyShangChengLogoListFactory.getMyShangChengLogoListFromService",function () {
+      onGetMyShangChengLogoListFromService();
+      $scope.myShangChengLogoList=getMyShangChengLogoListFactory.getShangChengLogoList();
+      console.log($scope.myShangChengLogoList);
+    })
+
+    $scope.openModal=function () {
+      alert("查看详情");
+    }
+  }])
   .controller('Collect_sjgCtrl', ["$scope",function($scope) {
   }])
 
