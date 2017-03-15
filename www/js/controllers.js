@@ -57,6 +57,7 @@ angular.module("starter.controllers",[])
     $scope.userDataView={};
     //从config获取用户数据
     $scope.userDataView=userDataFactory.getUserDataConfig();
+    $scope.selectShangChengCloth="../img/sjg/sjg1.jpg";
     $scope.shangChengClothList={
       id:null,
       caption:"",
@@ -76,15 +77,16 @@ angular.module("starter.controllers",[])
     }).then (function(modal) {
       $scope.modal = modal;
     });
-    $scope.openModal = function() {
+    $scope.openModal = function(shangChengClothIndex) {
+      $scope.selectShangChengCloth=$scope.shangChengClothList[shangChengClothIndex].imgUrl;
       $scope.modal.show();
     };
     $scope.closeModal = function() {
       $scope.modal.hide();
     };
-    $scope.makeCloth=function () {
+    $scope.diyCloth=function () {
         $scope.modal.hide();
-        $state.go("makeCloth");
+        $state.go("diyCloth",{imgUrl:$scope.selectShangChengCloth});
     }
     $scope.goToShangJia_details=function () {
       $scope.modal.hide();
@@ -707,11 +709,70 @@ angular.module("starter.controllers",[])
       };
 }])
 
-  .controller('MakeClothCtrl', ["$scope","$state",function($scope,$state) {
+  .controller('DiyClothCtrl', ["$scope","$state","$stateParams",function($scope,$state,$stateParams) {
+    $scope.clothImgUrl=$stateParams["imgUrl"];
+    var clothImg=new Image();
+    clothImg.src=$scope.clothImgUrl;
+
+    var logoImg=new Image();
+    logoImg.src="../img/logo/logo7.png";
+
+    var clothCanvas=document.querySelector("#clothCanvas");
+    var clothCanvasCtx=clothCanvas.getContext("2d");
+
+    var clothCanvasWidth=clothCanvas.width;
+    var clothCanvasHeight=clothCanvas.height;
+
+    var logoLeft= 10;
+    var logoTop=  10;
+
+    var logoWidth=100;
+    var logoHeight=50;
+
+
+    function drawing(coordinate) {
+
+      if(coordinate && clothCanvasCtx.isPointInPath(coordinate.x, coordinate.y)) {
+        console.log(coordinate);
+        logoLeft = coordinate.x - logoWidth/2;
+        logoTop = coordinate.y - logoHeight/2;
+      }
+      clothCanvasCtx.clearRect(0,0,clothCanvasWidth,clothCanvasHeight);
+      clothCanvasCtx.drawImage(clothImg,0,0,clothCanvasWidth,clothCanvasHeight);
+      clothCanvasCtx.beginPath();
+      clothCanvasCtx.strokeStyle="#fff";
+      clothCanvasCtx.strokeRect(logoLeft,logoTop,logoWidth,logoHeight);
+      clothCanvasCtx.closePath();
+      clothCanvasCtx.stroke();
+      clothCanvasCtx.drawImage(logoImg,logoLeft,logoTop,logoWidth,logoHeight);
+    }
+
+
+    clothImg.onload=function () {
+      logoImg.onload=function () {
+        drawing();
+      }
+    }
+
+    clothCanvas.addEventListener("touchmove",function (e) {
+      e.preventDefault();
+      var moveTouch = e.targetTouches[0];
+
+      //layerX || offsetX
+      var coordinate = {
+        x: moveTouch.clientX - moveTouch.target.offsetLeft,
+        y: moveTouch.clientY - moveTouch.target.offsetTop
+      }
+
+      drawing(coordinate);
+    },false);
+
+
     $scope.dingZhi=function () {
       $state.go("dingzhi");
     }
   }])
+
 
   .controller('AiDingZhiCtrl', ["$scope","$state","getDataFactory"
               ,function($scope,$state,getDataFactory) {

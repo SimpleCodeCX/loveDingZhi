@@ -163,10 +163,10 @@ angular.module('starter',['ionic','starter.controllers','starter.services','star
         }
       })
 
-      .state("makeCloth",{
-        url:"/makeCloth",
-        templateUrl:"shopping/makeCloth.html",
-        controller:"MakeClothCtrl"
+      .state("diyCloth",{
+        url:"/diyCloth/:imgUrl",
+        templateUrl:"shopping/diyCloth.html",
+        controller:"DiyClothCtrl"
       })
 
       .state("shangJia_details",{
