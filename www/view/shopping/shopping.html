@@ -1,7 +1,7 @@
 <div class="">
   <ion-view   hide-back-button="true">
     <ion-nav-title class="">
-      商城
+      商城（班服定制）
     </ion-nav-title>
     <ion-nav-buttons side="right" >
       <a class="button button-small button-balanced" href="#/apply_shangjia"
@@ -12,7 +12,7 @@
     <ion-content class="stable-bg">
       <div class="sjg_show">
         <div class="row row-wrap"  style="margin-top: 15px;">
-          <div class="col col-50 " ng-repeat="shangChengCloth in shangChengClothList" style="" ng-click="openModal()">
+          <div class="col col-50 " ng-repeat="shangChengCloth in shangChengClothList" style="" ng-click="openModal($index)">
 
             <div class="img_div">
               <img ng-src="{{shangChengCloth.imgUrl}}"  style="  height: 150px;width: 100%;">
@@ -67,8 +67,35 @@
                     <i class="icon ion-ios-close-outline"
                        ng-click="closeModal()"></i>
                   </ion-item>
-                  <ion-item class="item-image" style="text-align: center;">
-                    <img style="width: 100%;" src="../img/sjg/sjg1.jpg">
+                  <ion-item class="item-image" style="text-align: center;margin-bottom: 10px;">
+                    <img style="width: 90%;height:250px;margin: auto;margin-top: 20px;" ng-src="{{selectShangChengCloth}}">
+                  </ion-item>
+                  <ion-item class="item-divider">
+                      商家销售记录
+                  </ion-item>
+                  <ion-item style="font-size: 14px;">
+                    <ul>
+                      <li style="border: 1px solid #ccc; padding-left: 10px;">
+                        2016年5月21日为<span style="color: #0a9dc7">才艺音乐协会</span> 定制了<span style="color: #0a9dc7">T恤</span><br>
+                        <span style="color:blue ">件数：90</span>
+                        <span style="color:blue;margin-left: 20px;"> 评价：满意</span>
+                      </li>
+                      <li style="border: 1px solid #ccc; padding-left: 10px;margin-top: 5px;">
+                        2016年5月21日为<span style="color: #0a9dc7">才艺音乐协会</span> 定制了<span style="color: #0a9dc7">T恤</span><br>
+                        <span style="color:blue ">件数：90</span>
+                        <span style="color:blue;margin-left: 20px;"> 评价：满意</span>
+                      </li>
+                      <li style="border: 1px solid #ccc; padding-left: 10px;margin-top: 5px;">
+                        2016年5月21日为<span style="color: #0a9dc7">才艺音乐协会</span> 定制了<span style="color: #0a9dc7">T恤</span><br>
+                        <span style="color:blue ">件数：90</span>
+                        <span style="color:blue;margin-left: 20px;"> 评价：满意</span>
+                      </li>
+                      <li style="border: 1px solid #ccc; padding-left: 10px;margin-top: 5px;">
+                        2016年5月21日为<span style="color: #0a9dc7">才艺音乐协会</span> 定制了<span style="color: #0a9dc7">T恤</span><br>
+                        <span style="color:blue ">件数：90</span>
+                        <span style="color:blue;margin-left: 20px;"> 评价：满意</span>
+                      </li>
+                    </ul>
                   </ion-item>
                   <ion-item>
                    <button ng-click="goToShangJia_details()">
@@ -77,8 +104,8 @@
                   </ion-item>
 
                   <div class="padding">
-                    <button class="button button-block button-balanced" ng-click="makeCloth()">
-                      开始定制
+                    <button class="button button-block button-balanced" ng-click="diyCloth()">
+                      开始DIY
                     </button>
                   </div>
                 </ion-list>
