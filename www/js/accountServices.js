@@ -577,6 +577,7 @@ angular.module("starter.accountServices",[])
           /*data:{a:"aa",b:"bb"},//加上这个就会自动采用contentType:"application/json，浏览器会使用非简单请求*/
           url: theUrl
         }).then(function successCallback(response) {
+          console.log(response);
           data=response.data;
           $rootScope.$broadcast("getDataByHttpFactory.getDataByHttp");
         }, function errorCallback(error) {

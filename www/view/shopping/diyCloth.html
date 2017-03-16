@@ -8,14 +8,16 @@
   <ion-nav-title class="">
     个性化合成
   </ion-nav-title>
-  <ion-content>
-    <ion-list>
-      <canvas id="clothCanvas" style="/*border: solid 1px blue;*/width: 100%;height: 450px;margin:auto;margin-top: 60px;">不支持canvas</canvas>
+  <div>
+    <div style="height: 80px;"></div>
+    <canvas id="clothCanvas" style="border: /*solid 1px blue;*/margin:auto;margn-top: 60px;">不支持canvas</canvas>
+    <img style="height: 1000px;" ng-src="{{aa}}">
+  </div>
 
-    </ion-list>
-  </ion-content>
   <ion-footer-bar class="">
     <button class="button button-balanced icon ion-plus">选择Logo</button>
+    <button class="button button-balanced icon " ng-click="zoomLogoBig()" style="margin-left: 10px;">放大</button>
+    <button class="button button-balanced" ng-click="zoomLogoSmall()" style="margin-left: 10px;" >缩小</button>
     <button class="button button-balanced" ng-click="dingZhi()">购买</button>
   </ion-footer-bar>
 </ion-view>

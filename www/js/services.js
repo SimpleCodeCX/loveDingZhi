@@ -39,3 +39,36 @@ angular.module("starter.services",[])
     }
   })
 
+
+  /**
+   * * Created by simple on 2016/12/11.
+   * 实现通过imgUrl从服务器获取图片的base64数据
+   * 返回值：图片的去掉文件头的base64数据
+   */
+  .factory("getImageBase64Factory",function (THEGLOBAL,$resource,$rootScope) {
+    var theUrl=THEGLOBAL.serviceAPI + "/share/getImgBase64";
+    var isGetImageBase64;//true代表成功
+    var imgBase64="";
+    return{
+      //请求服务器获取数据
+      getImageBase64FromService:function (imgUrl_) {
+        $.ajax({
+          type:"get",
+          url:theUrl,
+          data:{imgUrl:imgUrl_},
+          xhrFields: {
+            withCredentials: true
+          },
+          success:function (data) {
+            imgBase64= data;
+            $rootScope.$broadcast("getImageBase64Factory.getImageBase64FromService");
+          }
+        });
+      },
+      //返回数据
+      getImgBase64:function () {
+        return imgBase64;
+      }
+
+    }
+  })

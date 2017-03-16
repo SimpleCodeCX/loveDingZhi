@@ -4,11 +4,11 @@
 var configModule=angular.module("starter.config",[]);
 configModule.constant("THEGLOBAL",{
   /*"serviceAPI":"http://localhost:8080"*/
-  "serviceAPI":"http://10.60.231.136:8080"//宿舍的服务器ip
+  /*"serviceAPI":"http://10.60.231.136:8080"//宿舍的服务器ip*/
   /*"serviceAPI":"http://192.168.0.106:8080"//家里的服务器ip*/
   /*"serviceAPI":"http://192.168.1.103:8080"//5号楼的服务器ip*/
   /*"serviceAPI":"http://10.32.2.228:8080"//公司宿舍的服务器ip*/
-  /*"serviceAPI":"http://10.219.91.216:8080"//公司的服务器ip*/
+  "serviceAPI":"http://10.219.91.216:8080"//公司的服务器ip
 })
   .factory("userDataFactory",function (THEGLOBAL,$resource,$rootScope) {
     //用户信息

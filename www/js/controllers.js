@@ -51,7 +51,8 @@ angular.module("starter.controllers",[])
 
   }
 }])
-  .controller('ShoppingCtrl', ["$scope","$ionicModal","$state","userDataFactory","getShangChengClothListFactory",function($scope,$ionicModal,$state,userDataFactory,getShangChengClothListFactory) {
+  .controller('ShoppingCtrl', ["$scope","$ionicModal","$state","userDataFactory","getShangChengClothListFactory","imageFactory",
+    function($scope,$ionicModal,$state,userDataFactory,getShangChengClothListFactory,imageFactory) {
 
     //保存用户的数据(需要用到用户的数据，前端判断是否为商家)
     $scope.userDataView={};
@@ -85,8 +86,8 @@ angular.module("starter.controllers",[])
       $scope.modal.hide();
     };
     $scope.diyCloth=function () {
-        $scope.modal.hide();
-        $state.go("diyCloth",{imgUrl:$scope.selectShangChengCloth});
+      $scope.modal.hide();
+      $state.go("diyCloth",{imgUrl:$scope.selectShangChengCloth});
     }
     $scope.goToShangJia_details=function () {
       $scope.modal.hide();
@@ -709,67 +710,127 @@ angular.module("starter.controllers",[])
       };
 }])
 
-  .controller('DiyClothCtrl', ["$scope","$state","$stateParams",function($scope,$state,$stateParams) {
+  .controller('DiyClothCtrl', ["$scope","$state","$stateParams","getImageBase64Factory",function($scope,$state,$stateParams,getImageBase64Factory) {
     $scope.clothImgUrl=$stateParams["imgUrl"];
+
+
     var clothImg=new Image();
-    clothImg.src=$scope.clothImgUrl;
-
     var logoImg=new Image();
-    logoImg.src="../img/logo/logo7.png";
-
-    var clothCanvas=document.querySelector("#clothCanvas");
-    var clothCanvasCtx=clothCanvas.getContext("2d");
-
-    var clothCanvasWidth=clothCanvas.width;
-    var clothCanvasHeight=clothCanvas.height;
-
-    var logoLeft= 10;
-    var logoTop=  10;
-
-    var logoWidth=100;
-    var logoHeight=50;
+    getImageBase64Factory.getImageBase64FromService($scope.clothImgUrl);
+    var onGetImageBase64FromService= $scope.$on("getImageBase64Factory.getImageBase64FromService",function () {
+      onGetImageBase64FromService();
 
 
-    function drawing(coordinate) {
+      /*clothImg.crossOrigin = 'anonymous';*/
 
-      if(coordinate && clothCanvasCtx.isPointInPath(coordinate.x, coordinate.y)) {
-        console.log(coordinate);
-        logoLeft = coordinate.x - logoWidth/2;
-        logoTop = coordinate.y - logoHeight/2;
+      /*clothImg.src="../img/shangcheng/cloth/1.jpg";*/
+      // var clothImg=document.querySelector("#clothImg");
+
+      clothImg.src = getImageBase64Factory.getImgBase64();
+      logoImg.src="../img/logo/logo7.png";
+
+
+
+
+      var clothCanvas=document.querySelector("#clothCanvas");
+      var clothCanvasCtx=clothCanvas.getContext("2d");
+
+
+      //设置canvas的宽和高,宽要设置成屏幕的大小
+
+      clothCanvas.width= document.body.clientWidth;-2;
+      clothCanvas.height=450;
+
+      var clothCanvasWidth=clothCanvas.width;
+      var clothCanvasHeight=clothCanvas.height;
+
+      //初始化logo的位置
+      var logoLeft= 44;
+      var logoTop=  16;
+
+      //初始化logo的大小
+      var logoWidth=100;
+      var logoHeight=100;
+
+      //放大次数
+      var multipleCount=0;
+      //每次缩放的倍数
+      var multiple=1.1;
+
+      clothImg.onload=function () {
+        logoImg.onload=function () {
+          drawing();
+        }
+      };
+
+      function drawing(coordinate) {
+        if(coordinate && clothCanvasCtx.isPointInPath(coordinate.x, coordinate.y)) {
+          logoLeft = coordinate.x - logoWidth/2;
+          logoTop = coordinate.y - logoHeight/2;
+          console.log(logoLeft+"  "+logoTop);
+          console.log(coordinate);
+        }
+        clothCanvasCtx.clearRect(0,0,clothCanvasWidth,clothCanvasHeight);
+        clothCanvasCtx.drawImage(clothImg,0,0,clothCanvasWidth,clothCanvasHeight);
+        clothCanvasCtx.beginPath();
+        clothCanvasCtx.strokeStyle="#fff";
+        clothCanvasCtx.rect(logoLeft,logoTop,logoWidth,logoHeight);
+        clothCanvasCtx.closePath();
+        clothCanvasCtx.stroke();
+        clothCanvasCtx.drawImage(logoImg,logoLeft,logoTop,logoWidth,logoHeight);
       }
-      clothCanvasCtx.clearRect(0,0,clothCanvasWidth,clothCanvasHeight);
-      clothCanvasCtx.drawImage(clothImg,0,0,clothCanvasWidth,clothCanvasHeight);
-      clothCanvasCtx.beginPath();
-      clothCanvasCtx.strokeStyle="#fff";
-      clothCanvasCtx.strokeRect(logoLeft,logoTop,logoWidth,logoHeight);
-      clothCanvasCtx.closePath();
-      clothCanvasCtx.stroke();
-      clothCanvasCtx.drawImage(logoImg,logoLeft,logoTop,logoWidth,logoHeight);
-    }
+      
+      //触摸移动
+      clothCanvas.addEventListener("touchmove",function (e) {
 
+        var moveTouch = e.targetTouches[0];
 
-    clothImg.onload=function () {
-      logoImg.onload=function () {
+        //layerX || offsetX
+        var coordinate = {
+          x: moveTouch.clientX - moveTouch.target.offsetLeft,
+          y: moveTouch.clientY - moveTouch.target.offsetTop
+        };
+        coordinate.x=coordinate.x;
+        coordinate.y=coordinate.y;
+        drawing(coordinate);
+      },false);
+
+      //放大
+      $scope.zoomLogoBig=function () {
+        console.log(1);
+        if(multipleCount >= 8){
+          console.log('not big');
+          return false;
+        }
+        scale(multiple);
+        multipleCount += 1;
         drawing();
       }
-    }
-
-    clothCanvas.addEventListener("touchmove",function (e) {
-      e.preventDefault();
-      var moveTouch = e.targetTouches[0];
-
-      //layerX || offsetX
-      var coordinate = {
-        x: moveTouch.clientX - moveTouch.target.offsetLeft,
-        y: moveTouch.clientY - moveTouch.target.offsetTop
+      //缩小
+      $scope.zoomLogoSmall= function (){
+        if(multipleCount <= -8) {
+          console.log('not small');
+          return false;
+        }
+        scale(1/multiple);
+        multipleCount -= 1;
+        drawing();
       }
+      function scale(multiple) {
+        logoWidth = multiple * logoWidth;
+        logoHeight = multiple * logoHeight;
+      }
+    });
 
-      drawing(coordinate);
-    },false);
+
+
+
 
 
     $scope.dingZhi=function () {
-      $state.go("dingzhi");
+      console.log(clothCanvas.toDataURL("image/png"));
+      $scope.aa=clothCanvas.toDataURL("image/png");
+      /*$state.go("dingzhi");*/
     }
   }])
 
