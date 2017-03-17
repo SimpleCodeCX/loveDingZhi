@@ -41,14 +41,14 @@ angular.module("starter.services",[])
 
 
   /**
-   * * Created by simple on 2016/12/11.
+   * * Created by simple on 2017/3/17.
    * 实现通过imgUrl从服务器获取图片的base64数据
    * 返回值：图片的去掉文件头的base64数据
    */
   .factory("getImageBase64Factory",function (THEGLOBAL,$resource,$rootScope) {
     var theUrl=THEGLOBAL.serviceAPI + "/share/getImgBase64";
     var isGetImageBase64;//true代表成功
-    var imgBase64="";
+    var ImgBase64="";
     return{
       //请求服务器获取数据
       getImageBase64FromService:function (imgUrl_) {
@@ -60,7 +60,7 @@ angular.module("starter.services",[])
             withCredentials: true
           },
           success:function (data) {
-            imgBase64= data;
+            imgBase64=data;
             $rootScope.$broadcast("getImageBase64Factory.getImageBase64FromService");
           }
         });

@@ -155,7 +155,6 @@ angular.module("starter.shoppingServices",[])
           data:{page:page_},
           success:function (data) {
             shangChengClothList=data;
-            console.log(shangChengClothList);
             for(i=0;i<shangChengClothList.length;i++){
               shangChengClothList[i].imgUrl=THEGLOBAL.serviceAPI+"/"+shangChengClothList[i].imgUrl;
             }
@@ -166,6 +165,53 @@ angular.module("starter.shoppingServices",[])
       //返回数据
       getShangChengClothList:function () {
         return shangChengClothList;
+      }
+
+    }
+  })
+  /**
+   * * Created by simple on 2016/12/11.
+   * 获得商城的衣服商品列表数据
+   * 调用接口：shopping/getShangChengClothList：
+   * 返回衣服商品列表数据：List<BusinessCloth>
+   */
+  .factory("saveDiyClothFactory",function (THEGLOBAL,$resource,$rootScope) {
+    var theUrl=THEGLOBAL.serviceAPI + "/shopping/saveDiyCloth_authority";
+    var isSaveDiyCloth;//true代表成功
+
+    var myDiyCloth= {
+        id:null,
+        imgUrl:""
+      };
+    return{
+      //请求服务器获取数据
+      saveDiyClothToService:function (businessClothId_,logoId_,isBusinessLogo_,diyImgBase64_) {
+        /*console.log(businessClothId_);
+        console.log(logoId_);
+        console.log(isBusinessLogo_);
+        console.log(diyImgBase64_);*/
+        $.ajax({
+          type:"post",
+          url:theUrl,
+          xhrFields: {
+            withCredentials: true
+          },
+          data:{
+            businessClothId:businessClothId_,
+            logoId:logoId_,
+            isBusinessLogo:isBusinessLogo_,
+            diyImgBase64:diyImgBase64_
+          },
+          success:function (data) {
+
+            console.log(JSON.parse(data));
+            $rootScope.$broadcast("saveDiyClothFactory.saveDiyClothToService");
+          }
+        });
+      },
+      //返回数据
+      getMyDiyCloth:function () {
+        return myDiyCloth;
       }
 
     }

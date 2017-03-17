@@ -164,7 +164,7 @@ angular.module('starter',['ionic','starter.controllers','starter.services','star
       })
 
       .state("diyCloth",{
-        url:"/diyCloth/:imgUrl",
+        url:"/diyCloth/:imgUrl/:businessClothId",
         templateUrl:"shopping/diyCloth.html",
         controller:"DiyClothCtrl"
       })

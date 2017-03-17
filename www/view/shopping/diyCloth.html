@@ -11,11 +11,57 @@
   <div>
     <div style="height: 80px;"></div>
     <canvas id="clothCanvas" style="border: /*solid 1px blue;*/margin:auto;margn-top: 60px;">不支持canvas</canvas>
-    <img style="height: 1000px;" ng-src="{{aa}}">
-  </div>
 
+
+  </div>
+  <script id="selectLogo" type="text/ng-template">
+    <ion-modal-view  class="dark-bg ion_modal_view">
+    </ion-modal-view>
+    <ion-modal-view  class="light-bg"  style="width: 90%;min-height:89%;
+                      margin-top: 40px;margin-left: 20px;">
+      <ion-content class="dark-bg">
+
+        <!--   <ion-list type="card" >
+             <ion-item class="testBorder" style="padding: 0;text-align: right;">
+               <button class="button button-dark button-outline icon ion-close-circled" ></button>
+             </ion-item>
+             <ion-item class="item-image">
+               <img src="../img/sjg/sjg1.jpg">
+             </ion-item>
+             <ion-item>
+               ddd
+             </ion-item>
+           </ion-list>-->
+        <div style="margin-top: 10px;" class="padding">
+          <div class="light-bg">
+            <div class="row row-wrap"  style="margin-top: 15px;">
+              <div class="col col-50 " ng-repeat="logo in logoList" style="" >
+                <div class="img_div"  ng-click="selectLogo($index);">
+                  <img ng-src="{{logo.imgUrl}}"  style="  height: 150px;width: 100%;border: 1px solid #8f8f8f;" >
+                </div>
+                <div style="text-align: center;">
+                  {{logo.caption}}
+                </div>
+                <div style="text-align: center;">
+                  点赞数：90
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+        </div>
+
+      </ion-content>
+    </ion-modal-view>
+
+
+
+  </script>
   <ion-footer-bar class="">
-    <button class="button button-balanced icon ion-plus">选择Logo</button>
+    <button class="button button-balanced icon ion-plus" ng-click="selectLogoActionSheet();">选择Logo</button>
     <button class="button button-balanced icon " ng-click="zoomLogoBig()" style="margin-left: 10px;">放大</button>
     <button class="button button-balanced" ng-click="zoomLogoSmall()" style="margin-left: 10px;" >缩小</button>
     <button class="button button-balanced" ng-click="dingZhi()">购买</button>
