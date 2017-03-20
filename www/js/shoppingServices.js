@@ -180,8 +180,8 @@ angular.module("starter.shoppingServices",[])
     var isSaveDiyCloth;//true代表成功
 
     var myDiyCloth= {
-        id:null,
-        imgUrl:""
+      myDiyClothId:null,
+      imgUrl:""
       };
     return{
       //请求服务器获取数据
@@ -203,8 +203,8 @@ angular.module("starter.shoppingServices",[])
             diyImgBase64:diyImgBase64_
           },
           success:function (data) {
-
-            console.log(JSON.parse(data));
+            myDiyCloth=JSON.parse(data);
+            myDiyCloth.imgUrl=THEGLOBAL.serviceAPI+"/"+myDiyCloth.imgUrl;
             $rootScope.$broadcast("saveDiyClothFactory.saveDiyClothToService");
           }
         });
@@ -212,6 +212,51 @@ angular.module("starter.shoppingServices",[])
       //返回数据
       getMyDiyCloth:function () {
         return myDiyCloth;
+      }
+
+    }
+  })
+
+
+  /**
+   * Created by simple on 2017/03/20.
+   * 根据diyCloth的id获得diy衣服的详情,需要登录
+   * * 调用接口：shopping/getDiyClothDetails_authority：
+   * 返回衣服商品列表数据：MyDiyClothVo
+   */
+  .factory("getDiyClothDetailsFactory",function (THEGLOBAL,$resource,$rootScope) {
+    var theUrl=THEGLOBAL.serviceAPI + "/shopping/getDiyClothDetails_authority";
+    var myDiyClothDetails= {
+      isBusinessLogo:null,
+      price:null,
+      userName:""
+    };
+    return{
+      //请求服务器获取数据
+      getDiyClothDetailsFromService:function (myDiyClothId_) {
+        $.ajax({
+          type:"get",
+          url:theUrl,
+          xhrFields: {
+            withCredentials: true
+          },
+          data:{
+            myDiyClothId:myDiyClothId_
+          },
+          success:function (data) {
+
+            myDiyClothDetails.isBusinessLogo=data.isBusinessLogo;
+            myDiyClothDetails.price=data.businessCloth.price;
+            myDiyClothDetails.userName=data.user.userName;
+            console.log(myDiyClothDetails);
+            $rootScope.$broadcast("getDiyClothDetailsFactory.getDiyClothDetailsFromService");
+
+          }
+        });
+      },
+      //返回数据
+      getMyDiyClothDetails:function () {
+        return myDiyClothDetails;
       }
 
     }

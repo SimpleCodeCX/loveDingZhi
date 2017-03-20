@@ -111,10 +111,16 @@ angular.module('starter',['ionic','starter.controllers','starter.services','star
         controller:"LogoCtrl"
     })
       .state("dingzhi",{
-        url:"/dingzhi",
-        templateUrl:"design/dingzhi.html",
-        controller:"DingzhiCtrl"
+      url:"/dingzhi/:myDiyClothId/:imgUrl",
+      templateUrl:"design/dingzhi.html",
+      controller:"DingzhiCtrl"
+    })
+      .state("makeOrder",{
+        url:"/share/makeOrder/:myDiyClothId/:imgUrl",
+        templateUrl:"share/makeOrder.html",
+        controller:"MakeOrderCtrl"
       })
+
       .state("orderPay",{
         url:"/orderPay",
         templateUrl:"design/orderPay.html",

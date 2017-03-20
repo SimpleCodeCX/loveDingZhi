@@ -629,8 +629,111 @@ angular.module("starter.controllers",[])
       };
 
   }])
-  .controller('DingzhiCtrl', ["$scope",function($scope) {
+  .controller('DingzhiCtrl', ["$scope","$stateParams",function($scope,$stateParams) {
+    $scope.myDiyClothId=$stateParams["myDiyClothId"];
+    $scope.imgUrl=$stateParams["imgUrl"];
+    /*$state.go("dingzhi",{myDiyClothId:myDiyCloth.myDiyClothId,imgUrl:myDiyCloth.imgUrl});*/
   }])
+
+  .controller('MakeOrderCtrl', ["$scope","$stateParams","$ionicModal","$state","getDiyClothDetailsFactory",function($scope,$stateParams,$ionicModal,$state,getDiyClothDetailsFactory) {
+    $scope.myDiyClothId=$stateParams["myDiyClothId"];
+    $scope.imgUrl=$stateParams["imgUrl"];
+    console.log($scope.myDiyClothId);
+    $scope.myDiyClothDetails= {
+      isBusinessLogo:null,
+      price:null,
+      userName:""
+    };
+    //logo价格，如果是设计师的logo这需要1元，如果是商家的logo则免费
+    $scope.logoPrice=0;
+    //总单价（衣服+logo）
+    $scope.price=50;
+    //总件数
+    $scope.totalCount=10;
+    //总价格
+    $scope.totalPrice=10;
+    getDiyClothDetailsFactory.getDiyClothDetailsFromService($scope.myDiyClothId);
+    var onGetDiyClothDetailsFromService= $scope.$on("getDiyClothDetailsFactory.getDiyClothDetailsFromService",function () {
+      onGetDiyClothDetailsFromService();
+      $scope.myDiyClothDetails = getDiyClothDetailsFactory.getMyDiyClothDetails();
+      $scope.price=$scope.myDiyClothDetails.price;
+      //判断是否为设计师的logo
+      if(!$scope.myDiyClothDetails.isBusinessLogo){
+        $scope.logoPrice=1;
+        $scope.price=$scope.price+$scope.logoPrice;
+      }
+    });
+
+  /* //添加一行选择尺码和件数的item，方法一
+    var theBarItem = document.querySelector("#theBarItem");
+    var theContent = document.querySelector("#theContent");
+    var select = document.getElementsByTagName('select');
+    $scope.addTheBarItem=function () {
+      var theBarItemStr=theBarItem.innerHTML;
+      var newNode = document.createElement("div");
+      newNode.innerHTML = theBarItemStr;
+      /!*newNode.innerHTML = theBarItemStr+"</ion-item>";*!/
+      console.log(newNode);
+      theContent.appendChild(newNode);
+
+    }*/
+    //添加一行选择尺码和件数的item，方法二
+    $scope.addTheBarItem=function () {
+      var item={selectSize:"请选择",sizes:["请选择","S","M","L","XL","2XL"],selectQuantity:0,quantitys:jianshu,isHaveBtnAdd:false};
+      $scope.items.push(item);
+    }
+    $scope.calculatePrice=function () {
+      console.log("计算");
+    }
+
+   var jianshu=new  Array(100);
+    for(i=0;i<=100;i++){
+      jianshu[i]=i;
+    }
+    $scope.items=[
+      {selectSize:"请选择",sizes: ["请选择","S","M","L","XL","2XL"],selectQuantity:0,quantitys:jianshu,isHaveBtnAdd:true},
+      {selectSize:"请选择",sizes:["请选择","S","M","L","XL","2XL"],selectQuantity:0,quantitys:jianshu,isHaveBtnAdd:false},
+    ];
+
+    $scope.count = function(newValue,oldValue,scope){
+      $scope.totalCount=0;
+      for(var i=0;i<$scope.items.length;i++){
+        $scope.totalCount=$scope.totalCount+$scope.items[i].selectQuantity;
+      }
+
+      $scope.totalPrice=$scope.totalCount*$scope.price;
+    };
+    $scope.$watch('items',$scope.count,true)
+    //下单
+    $scope.orderPay=function () {
+      $scope.modal.show();
+    }
+    //取消下单
+    $scope.cancleOrderPay=function () {
+      $scope.modal.hide();
+    }
+    //确定下单
+    $scope.confirmOrderPay=function () {
+      $scope.modal.hide();
+      $state.go("orderPay");
+    };
+    $ionicModal.fromTemplateUrl("confirmOrderPay",{
+      scope: $scope,
+      animation: "slide-in-down"
+    }).then (function(modal) {
+
+      $scope.modal = modal;
+    });
+    $scope.openModal = function() {
+      $scope.modal.show();
+    };
+    $scope.closeModal = function() {
+      $scope.modal.hide();
+    };
+
+  }])
+
+
   .controller('OrderPayCtrl', ["$scope",function($scope) {
   }])
   .controller('PostNeedCtrl', ["$scope","$ionicModal","$ionicSlideBoxDelegate",
@@ -719,7 +822,7 @@ angular.module("starter.controllers",[])
       $scope.businessClothId=$stateParams["businessClothId"];
       $scope.selectLogoId=0;
       //选择的logo是否为商家的logo，1代表是商家的logo
-      $scope.isBusinessLogo=true;
+      $scope.isBusinessLogo=1;
       var clothImg=new Image();
       var logoImg=new Image();
       getImageBase64Factory.getImageBase64FromService($scope.clothImgUrl);
@@ -874,15 +977,23 @@ angular.module("starter.controllers",[])
         var diyImg=clothCanvas.toDataURL("image/png");
         var diyImgBase64=diyImg.substr(diyImg.indexOf(",") + 1)//去掉base64的格式头，因为格式头不属于图片的数据，否则后台将图片的base64保存为图片时会出错
         saveDiyClothFactory.saveDiyClothToService($scope.businessClothId,$scope.selectLogoId,$scope.isBusinessLogo,diyImgBase64);
+        var onSaveDiyClothToService=$scope.$on("saveDiyClothFactory.saveDiyClothToService",function () {
+          onSaveDiyClothToService();
+          var myDiyCloth= {
+            myDiyClothId:null,
+            imgUrl:""
+          };
+          myDiyCloth=saveDiyClothFactory.getMyDiyCloth();
+          $state.go("makeOrder",{myDiyClothId:myDiyCloth.myDiyClothId,imgUrl:myDiyCloth.imgUrl});
+        });
 
-        /*$state.go("dingzhi");*/
       }
 
       $scope.selectLogo=function (index_) {
         $scope.modal.hide();
         getImageBase64Factory.getImageBase64FromService($scope.logoList[index_].imgUrl);
         $scope.selectLogoId=$scope.logoList[index_].id;
-        $scope.isBusinessLogo=false;
+        $scope.isBusinessLogo=0;
         var onGetImageBase64FromService=$scope.$on("getImageBase64Factory.getImageBase64FromService",function () {
           onGetImageBase64FromService();
           logoImg.src= getImageBase64Factory.getImgBase64();
