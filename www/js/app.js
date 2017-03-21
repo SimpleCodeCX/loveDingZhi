@@ -3,7 +3,7 @@
  */
 
 angular.module('starter',['ionic','starter.controllers','starter.services','starter.accountServices',
-  'starter.designServices','starter.shoppingServices','starter.aiDingZhiServices','ngCordova','ngResource','starter.config'])
+  'starter.designServices','starter.shoppingServices','starter.aiDingZhiServices','ngCordova','ngResource','starter.config','ionic-citypicker'])
   .run(function($ionicPlatform,userDataFactory,firstOpenLoginFactory) {
     //这里是首次运行就会运行
     //app首次运行时，执行自动登录功能
@@ -115,16 +115,26 @@ angular.module('starter',['ionic','starter.controllers','starter.services','star
       templateUrl:"design/dingzhi.html",
       controller:"DingzhiCtrl"
     })
-      .state("makeOrder",{
-        url:"/share/makeOrder/:myDiyClothId/:imgUrl",
-        templateUrl:"share/makeOrder.html",
-        controller:"MakeOrderCtrl"
+      .state("makeOrder_shopping",{
+        url:"/shopping/makeOrder_shopping/:myDiyClothId/:imgUrl",
+        templateUrl:"shopping/makeOrder_shopping.html",
+        controller:"MakeOrder_shoppingCtrl"
+      })
+      .state("makeOrder_design",{
+        url:"/design/makeOrder_design/:myDiyClothId/:imgUrl",
+        templateUrl:"design/makeOrder_design.html",
+        controller:"MakeOrder_designCtrl"
       })
 
-      .state("orderPay",{
-        url:"/orderPay",
-        templateUrl:"design/orderPay.html",
-        controller:"OrderPayCtrl"
+      .state("orderPay_shopping",{
+        url:"/orderPay_shopping",
+        templateUrl:"shopping/orderPay_shopping.html",
+        controller:"OrderPay_shoppingCtrl"
+      })
+      .state("orderPay_design",{
+        url:"/orderPay_design",
+        templateUrl:"design/orderPay_design.html",
+        controller:"OrderPay_designCtrl"
       })
 
 

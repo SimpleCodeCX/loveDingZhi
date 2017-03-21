@@ -1,0 +1,43 @@
+<ion-view hide-back-button="true">
+  <ion-nav-buttons side="left" >
+    <a class="button button-clear " href="#/makeOrder_shopping">
+      <i class="icon ion-chevron-left"></i>
+      返回
+    </a>
+  </ion-nav-buttons>
+  <ion-nav-title class="">
+    结算中心
+  </ion-nav-title>
+  <ion-content>
+
+    <ion-list>
+      <ion-item class="item-input">
+        收货人：<input type="text" ng-model="customerInfo.name">
+      </ion-item>
+      <ion-item class="item-input">
+        联系方式：<input type="text" ng-model="customerInfo.phoneNumber">
+      </ion-item>
+      <ionic-city-picker options='vm.CityPickData1'></ionic-city-picker>
+      <ion-item class="item-input">
+        详细地址：<input type="text" ng-model="customerInfo.detailAddress">
+      </ion-item>
+      <ion-item class="item-input">
+        邮政编码：<input type="text" ng-model="customerInfo.postalcode">
+      </ion-item>
+    </ion-list>
+
+  </ion-content>
+  <ion-footer-bar class="">
+    <div class="" style="width: 100%;height: 200px;">
+      合计：金额  ￥99
+      <button class="button button-large button-balanced testBorder" style="float: right;" ng-click="pay()">支付</button>
+    </div>
+  </ion-footer-bar>
+</ion-view>
+
+
+
+
+
+
+

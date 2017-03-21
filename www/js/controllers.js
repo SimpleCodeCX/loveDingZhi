@@ -635,106 +635,156 @@ angular.module("starter.controllers",[])
     /*$state.go("dingzhi",{myDiyClothId:myDiyCloth.myDiyClothId,imgUrl:myDiyCloth.imgUrl});*/
   }])
 
-  .controller('MakeOrderCtrl', ["$scope","$stateParams","$ionicModal","$state","getDiyClothDetailsFactory",function($scope,$stateParams,$ionicModal,$state,getDiyClothDetailsFactory) {
-    $scope.myDiyClothId=$stateParams["myDiyClothId"];
-    $scope.imgUrl=$stateParams["imgUrl"];
-    console.log($scope.myDiyClothId);
-    $scope.myDiyClothDetails= {
-      isBusinessLogo:null,
-      price:null,
-      userName:""
-    };
-    //logo价格，如果是设计师的logo这需要1元，如果是商家的logo则免费
-    $scope.logoPrice=0;
-    //总单价（衣服+logo）
-    $scope.price=50;
-    //总件数
-    $scope.totalCount=10;
-    //总价格
-    $scope.totalPrice=10;
-    getDiyClothDetailsFactory.getDiyClothDetailsFromService($scope.myDiyClothId);
-    var onGetDiyClothDetailsFromService= $scope.$on("getDiyClothDetailsFactory.getDiyClothDetailsFromService",function () {
-      onGetDiyClothDetailsFromService();
-      $scope.myDiyClothDetails = getDiyClothDetailsFactory.getMyDiyClothDetails();
-      $scope.price=$scope.myDiyClothDetails.price;
-      //判断是否为设计师的logo
-      if(!$scope.myDiyClothDetails.isBusinessLogo){
-        $scope.logoPrice=1;
-        $scope.price=$scope.price+$scope.logoPrice;
+  .controller('MakeOrder_shoppingCtrl', ["$scope","$stateParams","$ionicModal","$state","getDiyClothDetailsFactory","saveShoppingMakeOrderFactory"
+    ,function($scope,$stateParams,$ionicModal,$state,getDiyClothDetailsFactory,saveShoppingMakeOrderFactory) {
+      $scope.myDiyClothId=$stateParams["myDiyClothId"];
+      $scope.imgUrl=$stateParams["imgUrl"];
+      console.log($scope.myDiyClothId);
+      $scope.myDiyClothDetails= {
+        isBusinessLogo:null,
+        price:null,
+        userName:""
+      };
+      //logo价格，如果是设计师的logo这需要1元，如果是商家的logo则免费
+      $scope.logoPrice=0;
+      //总单价（衣服+logo）
+      $scope.price=50;
+      //总件数
+      $scope.totalCount=10;
+      //总价格
+      $scope.totalPrice=10;
+      getDiyClothDetailsFactory.getDiyClothDetailsFromService($scope.myDiyClothId);
+      var onGetDiyClothDetailsFromService= $scope.$on("getDiyClothDetailsFactory.getDiyClothDetailsFromService",function () {
+        onGetDiyClothDetailsFromService();
+        $scope.myDiyClothDetails = getDiyClothDetailsFactory.getMyDiyClothDetails();
+        $scope.price=$scope.myDiyClothDetails.price;
+        //判断是否为设计师的logo
+        if(!$scope.myDiyClothDetails.isBusinessLogo){
+          $scope.logoPrice=1;
+          $scope.price=$scope.price+$scope.logoPrice;
+        }
+      });
+
+      /* //添加一行选择尺码和件数的item，方法一
+       var theBarItem = document.querySelector("#theBarItem");
+       var theContent = document.querySelector("#theContent");
+       var select = document.getElementsByTagName('select');
+       $scope.addTheBarItem=function () {
+       var theBarItemStr=theBarItem.innerHTML;
+       var newNode = document.createElement("div");
+       newNode.innerHTML = theBarItemStr;
+       /!*newNode.innerHTML = theBarItemStr+"</ion-item>";*!/
+       console.log(newNode);
+       theContent.appendChild(newNode);
+
+       }*/
+      //添加一行选择尺码和件数的item，方法二
+      $scope.addTheBarItem=function () {
+        var item={selectSize:"请选择",sizes:["请选择","S","M","L","XL","2XL"],selectQuantity:0,quantitys:jianshu,isHaveBtnAdd:false};
+        $scope.items.push(item);
       }
-    });
-
-  /* //添加一行选择尺码和件数的item，方法一
-    var theBarItem = document.querySelector("#theBarItem");
-    var theContent = document.querySelector("#theContent");
-    var select = document.getElementsByTagName('select');
-    $scope.addTheBarItem=function () {
-      var theBarItemStr=theBarItem.innerHTML;
-      var newNode = document.createElement("div");
-      newNode.innerHTML = theBarItemStr;
-      /!*newNode.innerHTML = theBarItemStr+"</ion-item>";*!/
-      console.log(newNode);
-      theContent.appendChild(newNode);
-
-    }*/
-    //添加一行选择尺码和件数的item，方法二
-    $scope.addTheBarItem=function () {
-      var item={selectSize:"请选择",sizes:["请选择","S","M","L","XL","2XL"],selectQuantity:0,quantitys:jianshu,isHaveBtnAdd:false};
-      $scope.items.push(item);
-    }
-    $scope.calculatePrice=function () {
-      console.log("计算");
-    }
-
-   var jianshu=new  Array(100);
-    for(i=0;i<=100;i++){
-      jianshu[i]=i;
-    }
-    $scope.items=[
-      {selectSize:"请选择",sizes: ["请选择","S","M","L","XL","2XL"],selectQuantity:0,quantitys:jianshu,isHaveBtnAdd:true},
-      {selectSize:"请选择",sizes:["请选择","S","M","L","XL","2XL"],selectQuantity:0,quantitys:jianshu,isHaveBtnAdd:false},
-    ];
-
-    $scope.count = function(newValue,oldValue,scope){
-      $scope.totalCount=0;
-      for(var i=0;i<$scope.items.length;i++){
-        $scope.totalCount=$scope.totalCount+$scope.items[i].selectQuantity;
+      $scope.calculatePrice=function () {
+        console.log("计算");
       }
 
-      $scope.totalPrice=$scope.totalCount*$scope.price;
-    };
-    $scope.$watch('items',$scope.count,true)
-    //下单
-    $scope.orderPay=function () {
-      $scope.modal.show();
-    }
-    //取消下单
-    $scope.cancleOrderPay=function () {
-      $scope.modal.hide();
-    }
-    //确定下单
-    $scope.confirmOrderPay=function () {
-      $scope.modal.hide();
-      $state.go("orderPay");
-    };
-    $ionicModal.fromTemplateUrl("confirmOrderPay",{
-      scope: $scope,
-      animation: "slide-in-down"
-    }).then (function(modal) {
+      var jianshu=new  Array(100);
+      for(i=0;i<=100;i++){
+        jianshu[i]=i;
+      }
+      $scope.items=[
+        {selectSize:"请选择",sizes: ["请选择","S","M","L","XL","2XL"],selectQuantity:0,quantitys:jianshu,isHaveBtnAdd:true},
+        {selectSize:"请选择",sizes:["请选择","S","M","L","XL","2XL"],selectQuantity:0,quantitys:jianshu,isHaveBtnAdd:false},
+      ];
 
-      $scope.modal = modal;
-    });
-    $scope.openModal = function() {
-      $scope.modal.show();
-    };
-    $scope.closeModal = function() {
-      $scope.modal.hide();
-    };
+      $scope.count = function(newValue,oldValue,scope){
+        $scope.totalCount=0;
+        for(var i=0;i<$scope.items.length;i++){
+          $scope.totalCount=$scope.totalCount+$scope.items[i].selectQuantity;
+        }
+
+        $scope.totalPrice=$scope.totalCount*$scope.price;
+      };
+      $scope.$watch('items',$scope.count,true)
+      //下单
+      $scope.orderPay=function () {
+        $scope.modal.show();
+      }
+      //取消下单
+      $scope.cancleOrderPay=function () {
+        $scope.modal.hide();
+      }
+      //确定下单
+      $scope.confirmOrderPay=function () {
+        //保存尺码
+        var clothSizeItems=[];
+        for(var i=0;i<$scope.items.length;i++){
+          clothSizeItems.push({clothSize:$scope.items[i].selectSize,quantity:$scope.items[i].selectQuantity});
+        }
+        saveShoppingMakeOrderFactory.saveShoppingMakeOrderToService($scope.myDiyClothId,$scope.price,$scope.totalCount,$scope.totalPrice,clothSizeItems);
+        var onSaveShoppingMakeOrderToService = $scope.$on("saveShoppingMakeOrderFactory.saveShoppingMakeOrderToService",function () {
+          onSaveShoppingMakeOrderToService();
+          if(saveShoppingMakeOrderFactory.getIsSaveSuccess()){
+            $scope.modal.hide();
+            $state.go("orderPay_shopping");
+          }
+        });
+
+      };
+      $ionicModal.fromTemplateUrl("confirmOrderPay",{
+        scope: $scope,
+        animation: "slide-in-down"
+      }).then (function(modal) {
+
+        $scope.modal = modal;
+      });
+      $scope.openModal = function() {
+        $scope.modal.show();
+      };
+      $scope.closeModal = function() {
+        $scope.modal.hide();
+      };
+  }])
+  .controller('MakeOrder_designCtrl', ["$scope","$stateParams","$ionicModal","$state",function($scope,$stateParams,$ionicModal,$state) {
 
   }])
 
 
-  .controller('OrderPayCtrl', ["$scope",function($scope) {
+  .controller('OrderPay_shoppingCtrl', ["$scope",function($scope) {
+    $scope.customerInfo={
+      realName:"",
+      phoneNumber:"",
+      areaData:{
+        sheng:"",//省
+        shi:"",//市
+        qu:""//区
+      },
+      detailAddress:"",
+      postalcode:""
+    };
+
+    var vm=$scope.vm={};
+    vm.cb = function () {
+      $scope.customerInfo.areaData=vm.CityPickData1.areaData;
+    }
+    //例1
+    vm.CityPickData1 = {
+      areaData: [],
+      backdrop: true,
+      backdropClickToClose: true,
+      defaultAreaData: ['江苏', '无锡', '江阴市'],
+      buttonClicked: function () {
+        vm.cb()
+      },
+      title: '所在地区：'
+    };
+
+    $scope.pay=function () {
+
+
+      console.log($scope.customerInfo);
+    }
+  }])
+  .controller('OrderPay_designCtrl', ["$scope",function($scope) {
   }])
   .controller('PostNeedCtrl', ["$scope","$ionicModal","$ionicSlideBoxDelegate",
     function($scope,$ionicModal,$ionicSlideBoxDelegate) {
@@ -984,7 +1034,7 @@ angular.module("starter.controllers",[])
             imgUrl:""
           };
           myDiyCloth=saveDiyClothFactory.getMyDiyCloth();
-          $state.go("makeOrder",{myDiyClothId:myDiyCloth.myDiyClothId,imgUrl:myDiyCloth.imgUrl});
+          $state.go("makeOrder_shopping",{myDiyClothId:myDiyCloth.myDiyClothId,imgUrl:myDiyCloth.imgUrl});
         });
 
       }

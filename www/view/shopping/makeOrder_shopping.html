@@ -1,0 +1,129 @@
+
+<ion-view cache-view="false" hide-back-button="true">
+  <ion-nav-buttons side="left" >
+    <a class="button button-clear " href="#/shopping">
+      <i class="icon ion-chevron-left"></i>
+      返回
+    </a>
+  </ion-nav-buttons>
+  <ion-nav-title class="">
+    衣服定制
+  </ion-nav-title>
+  <ion-content>
+    <ion-list class="card">
+      <ion-item class="item-divider"  style="text-align: center;border-bottom: 0px;">
+        商家：{{myDiyClothDetails.userName}}
+      </ion-item>
+      <ion-item class="item-image"  style="text-align: center;border-top: 0px;border-bottom: 0px;margin-top: 10px;">
+        <img ng-src="{{imgUrl}}" class="" style="height: 200px;width: 200px;">
+      </ion-item>
+      <div id="theContent">
+        <hr style="margin-bottom: 0px;">
+          <ion-item  class="item-icon-right" ng-repeat="item in items" style="border: 0px;">
+            <div >
+              <div class="" style="width: 80%;margin:auto;" data-tap-disabled="true" >
+                <div style="display: inline-block;" >
+                  尺码：
+                  <!--<select  id="select" onchange="alert();" >
+                    <option value="{{$index}}" ng-repeat="size in item.sizes">{{size}}</option>
+                    &lt;!&ndash;<option>M</option>
+                    <option>L</option>
+                    <option>XL</option>
+                    <option>2XL</option>&ndash;&gt;
+                  </select>-->
+                  <select  id="select"  ng-model="item.selectSize"  ng-options="size as size for size in item.sizes"></select>
+                </div>
+                <div style="display: inline-block;margin-left: 10px;">
+                  件数：
+                  <select   ng-model="item.selectQuantity"  ng-options="quantity as quantity for quantity in item.quantitys"></select>
+                  <!--<select>
+                    <option>0</option>
+                    <option>5</option>
+                    <option>10</option>
+                    <option>15</option>
+                    <option>20</option>
+                  </select>-->
+                </div>
+              </div>
+            </div>
+            <button ng-show="item.isHaveBtnAdd" class="button button-clear button-positive icon ion-plus" ng-click="addTheBarItem()"></button>
+          </ion-item>
+
+      </div>
+      <div id="theBarItem" style="display: none;" >
+        <ion-item  class="item-icon-right">
+          <div class="" style="width: 80%;margin:auto;" data-tap-disabled="true">
+            <div style="display: inline-block;">
+              尺码：
+              <select onchange="alert();" >
+                <option>S</option>
+                <option>M</option>
+                <option>L</option>
+                <option>XL</option>
+                <option>2XL</option>
+              </select>
+            </div>
+            <div style="display: inline-block;margin-left: 30px;">
+              件数：
+              <select>
+                <option>1</option>
+                <option>5</option>
+                <option>10</option>
+                <option>15</option>
+                <option>20</option>
+              </select>
+            </div>
+          </div>
+        </ion-item>
+      </div>
+
+
+      <ion-item>
+        <span style="font-weight: bolder;margin-left: 20px;">logo价格</span>：￥{{logoPrice}}/件
+        <span style="font-weight: bolder;margin-left: 20px;">总单价</span>：￥{{price}}/件
+      </ion-item>
+      <ion-item>
+        <span style="margin-left: 5px;font-weight: bolder;margin-left: 20px;">总件数</span>：{{totalCount}}
+        <span style="margin-left: 5px;font-weight: bolder;margin-left: 20px;">金额</span>：￥{{totalPrice}}
+      </ion-item>
+      <ion-item>
+        <a class="button button-dark button-full" ng-click="orderPay()">下单</a>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+  <script id="confirmOrderPay" type="text/ng-template">
+    <ion-modal-view  class="dark-bg ion_modal_view">
+    </ion-modal-view>
+    <ion-modal-view  class="light-bg"  style="width: 95%;min-height:70%;
+                      margin-top: 150px;margin-left: 10px;">
+      <ion-content >
+        <div style="margin-top: 10px;" class="padding">
+          <div class="light-bg">
+            <ion-item>
+              <div class="row" ng-repeat="item in items" >
+                <div class="col" style="border: 1px solid #888888;">尺码：</div>
+                <div class="col" style="border: 1px solid #888888;">{{item.selectSize}}</div>
+                <div class="col" style="border: 1px solid #888888;">件数:</div>
+                <div class="col" style="border: 1px solid #888888;">{{item.selectQuantity}}</div>
+              </div>
+            </ion-item>
+            <ion-item style="font-size: 15px;">
+              <span style="font-weight: bolder;margin-left: 0px;">单价</span>：￥{{price}}
+              <span style="margin-left: 5px;font-weight: bolder;">总件数</span>：{{totalCount}}
+              <span style="margin-left: 5px;font-weight: bolder;">金额</span>：￥{{totalPrice}}
+            </ion-item>
+            <ion-item>
+              <a class="button button-stable  button-full" ng-click="cancleOrderPay()">取消</a>
+              <a class="button button-dark button-full" ng-click="confirmOrderPay()">确定下单</a>
+            </ion-item>
+          </div>
+        </div>
+
+      </ion-content>
+    </ion-modal-view>
+
+
+
+  </script>
+</ion-view>
+
