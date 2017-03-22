@@ -530,7 +530,58 @@ angular.module("starter.accountServices",[])
     }
   })
 
+  /**
+   * * Created by simple on 2017/03/22.
+   * 保存用户的收货地址  需要登录
+   * 保存成功，返回{flat:true,userAddressId:number},否则返回{flat:false}
+   */
+  .factory("saveUserAddressFactory",function (THEGLOBAL,$resource,$rootScope,userDataFactory) {
+    var theUrl=THEGLOBAL.serviceAPI + "/account/saveUserAddress_authority";
 
+    var userAddressId;//用户收货地址保存后在数据库的userAddressId
+    var isSaveSuccess;//true代表成功
+    return{
+      //请求服务器获取数据
+      saveUserAddressToService:function (realName_,phoneNumber_,sheng_,shi_,qu_,detailAddress_,postalcode_) {
+        //账号
+        var accountNumber_=userDataFactory.getUserDataConfig().accountNumber;
+        $.ajax({
+          type:"post",
+          url:theUrl,
+          xhrFields: {
+            withCredentials: true
+          },
+          data:{
+            accountNumber:accountNumber_,
+            realName:realName_,
+            phoneNumber:phoneNumber_,
+            sheng:sheng_,
+            shi:shi_,
+            qu:qu_,
+            detailAddress:detailAddress_,
+            postalcode:postalcode_
+          },
+          success:function (data) {
+
+            var jsonData=JSON.parse(data);
+            isSaveSuccess=jsonData.flat;
+            userAddressId=jsonData.userAddressId;
+            $rootScope.$broadcast("saveUserAddressFactory.saveUserAddressToService");
+          }
+        });
+      },
+      //返回是否成功
+      getIsSaveSuccess:function () {
+        return isSaveSuccess;
+      },
+      //返回是否成功
+      getUserAddressId:function () {
+        return userAddressId;
+      }
+
+
+    }
+  })
 
 
 

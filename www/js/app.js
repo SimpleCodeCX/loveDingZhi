@@ -252,7 +252,21 @@ angular.module('starter',['ionic','starter.controllers','starter.services','star
         templateUrl:"account/myShangCheng_cloth.html",
         controller:"MyShangCheng_clothCtrl"
       })
-
+      .state("myAddress",{
+        url:"/myAddress",
+        templateUrl:"account/myAddress.html",
+        controller:"MyAddressCtrl"
+      })
+      .state("add_address",{
+        url:"/add_address",
+        templateUrl:"account/add_address.html",
+        controller:"Add_addressCtrl"
+      })
+      .state("update_address",{
+        url:"/update_address",
+        templateUrl:"account/update_address.html",
+        controller:"Update_addressCtrl"
+      })
       .state("myShangCheng_logo",{
         url:"/myShangCheng_logo",
         templateUrl:"account/myShangCheng_logo.html",
@@ -273,11 +287,7 @@ angular.module('starter',['ionic','starter.controllers','starter.services','star
         templateUrl:"account/update_name.html",
         controller:"Update_nameCtrl"
       })
-      .state("update_address",{
-        url:"/update_address",
-        templateUrl:"account/update_address.html",
-        controller:"Update_addressCtrl"
-      })
+
 
       .state("collect_sjg",{
         url:"/collect_sjg",

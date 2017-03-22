@@ -302,12 +302,12 @@ angular.module("starter.shoppingServices",[])
     }
   })
 
-  /**
+  /*/!**
    * Created by simple on 2017/03/22.
    * 商城订单支付   需要登录
    * * 调用接口：shopping/saveAddressAndshoppingOrderPay_authority：
    * 支付成功，返回{flat:true},否则返回{flat:false}
-   */
+   *!/
   .factory("saveAddressAndshoppingOrderPayFactory",function (THEGLOBAL,$resource,$rootScope) {
     var theUrl=THEGLOBAL.serviceAPI + "/shopping/saveAddressAndshoppingOrderPay_authority";
     var isSuccess;
@@ -341,4 +341,4 @@ angular.module("starter.shoppingServices",[])
       }
 
     }
-  })
+  })*/

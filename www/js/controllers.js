@@ -743,13 +743,32 @@ angular.module("starter.controllers",[])
       $scope.closeModal = function() {
         $scope.modal.hide();
       };
+
+
   }])
   .controller('MakeOrder_designCtrl', ["$scope","$stateParams","$ionicModal","$state",function($scope,$stateParams,$ionicModal,$state) {
 
   }])
 
 
-  .controller('OrderPay_shoppingCtrl', ["$scope",function($scope) {
+  .controller('OrderPay_shoppingCtrl', ["$scope","$ionicModal","saveUserAddressFactory",function($scope,$ionicModal,saveUserAddressFactory) {
+    $scope.shouhuoAddressList=[
+      {
+        userAddressId:1,
+        realName:"陈旭东",
+        addressDetail:"广东省惠州市惠城区惠州学院"
+      },
+      {
+        userAddressId:2,
+        realName:"陈旭东2",
+        addressDetail:"广东省惠州市惠城区惠州学院2"
+      },
+    ];
+    $scope.data={
+      userAddressId:1
+    };
+
+    //保存用户新增的地址信息
     $scope.customerInfo={
       realName:"",
       phoneNumber:"",
@@ -764,25 +783,63 @@ angular.module("starter.controllers",[])
 
     var vm=$scope.vm={};
     vm.cb = function () {
-      $scope.customerInfo.areaData=vm.CityPickData1.areaData;
+      $scope.customerInfo.areaData.sheng=vm.CityPickData1.areaData[0];
+      $scope.customerInfo.areaData.shi=vm.CityPickData1.areaData[1];
+      $scope.customerInfo.areaData.qu=vm.CityPickData1.areaData[2];
     }
     //例1
     vm.CityPickData1 = {
       areaData: [],
       backdrop: true,
       backdropClickToClose: true,
-      defaultAreaData: ['江苏', '无锡', '江阴市'],
       buttonClicked: function () {
         vm.cb()
       },
       title: '所在地区：'
     };
 
+    $ionicModal.fromTemplateUrl("addAddressHtml",{
+      scope: $scope,
+      animation: "slide-in-down"
+    }).then (function(modal) {
+      $scope.modal = modal;
+    });
+    $scope.openModal = function(shangChengClothIndex) {
+      $scope.modal.show();
+    };
+    $scope.closeModal = function() {
+      $scope.modal.hide();
+    };
+
+    //保存新增的地址到服务器
+    $scope.saveAddress=function () {
+      //将用户地址数据保存到服务器
+      saveUserAddressFactory.saveUserAddressToService($scope.customerInfo.realName,$scope.customerInfo.phoneNumber,$scope.customerInfo.areaData.sheng,$scope.customerInfo.areaData.shi,$scope.customerInfo.areaData.qu,$scope.customerInfo.detailAddress,$scope.customerInfo.postalcode);
+      var onSaveUserAddressToService=$scope.$on("saveUserAddressFactory.saveUserAddressToService",function () {
+        onSaveUserAddressToService();
+        //保存成功
+        if(saveUserAddressFactory.getIsSaveSuccess()){
+          $scope.modal.hide();
+          var address={
+            userAddressId:saveUserAddressFactory.getUserAddressId(),
+            realName:$scope.customerInfo.realName,
+            addressDetail:$scope.customerInfo.areaData.sheng+$scope.customerInfo.areaData.shi+$scope.customerInfo.areaData.qu+$scope.customerInfo.detailAddress
+          };
+          $scope.data.userAddressId=address.userAddressId;
+          $scope.shouhuoAddressList.push(address);
+        }
+      });
+    };
+
+
+
     $scope.pay=function () {
-
-
       console.log($scope.customerInfo);
     }
+
+
+
+
   }])
   .controller('OrderPay_designCtrl', ["$scope",function($scope) {
   }])
@@ -1256,13 +1313,79 @@ angular.module("starter.controllers",[])
     $scope.goToUpdateName=function () {
       $state.go("update_name");
     }
-    $scope.goToUpdateAddress=function () {
-      $state.go("update_address");
+    $scope.goToMyAddress=function () {
+      $state.go("myAddress");
     }
 
     $scope.test=function () {
       /*alert("test");*/
     }
+
+
+  }])
+  .controller('MyAddressCtrl',["$scope","$state",function($scope,$state) {
+    $scope.goToAdd_address=function () {
+      $state.go("add_address");
+    };
+    $scope.goToUpdate_address=function () {
+      $state.go("update_address");
+    };
+
+  }])
+  .controller('Add_addressCtrl',["$scope","$state","saveUserAddressFactory",function($scope,$state,saveUserAddressFactory) {
+    $scope.customerInfo={
+      realName:"",
+      phoneNumber:"",
+      areaData:{
+        sheng:"",//省
+        shi:"",//市
+        qu:""//区
+      },
+      detailAddress:"",
+      postalcode:""
+    };
+
+    var vm=$scope.vm={};
+    vm.cb = function () {
+      $scope.customerInfo.areaData.sheng=vm.CityPickData1.areaData[0];
+      $scope.customerInfo.areaData.shi=vm.CityPickData1.areaData[1];
+      $scope.customerInfo.areaData.qu=vm.CityPickData1.areaData[2];
+    }
+    //例1
+    vm.CityPickData1 = {
+      areaData: [],
+      backdrop: true,
+      backdropClickToClose: true,
+      defaultAreaData: ['江苏', '无锡', '江阴市'],
+      buttonClicked: function () {
+        vm.cb()
+      },
+      title: "所在地区："
+    };
+
+    //保存新增的地址到服务器
+    $scope.saveAddress=function () {
+      //将用户地址数据保存到服务器
+      saveUserAddressFactory.saveUserAddressToService($scope.customerInfo.realName,$scope.customerInfo.phoneNumber,$scope.customerInfo.areaData.sheng,$scope.customerInfo.areaData.shi,$scope.customerInfo.areaData.qu,$scope.customerInfo.detailAddress,$scope.customerInfo.postalcode);
+      var onSaveUserAddressToService=$scope.$on("saveUserAddressFactory.saveUserAddressToService",function () {
+        onSaveUserAddressToService();
+        //保存成功
+        if(saveUserAddressFactory.getIsSaveSuccess()){
+         /* $scope.modal.hide();
+          var address={
+            id:saveUserAddressFactory.getUserAddressId(),
+            realName:$scope.customerInfo.realName,
+            addressDetail:$scope.customerInfo.sheng+$scope.customerInfo.shi+$scope.customerInfo.qu+$scope.customerInfo.detailAddress
+          };
+          $scope.data.selectId=address.id;
+          $scope.shouhuoAddressList.push(address);*/
+        }
+      });
+    };
+
+
+
+
 
 
   }])
@@ -1555,6 +1678,33 @@ angular.module("starter.controllers",[])
   }])
 
   .controller('Update_addressCtrl',["$scope","$state",function($scope,$state) {
+    $scope.customerInfo={
+      realName:"",
+      phoneNumber:"",
+      areaData:{
+        sheng:"",//省
+        shi:"",//市
+        qu:""//区
+      },
+      detailAddress:"",
+      postalcode:""
+    };
+
+    var vm=$scope.vm={};
+    vm.cb = function () {
+      $scope.customerInfo.areaData=vm.CityPickData1.areaData;
+    }
+    //例1
+    vm.CityPickData1 = {
+      areaData: [],
+      backdrop: true,
+      backdropClickToClose: true,
+      defaultAreaData: ['江苏', '无锡', '江阴市'],
+      buttonClicked: function () {
+        vm.cb()
+      },
+      title: "所在地区："
+    };
   }])
 
 
