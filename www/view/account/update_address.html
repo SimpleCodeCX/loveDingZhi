@@ -7,7 +7,7 @@
   <ion-content>
     <ion-list>
       <ion-item class="item-input">
-        收货人：<input type="text" ng-model="customerInfo.name" placeholder="真是姓名">
+        收货人：<input type="text" ng-model="customerInfo.realName" placeholder="真是姓名">
       </ion-item>
       <ion-item class="item-input">
         联系方式：<input type="text" ng-model="customerInfo.phoneNumber" placeholder="手机号码">
@@ -21,7 +21,7 @@
       </ion-item>
     </ion-list>
     <div class="padding">
-      <button class="button button-block button-stable" ng-click="diyCloth()">
+      <button class="button button-block button-stable" ng-click="updateAddress()">
         保存
       </button>
     </div>

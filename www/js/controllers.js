@@ -725,7 +725,7 @@ angular.module("starter.controllers",[])
           onSaveShoppingMakeOrderToService();
           if(saveShoppingMakeOrderFactory.getIsSaveSuccess()){
             $scope.modal.hide();
-            $state.go("orderPay_shopping");
+            $state.go("orderPay_shopping",{totalPrice:$scope.totalPrice});
           }
         });
 
@@ -751,21 +751,29 @@ angular.module("starter.controllers",[])
   }])
 
 
-  .controller('OrderPay_shoppingCtrl', ["$scope","$ionicModal","saveUserAddressFactory",function($scope,$ionicModal,saveUserAddressFactory) {
-    $scope.shouhuoAddressList=[
-      {
-        userAddressId:1,
-        realName:"陈旭东",
-        addressDetail:"广东省惠州市惠城区惠州学院"
-      },
-      {
-        userAddressId:2,
-        realName:"陈旭东2",
-        addressDetail:"广东省惠州市惠城区惠州学院2"
-      },
-    ];
+  .controller('OrderPay_shoppingCtrl', ["$scope","$ionicModal","saveUserAddressFactory","getUserAddressListFactory","$stateParams",function($scope,$ionicModal,saveUserAddressFactory,getUserAddressListFactory,$stateParams) {
+    $scope.totalPrice=$stateParams["totalPrice"];
+    $scope.userAddressList=[{
+      userAddressId:null,
+      userId:null,
+      realName:"",
+      phoneNumber:null,
+      sheng:"",
+      shi:"",
+      qu:"",
+      detailAddress:"",
+      postalcode:null
+    }];
+
+    getUserAddressListFactory.getUserAddressListFromService();
+    var onGetUserAddressListFromService=$scope.$on("getUserAddressListFactory.getUserAddressListFromService",function () {
+      onGetUserAddressListFromService();
+      $scope.userAddressList=getUserAddressListFactory.getUserAddressList();
+      $scope.data.userAddressId=$scope.userAddressList[0].userAddressId;
+    });
+
     $scope.data={
-      userAddressId:1
+      userAddressId:null
     };
 
     //保存用户新增的地址信息
@@ -822,11 +830,17 @@ angular.module("starter.controllers",[])
           $scope.modal.hide();
           var address={
             userAddressId:saveUserAddressFactory.getUserAddressId(),
+            userId:null,
             realName:$scope.customerInfo.realName,
-            addressDetail:$scope.customerInfo.areaData.sheng+$scope.customerInfo.areaData.shi+$scope.customerInfo.areaData.qu+$scope.customerInfo.detailAddress
+            phoneNumber:$scope.customerInfo.phoneNumber,
+            sheng:$scope.customerInfo.areaData.sheng,
+            shi:$scope.customerInfo.areaData.shi,
+            qu:$scope.customerInfo.areaData.qu,
+            detailAddress:$scope.customerInfo.detailAddress,
+            postalcode:$scope.customerInfo.postalcode
           };
           $scope.data.userAddressId=address.userAddressId;
-          $scope.shouhuoAddressList.push(address);
+          $scope.userAddressList.push(address);
         }
       });
     };
@@ -834,7 +848,8 @@ angular.module("starter.controllers",[])
 
 
     $scope.pay=function () {
-      console.log($scope.customerInfo);
+      alert("请进行支付，下单成功.");
+
     }
 
 
@@ -1323,12 +1338,28 @@ angular.module("starter.controllers",[])
 
 
   }])
-  .controller('MyAddressCtrl',["$scope","$state",function($scope,$state) {
+  .controller('MyAddressCtrl',["$scope","$state","getUserAddressListFactory",function($scope,$state,getUserAddressListFactory) {
+    $scope.userAddressList=[{
+      userAddressId:null,
+      userId:null,
+      realName:"",
+      phoneNumber:null,
+      sheng:"",
+      shi:"",
+      qu:"",
+      detailAddress:"",
+      postalcode:null
+    }];
+    getUserAddressListFactory.getUserAddressListFromService();
+    var onGetUserAddressListFromService=$scope.$on("getUserAddressListFactory.getUserAddressListFromService",function () {
+      onGetUserAddressListFromService();
+      $scope.userAddressList=getUserAddressListFactory.getUserAddressList();
+    });
     $scope.goToAdd_address=function () {
       $state.go("add_address");
     };
-    $scope.goToUpdate_address=function () {
-      $state.go("update_address");
+    $scope.goToUpdate_address=function (userAddressId) {
+      $state.go("update_address",{userAddressId:userAddressId});
     };
 
   }])
@@ -1371,14 +1402,7 @@ angular.module("starter.controllers",[])
         onSaveUserAddressToService();
         //保存成功
         if(saveUserAddressFactory.getIsSaveSuccess()){
-         /* $scope.modal.hide();
-          var address={
-            id:saveUserAddressFactory.getUserAddressId(),
-            realName:$scope.customerInfo.realName,
-            addressDetail:$scope.customerInfo.sheng+$scope.customerInfo.shi+$scope.customerInfo.qu+$scope.customerInfo.detailAddress
-          };
-          $scope.data.selectId=address.id;
-          $scope.shouhuoAddressList.push(address);*/
+         $state.go("myAddress");
         }
       });
     };
@@ -1677,7 +1701,9 @@ angular.module("starter.controllers",[])
 
   }])
 
-  .controller('Update_addressCtrl',["$scope","$state",function($scope,$state) {
+  .controller('Update_addressCtrl',["$scope","$state","$stateParams","getUserAddressByUserAddressIdFactory","updateUserAddressByUserAddressIdFactory",function($scope,$state,$stateParams,getUserAddressByUserAddressIdFactory,updateUserAddressByUserAddressIdFactory) {
+
+    var userAddressId=$stateParams["userAddressId"];
     $scope.customerInfo={
       realName:"",
       phoneNumber:"",
@@ -1689,22 +1715,53 @@ angular.module("starter.controllers",[])
       detailAddress:"",
       postalcode:""
     };
-
-    var vm=$scope.vm={};
+     vm=$scope.vm={};
     vm.cb = function () {
-      $scope.customerInfo.areaData=vm.CityPickData1.areaData;
+      $scope.customerInfo.areaData.sheng=vm.CityPickData1.areaData[0];
+      $scope.customerInfo.areaData.shi=vm.CityPickData1.areaData[1];
+      $scope.customerInfo.areaData.qu=vm.CityPickData1.areaData[2];
     }
     //例1
     vm.CityPickData1 = {
       areaData: [],
       backdrop: true,
       backdropClickToClose: true,
-      defaultAreaData: ['江苏', '无锡', '江阴市'],
       buttonClicked: function () {
         vm.cb()
       },
       title: "所在地区："
     };
+    getUserAddressByUserAddressIdFactory.getUserAddressByUserAddressIdFromService(userAddressId);
+    var onGetUserAddressByUserAddressIdFromService=$scope.$on("getUserAddressByUserAddressIdFactory.getUserAddressByUserAddressIdFromService",function () {
+      onGetUserAddressByUserAddressIdFromService();
+      var userAddress=getUserAddressByUserAddressIdFactory.getUserAddress();
+      $scope.customerInfo.realName=userAddress.realName;
+      $scope.customerInfo.phoneNumber=userAddress.phoneNumber;
+      $scope.customerInfo.detailAddress=userAddress.detailAddress;
+      $scope.customerInfo.postalcode=userAddress.postalcode;
+      $scope.customerInfo.areaData.sheng=userAddress.sheng;
+      $scope.customerInfo.areaData.shi=userAddress.shi;
+      $scope.customerInfo.areaData.qu=userAddress.qu;
+    });
+    $scope.updateAddress=function () {
+
+      updateUserAddressByUserAddressIdFactory.updateUserAddressByUserAddressIdToService(
+        userAddressId,
+        $scope.customerInfo.realName,
+        $scope.customerInfo.phoneNumber,
+        $scope.customerInfo.areaData.sheng,
+        $scope.customerInfo.areaData.shi,
+        $scope.customerInfo.areaData.qu,
+        $scope.customerInfo.detailAddress,
+        $scope.customerInfo.postalcode
+      );
+      var onUpdateUserAddressByUserAddressIdToService=$scope.$on("updateUserAddressByUserAddressIdFactory.updateUserAddressByUserAddressIdToService",function () {
+        onUpdateUserAddressByUserAddressIdToService();
+        if(updateUserAddressByUserAddressIdFactory.getisUpdateSuccess()){
+          $state.go("myAddress");
+        }
+      });
+    }
   }])
 
 

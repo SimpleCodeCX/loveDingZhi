@@ -127,7 +127,7 @@ angular.module('starter',['ionic','starter.controllers','starter.services','star
       })
 
       .state("orderPay_shopping",{
-        url:"/orderPay_shopping",
+        url:"/orderPay_shopping/:totalPrice",
         templateUrl:"shopping/orderPay_shopping.html",
         controller:"OrderPay_shoppingCtrl"
       })
@@ -263,7 +263,7 @@ angular.module('starter',['ionic','starter.controllers','starter.services','star
         controller:"Add_addressCtrl"
       })
       .state("update_address",{
-        url:"/update_address",
+        url:"/update_address/:userAddressId",
         templateUrl:"account/update_address.html",
         controller:"Update_addressCtrl"
       })
