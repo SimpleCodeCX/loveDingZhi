@@ -247,7 +247,6 @@ angular.module("starter.shoppingServices",[])
             myDiyClothDetails.isBusinessLogo=data.isBusinessLogo;
             myDiyClothDetails.price=data.businessCloth.price;
             myDiyClothDetails.userName=data.user.userName;
-            console.log(myDiyClothDetails);
             $rootScope.$broadcast("getDiyClothDetailsFactory.getDiyClothDetailsFromService");
 
           }

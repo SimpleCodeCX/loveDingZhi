@@ -346,11 +346,11 @@ angular.module("starter.accountServices",[])
   /**
    * * Created by simple on 2017/02/05.
    * 获取我的设计稿列表数据（注意：是我的）
-   * 调用接口：account/getMySjgList：
+   * 调用接口：account/getMySjgList_authority：
    * 返回设计稿列表数据：List<DesignDrawing>
    */
   .factory("getMySjgListFactory",function (THEGLOBAL,$resource,$rootScope) {
-    var theUrl=THEGLOBAL.serviceAPI + "/account/getMySjgList";
+    var theUrl=THEGLOBAL.serviceAPI + "/account/getMySjgList_authority";
     var isGetSjgListSuccess;//true代表成功
     var mySjgList=[
       {
@@ -392,11 +392,11 @@ angular.module("starter.accountServices",[])
   /**
    * * Created by simple on 2017/02/05.
    * 获取我的logo列表数据（注意：是我的）
-   * 调用接口：account/getMyLogoList：
+   * 调用接口：account/getMyLogoList_authority：
    * 返回logo列表数据：List<DesignerLogo>
    */
   .factory("getMyLogoListFactory",function (THEGLOBAL,$resource,$rootScope) {
-    var theUrl=THEGLOBAL.serviceAPI + "/account/getMyLogoList";
+    var theUrl=THEGLOBAL.serviceAPI + "/account/getMyLogoList_authority";
     var isGetLogoListSuccess;//true代表成功
     var myLogoList=[
       {

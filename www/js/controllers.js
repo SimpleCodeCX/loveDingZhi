@@ -21,7 +21,6 @@ angular.module("starter.controllers",[])
       onGetSjgDetailsFromService();
       $scope.sjgDetails=getSjgDetailsFactory.getSjgDetails();
       $scope.modal.show();
-      console.log($scope.sjgDetails);
     });
 
   }
@@ -186,7 +185,7 @@ angular.module("starter.controllers",[])
 
       };
 
-      //上传Logo
+  /*    //上传Logo
       $scope.uploadLogo= function () {
         var options = {
           maximumImagesCount: 1,
@@ -194,7 +193,7 @@ angular.module("starter.controllers",[])
           height: 150,
           quality: 80
         };
-        /*当Cordova加载完成后才可以调用Cordova插件*/
+        /!*当Cordova加载完成后才可以调用Cordova插件*!/
         document.addEventListener("deviceready", function () {
           //alert();
           $cordovaImagePicker.getPictures(options)
@@ -204,7 +203,7 @@ angular.module("starter.controllers",[])
 
             });
         }, false);
-      };
+      };*/
 
   }])
 
@@ -639,7 +638,6 @@ angular.module("starter.controllers",[])
     ,function($scope,$stateParams,$ionicModal,$state,getDiyClothDetailsFactory,saveShoppingMakeOrderFactory) {
       $scope.myDiyClothId=$stateParams["myDiyClothId"];
       $scope.imgUrl=$stateParams["imgUrl"];
-      console.log($scope.myDiyClothId);
       $scope.myDiyClothDetails= {
         isBusinessLogo:null,
         price:null,
@@ -683,10 +681,6 @@ angular.module("starter.controllers",[])
         var item={selectSize:"请选择",sizes:["请选择","S","M","L","XL","2XL"],selectQuantity:0,quantitys:jianshu,isHaveBtnAdd:false};
         $scope.items.push(item);
       }
-      $scope.calculatePrice=function () {
-        console.log("计算");
-      }
-
       var jianshu=new  Array(100);
       for(i=0;i<=100;i++){
         jianshu[i]=i;
@@ -1017,7 +1011,6 @@ angular.module("starter.controllers",[])
 
         //放大
         $scope.zoomLogoBig=function () {
-          console.log(1);
           if(multipleCount >= 8){
             console.log('not big');
             return false;
@@ -1490,7 +1483,6 @@ angular.module("starter.controllers",[])
     var onGetMyShangChengLogoListFromService=$scope.$on("getMyShangChengLogoListFactory.getMyShangChengLogoListFromService",function () {
       onGetMyShangChengLogoListFromService();
       $scope.myShangChengLogoList=getMyShangChengLogoListFactory.getShangChengLogoList();
-      console.log($scope.myShangChengLogoList);
     })
 
     $scope.openModal=function () {
@@ -1503,7 +1495,7 @@ angular.module("starter.controllers",[])
   .controller('Collect_logoCtrl', ["$scope",function($scope) {
   }])
 
-  .controller('MySjgCtrl', ["$scope","$state","getMySjgListFactory","userDataFactory",function($scope,$state,getMySjgListFactory,userDataFactory) {
+  .controller('MySjgCtrl', ["$scope","$state","getMySjgListFactory","userDataFactory","$cordovaImagePicker","$ionicActionSheet",function($scope,$state,getMySjgListFactory,userDataFactory,$cordovaImagePicker,$ionicActionSheet) {
 
     //保存用户的数据
     $scope.userDataView={};
@@ -1521,6 +1513,56 @@ angular.module("starter.controllers",[])
       // sjgId_为设计稿的sjgId
       $state.go("mySjg_details",{sjgId:sjgId_});
     }
+
+    //保存衣服图片
+    $scope.imgClothSrc="";
+    //此函数实现从相册中挑选一张照片
+    function selectImg() {
+      alert("调用相册接口，因为是在公司，无法进行手机测试");
+      $state.go("upload_sjg");
+      var options = {
+        maximumImagesCount: 1,
+        width: 150,
+        height: 150,
+        quality: 80
+      };
+      /*当Cordova加载完成后才可以调用Cordova插件*/
+      document.addEventListener("deviceready", function () {
+        //alert();
+        $cordovaImagePicker.getPictures(options)
+          .then(function (results) {
+              //选择衣服图片
+              $scope.imgClothSrc=results[0];
+              $state.go("upload_sjg");
+          },function (error) {
+
+          });
+      }, false);
+    }
+    //此函数实现显示一个ActionSheet，提示用户选择从相册上传照片
+     $scope.uploadImg=function() {
+      // Show the action sheet
+      var hideSheet= $ionicActionSheet.show({
+        cancelOnStateChange:true,
+        cssClass:'action_s',
+        titleText: "<b>请从相册挑选一件衣服图片进行上传</b>",
+        buttons: [
+          { text: "相册" }
+        ],
+        buttonClicked: function() {
+          selectImg();
+          return true;
+        },
+        cancelText: "取消",
+        cancel: function() {
+          // add cancel code..
+          console.log('执行了取消操作');
+          return true;
+        }
+      });
+    }
+
+
   }])
 
   .controller('MySjg_detailsCtrl', ["$scope","$state","getSjgDetailsFactory","$stateParams",function($scope,$state,getSjgDetailsFactory,$stateParams) {
