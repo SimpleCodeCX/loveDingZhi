@@ -112,5 +112,20 @@ color: #666;
   border-radius: 13px;
 }
 
+.aiDingZhi_page .design-slide ion-slide{
+  height: 300px;
+  width: 100%;
+}
+.aiDingZhi_page .design-slide ion-slide img{
+  height:300px;
+  width: 100%;
+}
+/*design页面里的slider-pager的高度和大小*/
+.aiDingZhi_page .slider-pager .slider-pager-page{
+  font-size: 15px;
+}
+.aiDingZhi_page .slider-pager{
+  bottom: 20px;
+}
 
 

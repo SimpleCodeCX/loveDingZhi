@@ -1,0 +1,100 @@
+<ion-view hide-back-button="true">
+  <ion-nav-buttons side="left" >
+    <a class="button button-clear " href="#/makeOrder_shopping">
+      <i class="icon ion-chevron-left"></i>
+      返回
+    </a>
+  </ion-nav-buttons>
+  <ion-nav-title class="">
+    结算中心
+  </ion-nav-title>
+  <ion-content>
+
+    <ion-list>
+      <ion-item class="item-divider" style="margin-top: 20px;">
+        <b>请选择收货地址{{data.userAddressId}}</b>
+      </ion-item>
+      <!--<ion-radio ng-model="data.userAddressId" ng-value="'{{shouhuoAddress.userAddressId}}'" ng-repeat="shouhuoAddress in shouhuoAddressList">
+        {{shouhuoAddress.realName}}
+        <div>
+         {{shouhuoAddress.addressDetail}}
+        </div>
+      </ion-radio>-->
+      <ion-radio ng-model="data.userAddressId" ng-value="'{{userAddress.userAddressId}}'" ng-repeat="userAddress in userAddressList">
+        {{userAddress.realName}}
+        <div>
+          {{userAddress.sheng+userAddress.shi+userAddress.qu+userAddress.addressDetail}}
+        </div>
+      </ion-radio>
+
+      <ion-item  class="item-icon-left item-button-right" style="margin-top: 10px;" ng-click="openModal();">
+        <i class="icon ion-ios-plus-outline"></i>
+        使用新地址
+        <button class="button button-balanced button-clear
+        button-large button-icon ion-chevron-right">
+        </button>
+      </ion-item>
+    </ion-list>
+
+
+    <script id="addAddressHtml" type="text/ng-template">
+      <ion-modal-view  class="dark-bg ion_modal_view">
+      </ion-modal-view>
+      <ion-modal-view  class="light-bg"  style="width: 90%;min-height:89%;
+                      margin-top: 40px;margin-left: 20px;">
+        <ion-content class="">
+          <div style="margin-top: 10px;" class="padding">
+            <div class="light-bg">
+              <ion-list>
+                <ion-item class="item-icon-right" style="text-align: center;" >
+                  新增地址
+                  <i class="icon ion-ios-close-outline"
+                     ng-click="closeModal()"></i>
+                </ion-item>
+                <ion-item class="item-input">
+                  收货人：<input type="text" ng-model="customerInfo.realName" >
+                </ion-item>
+                <ion-item class="item-input">
+                  联系方式：<input type="text" ng-model="customerInfo.phoneNumber" >
+                </ion-item>
+                <ionic-city-picker options='vm.CityPickData1'></ionic-city-picker>
+                <ion-item class="item-input">
+                  详细地址：<input type="text" ng-model="customerInfo.detailAddress" >
+                </ion-item>
+                <ion-item class="item-input">
+                  邮政编码：<input type="text" ng-model="customerInfo.postalcode" >
+                </ion-item>
+              </ion-list>
+              <div class="padding">
+                <button class="button button-block button-stable" ng-click="saveAddress()">
+                  保存
+                </button>
+              </div>
+            </div>
+
+
+
+          </div>
+          </div>
+
+        </ion-content>
+      </ion-modal-view>
+
+
+
+    </script>
+  </ion-content>
+  <ion-footer-bar class="">
+    <div class="" style="width: 100%;height: 200px;">
+      合计：金额  ￥{{totalPrice}}
+      <button class="button button-large button-balanced testBorder" style="float: right;" ng-click="pay()">支付</button>
+    </div>
+  </ion-footer-bar>
+</ion-view>
+
+
+
+
+
+
+

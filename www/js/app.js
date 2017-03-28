@@ -3,7 +3,7 @@
  */
 
 angular.module('starter',['ionic','starter.controllers','starter.services','starter.accountServices',
-  'starter.designServices','starter.shoppingServices','starter.aiDingZhiServices','ngCordova','ngResource','starter.config'])
+  'starter.designServices','starter.shoppingServices','starter.aiDingZhiServices','ngCordova','ngResource','starter.config','ionic-citypicker'])
   .run(function($ionicPlatform,userDataFactory,firstOpenLoginFactory) {
     //这里是首次运行就会运行
     //app首次运行时，执行自动登录功能
@@ -111,14 +111,30 @@ angular.module('starter',['ionic','starter.controllers','starter.services','star
         controller:"LogoCtrl"
     })
       .state("dingzhi",{
-        url:"/dingzhi",
-        templateUrl:"design/dingzhi.html",
-        controller:"DingzhiCtrl"
+      url:"/dingzhi/:myDiyClothId/:imgUrl",
+      templateUrl:"design/dingzhi.html",
+      controller:"DingzhiCtrl"
+    })
+      .state("makeOrder_shopping",{
+        url:"/shopping/makeOrder_shopping/:myDiyClothId/:imgUrl",
+        templateUrl:"shopping/makeOrder_shopping.html",
+        controller:"MakeOrder_shoppingCtrl"
       })
-      .state("orderPay",{
-        url:"/orderPay",
-        templateUrl:"design/orderPay.html",
-        controller:"OrderPayCtrl"
+      .state("makeOrder_design",{
+        url:"/design/makeOrder_design/:myDiyClothId/:imgUrl",
+        templateUrl:"design/makeOrder_design.html",
+        controller:"MakeOrder_designCtrl"
+      })
+
+      .state("orderPay_shopping",{
+        url:"/orderPay_shopping/:totalPrice",
+        templateUrl:"shopping/orderPay_shopping.html",
+        controller:"OrderPay_shoppingCtrl"
+      })
+      .state("orderPay_design",{
+        url:"/orderPay_design",
+        templateUrl:"design/orderPay_design.html",
+        controller:"OrderPay_designCtrl"
       })
 
 
@@ -164,7 +180,7 @@ angular.module('starter',['ionic','starter.controllers','starter.services','star
       })
 
       .state("diyCloth",{
-        url:"/diyCloth/:imgUrl",
+        url:"/diyCloth/:imgUrl/:businessClothId",
         templateUrl:"shopping/diyCloth.html",
         controller:"DiyClothCtrl"
       })
@@ -236,7 +252,21 @@ angular.module('starter',['ionic','starter.controllers','starter.services','star
         templateUrl:"account/myShangCheng_cloth.html",
         controller:"MyShangCheng_clothCtrl"
       })
-
+      .state("myAddress",{
+        url:"/myAddress",
+        templateUrl:"account/myAddress.html",
+        controller:"MyAddressCtrl"
+      })
+      .state("add_address",{
+        url:"/add_address",
+        templateUrl:"account/add_address.html",
+        controller:"Add_addressCtrl"
+      })
+      .state("update_address",{
+        url:"/update_address/:userAddressId",
+        templateUrl:"account/update_address.html",
+        controller:"Update_addressCtrl"
+      })
       .state("myShangCheng_logo",{
         url:"/myShangCheng_logo",
         templateUrl:"account/myShangCheng_logo.html",
@@ -257,11 +287,7 @@ angular.module('starter',['ionic','starter.controllers','starter.services','star
         templateUrl:"account/update_name.html",
         controller:"Update_nameCtrl"
       })
-      .state("update_address",{
-        url:"/update_address",
-        templateUrl:"account/update_address.html",
-        controller:"Update_addressCtrl"
-      })
+
 
       .state("collect_sjg",{
         url:"/collect_sjg",

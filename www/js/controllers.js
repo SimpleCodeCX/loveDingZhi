@@ -21,7 +21,6 @@ angular.module("starter.controllers",[])
       onGetSjgDetailsFromService();
       $scope.sjgDetails=getSjgDetailsFactory.getSjgDetails();
       $scope.modal.show();
-      console.log($scope.sjgDetails);
     });
 
   }
@@ -51,7 +50,8 @@ angular.module("starter.controllers",[])
 
   }
 }])
-  .controller('ShoppingCtrl', ["$scope","$ionicModal","$state","userDataFactory","getShangChengClothListFactory",function($scope,$ionicModal,$state,userDataFactory,getShangChengClothListFactory) {
+  .controller('ShoppingCtrl', ["$scope","$ionicModal","$state","userDataFactory","getShangChengClothListFactory","imageFactory",
+    function($scope,$ionicModal,$state,userDataFactory,getShangChengClothListFactory,imageFactory) {
 
     //保存用户的数据(需要用到用户的数据，前端判断是否为商家)
     $scope.userDataView={};
@@ -79,14 +79,15 @@ angular.module("starter.controllers",[])
     });
     $scope.openModal = function(shangChengClothIndex) {
       $scope.selectShangChengCloth=$scope.shangChengClothList[shangChengClothIndex].imgUrl;
+      $scope.selectShangChengClothId=$scope.shangChengClothList[shangChengClothIndex].id;
       $scope.modal.show();
     };
     $scope.closeModal = function() {
       $scope.modal.hide();
     };
     $scope.diyCloth=function () {
-        $scope.modal.hide();
-        $state.go("diyCloth",{imgUrl:$scope.selectShangChengCloth});
+      $scope.modal.hide();
+      $state.go("diyCloth",{imgUrl:$scope.selectShangChengCloth,businessClothId:$scope.selectShangChengClothId});
     }
     $scope.goToShangJia_details=function () {
       $scope.modal.hide();
@@ -184,7 +185,7 @@ angular.module("starter.controllers",[])
 
       };
 
-      //上传Logo
+  /*    //上传Logo
       $scope.uploadLogo= function () {
         var options = {
           maximumImagesCount: 1,
@@ -192,7 +193,7 @@ angular.module("starter.controllers",[])
           height: 150,
           quality: 80
         };
-        /*当Cordova加载完成后才可以调用Cordova插件*/
+        /!*当Cordova加载完成后才可以调用Cordova插件*!/
         document.addEventListener("deviceready", function () {
           //alert();
           $cordovaImagePicker.getPictures(options)
@@ -202,7 +203,7 @@ angular.module("starter.controllers",[])
 
             });
         }, false);
-      };
+      };*/
 
   }])
 
@@ -627,9 +628,229 @@ angular.module("starter.controllers",[])
       };
 
   }])
-  .controller('DingzhiCtrl', ["$scope",function($scope) {
+  .controller('DingzhiCtrl', ["$scope","$stateParams",function($scope,$stateParams) {
+    $scope.myDiyClothId=$stateParams["myDiyClothId"];
+    $scope.imgUrl=$stateParams["imgUrl"];
+    /*$state.go("dingzhi",{myDiyClothId:myDiyCloth.myDiyClothId,imgUrl:myDiyCloth.imgUrl});*/
   }])
-  .controller('OrderPayCtrl', ["$scope",function($scope) {
+
+  .controller('MakeOrder_shoppingCtrl', ["$scope","$stateParams","$ionicModal","$state","getDiyClothDetailsFactory","saveShoppingMakeOrderFactory"
+    ,function($scope,$stateParams,$ionicModal,$state,getDiyClothDetailsFactory,saveShoppingMakeOrderFactory) {
+      $scope.myDiyClothId=$stateParams["myDiyClothId"];
+      $scope.imgUrl=$stateParams["imgUrl"];
+      $scope.myDiyClothDetails= {
+        isBusinessLogo:null,
+        price:null,
+        userName:""
+      };
+      //logo价格，如果是设计师的logo这需要1元，如果是商家的logo则免费
+      $scope.logoPrice=0;
+      //总单价（衣服+logo）
+      $scope.price=50;
+      //总件数
+      $scope.totalCount=10;
+      //总价格
+      $scope.totalPrice=10;
+      getDiyClothDetailsFactory.getDiyClothDetailsFromService($scope.myDiyClothId);
+      var onGetDiyClothDetailsFromService= $scope.$on("getDiyClothDetailsFactory.getDiyClothDetailsFromService",function () {
+        onGetDiyClothDetailsFromService();
+        $scope.myDiyClothDetails = getDiyClothDetailsFactory.getMyDiyClothDetails();
+        $scope.price=$scope.myDiyClothDetails.price;
+        //判断是否为设计师的logo
+        if(!$scope.myDiyClothDetails.isBusinessLogo){
+          $scope.logoPrice=1;
+          $scope.price=$scope.price+$scope.logoPrice;
+        }
+      });
+
+      /* //添加一行选择尺码和件数的item，方法一
+       var theBarItem = document.querySelector("#theBarItem");
+       var theContent = document.querySelector("#theContent");
+       var select = document.getElementsByTagName('select');
+       $scope.addTheBarItem=function () {
+       var theBarItemStr=theBarItem.innerHTML;
+       var newNode = document.createElement("div");
+       newNode.innerHTML = theBarItemStr;
+       /!*newNode.innerHTML = theBarItemStr+"</ion-item>";*!/
+       console.log(newNode);
+       theContent.appendChild(newNode);
+
+       }*/
+      //添加一行选择尺码和件数的item，方法二
+      $scope.addTheBarItem=function () {
+        var item={selectSize:"请选择",sizes:["请选择","S","M","L","XL","2XL"],selectQuantity:0,quantitys:jianshu,isHaveBtnAdd:false};
+        $scope.items.push(item);
+      }
+      var jianshu=new  Array(100);
+      for(i=0;i<=100;i++){
+        jianshu[i]=i;
+      }
+      $scope.items=[
+        {selectSize:"请选择",sizes: ["请选择","S","M","L","XL","2XL"],selectQuantity:0,quantitys:jianshu,isHaveBtnAdd:true},
+        {selectSize:"请选择",sizes:["请选择","S","M","L","XL","2XL"],selectQuantity:0,quantitys:jianshu,isHaveBtnAdd:false},
+      ];
+
+      $scope.count = function(newValue,oldValue,scope){
+        $scope.totalCount=0;
+        for(var i=0;i<$scope.items.length;i++){
+          $scope.totalCount=$scope.totalCount+$scope.items[i].selectQuantity;
+        }
+
+        $scope.totalPrice=$scope.totalCount*$scope.price;
+      };
+      $scope.$watch('items',$scope.count,true)
+      //下单
+      $scope.orderPay=function () {
+        $scope.modal.show();
+      }
+      //取消下单
+      $scope.cancleOrderPay=function () {
+        $scope.modal.hide();
+      }
+      //确定下单
+      $scope.confirmOrderPay=function () {
+        //保存尺码
+        var clothSizeItems=[];
+        for(var i=0;i<$scope.items.length;i++){
+          clothSizeItems.push({clothSize:$scope.items[i].selectSize,quantity:$scope.items[i].selectQuantity});
+        }
+        saveShoppingMakeOrderFactory.saveShoppingMakeOrderToService($scope.myDiyClothId,$scope.price,$scope.totalCount,$scope.totalPrice,clothSizeItems);
+        var onSaveShoppingMakeOrderToService = $scope.$on("saveShoppingMakeOrderFactory.saveShoppingMakeOrderToService",function () {
+          onSaveShoppingMakeOrderToService();
+          if(saveShoppingMakeOrderFactory.getIsSaveSuccess()){
+            $scope.modal.hide();
+            $state.go("orderPay_shopping",{totalPrice:$scope.totalPrice});
+          }
+        });
+
+      };
+      $ionicModal.fromTemplateUrl("confirmOrderPay",{
+        scope: $scope,
+        animation: "slide-in-down"
+      }).then (function(modal) {
+
+        $scope.modal = modal;
+      });
+      $scope.openModal = function() {
+        $scope.modal.show();
+      };
+      $scope.closeModal = function() {
+        $scope.modal.hide();
+      };
+
+
+  }])
+  .controller('MakeOrder_designCtrl', ["$scope","$stateParams","$ionicModal","$state",function($scope,$stateParams,$ionicModal,$state) {
+
+  }])
+
+
+  .controller('OrderPay_shoppingCtrl', ["$scope","$ionicModal","saveUserAddressFactory","getUserAddressListFactory","$stateParams",function($scope,$ionicModal,saveUserAddressFactory,getUserAddressListFactory,$stateParams) {
+    $scope.totalPrice=$stateParams["totalPrice"];
+    $scope.userAddressList=[{
+      userAddressId:null,
+      userId:null,
+      realName:"",
+      phoneNumber:null,
+      sheng:"",
+      shi:"",
+      qu:"",
+      detailAddress:"",
+      postalcode:null
+    }];
+
+    getUserAddressListFactory.getUserAddressListFromService();
+    var onGetUserAddressListFromService=$scope.$on("getUserAddressListFactory.getUserAddressListFromService",function () {
+      onGetUserAddressListFromService();
+      $scope.userAddressList=getUserAddressListFactory.getUserAddressList();
+      $scope.data.userAddressId=$scope.userAddressList[0].userAddressId;
+    });
+
+    $scope.data={
+      userAddressId:null
+    };
+
+    //保存用户新增的地址信息
+    $scope.customerInfo={
+      realName:"",
+      phoneNumber:"",
+      areaData:{
+        sheng:"",//省
+        shi:"",//市
+        qu:""//区
+      },
+      detailAddress:"",
+      postalcode:""
+    };
+
+    var vm=$scope.vm={};
+    vm.cb = function () {
+      $scope.customerInfo.areaData.sheng=vm.CityPickData1.areaData[0];
+      $scope.customerInfo.areaData.shi=vm.CityPickData1.areaData[1];
+      $scope.customerInfo.areaData.qu=vm.CityPickData1.areaData[2];
+    }
+    //例1
+    vm.CityPickData1 = {
+      areaData: [],
+      backdrop: true,
+      backdropClickToClose: true,
+      buttonClicked: function () {
+        vm.cb()
+      },
+      title: '所在地区：'
+    };
+
+    $ionicModal.fromTemplateUrl("addAddressHtml",{
+      scope: $scope,
+      animation: "slide-in-down"
+    }).then (function(modal) {
+      $scope.modal = modal;
+    });
+    $scope.openModal = function(shangChengClothIndex) {
+      $scope.modal.show();
+    };
+    $scope.closeModal = function() {
+      $scope.modal.hide();
+    };
+
+    //保存新增的地址到服务器
+    $scope.saveAddress=function () {
+      //将用户地址数据保存到服务器
+      saveUserAddressFactory.saveUserAddressToService($scope.customerInfo.realName,$scope.customerInfo.phoneNumber,$scope.customerInfo.areaData.sheng,$scope.customerInfo.areaData.shi,$scope.customerInfo.areaData.qu,$scope.customerInfo.detailAddress,$scope.customerInfo.postalcode);
+      var onSaveUserAddressToService=$scope.$on("saveUserAddressFactory.saveUserAddressToService",function () {
+        onSaveUserAddressToService();
+        //保存成功
+        if(saveUserAddressFactory.getIsSaveSuccess()){
+          $scope.modal.hide();
+          var address={
+            userAddressId:saveUserAddressFactory.getUserAddressId(),
+            userId:null,
+            realName:$scope.customerInfo.realName,
+            phoneNumber:$scope.customerInfo.phoneNumber,
+            sheng:$scope.customerInfo.areaData.sheng,
+            shi:$scope.customerInfo.areaData.shi,
+            qu:$scope.customerInfo.areaData.qu,
+            detailAddress:$scope.customerInfo.detailAddress,
+            postalcode:$scope.customerInfo.postalcode
+          };
+          $scope.data.userAddressId=address.userAddressId;
+          $scope.userAddressList.push(address);
+        }
+      });
+    };
+
+
+
+    $scope.pay=function () {
+      alert("请进行支付，下单成功.");
+
+    }
+
+
+
+
+  }])
+  .controller('OrderPay_designCtrl', ["$scope",function($scope) {
   }])
   .controller('PostNeedCtrl', ["$scope","$ionicModal","$ionicSlideBoxDelegate",
     function($scope,$ionicModal,$ionicSlideBoxDelegate) {
@@ -709,73 +930,201 @@ angular.module("starter.controllers",[])
       };
 }])
 
-  .controller('DiyClothCtrl', ["$scope","$state","$stateParams",function($scope,$state,$stateParams) {
-    $scope.clothImgUrl=$stateParams["imgUrl"];
-    var clothImg=new Image();
-    clothImg.src=$scope.clothImgUrl;
+  .controller('DiyClothCtrl', ["$scope","$state","$stateParams","getImageBase64Factory","$ionicActionSheet",
+    "$ionicModal", "getDesignerLogoListFactory","saveDiyClothFactory",
+    function($scope,$state,$stateParams,getImageBase64Factory,$ionicActionSheet,$ionicModal,
+             getDesignerLogoListFactory,saveDiyClothFactory) {
+      $scope.clothImgUrl=$stateParams["imgUrl"];
+      $scope.businessClothId=$stateParams["businessClothId"];
+      $scope.selectLogoId=0;
+      //选择的logo是否为商家的logo，1代表是商家的logo
+      $scope.isBusinessLogo=1;
+      var clothImg=new Image();
+      var logoImg=new Image();
+      getImageBase64Factory.getImageBase64FromService($scope.clothImgUrl);
+      var onGetImageBase64FromService= $scope.$on("getImageBase64Factory.getImageBase64FromService",function () {
+        onGetImageBase64FromService();
+        /*clothImg.crossOrigin = 'anonymous';*/
+        /*clothImg.src="../img/shangcheng/cloth/1.jpg";*/
+        // var clothImg=document.querySelector("#clothImg");
+        clothImg.src = getImageBase64Factory.getImgBase64();
+        logoImg.src="../img/logo/logo7.png";
 
-    var logoImg=new Image();
-    logoImg.src="../img/logo/logo7.png";
+        var clothCanvas=document.querySelector("#clothCanvas");
+        var clothCanvasCtx=clothCanvas.getContext("2d");
 
-    var clothCanvas=document.querySelector("#clothCanvas");
-    var clothCanvasCtx=clothCanvas.getContext("2d");
+        //设置canvas的宽和高,宽要设置成屏幕的大小
+        clothCanvas.width= document.body.clientWidth;-2;
+        clothCanvas.height=450;
 
-    var clothCanvasWidth=clothCanvas.width;
-    var clothCanvasHeight=clothCanvas.height;
+        var clothCanvasWidth=clothCanvas.width;
+        var clothCanvasHeight=clothCanvas.height;
 
-    var logoLeft= 10;
-    var logoTop=  10;
+        //初始化logo的位置
+        var logoLeft= 44;
+        var logoTop=  16;
 
-    var logoWidth=100;
-    var logoHeight=50;
+        //初始化logo的大小
+        var logoWidth=100;
+        var logoHeight=100;
 
+        //放大次数
+        var multipleCount=0;
+        //每次缩放的倍数
+        var multiple=1.1;
 
-    function drawing(coordinate) {
+        clothImg.onload=function () {
+          logoImg.onload=function () {
+            drawing();
+          }
+        };
 
-      if(coordinate && clothCanvasCtx.isPointInPath(coordinate.x, coordinate.y)) {
-        console.log(coordinate);
-        logoLeft = coordinate.x - logoWidth/2;
-        logoTop = coordinate.y - logoHeight/2;
+        function drawing(coordinate) {
+          if(coordinate && clothCanvasCtx.isPointInPath(coordinate.x, coordinate.y)) {
+            logoLeft = coordinate.x - logoWidth/2;
+            logoTop = coordinate.y - logoHeight/2;
+          }
+          clothCanvasCtx.clearRect(0,0,clothCanvasWidth,clothCanvasHeight);
+          clothCanvasCtx.drawImage(clothImg,0,0,clothCanvasWidth,clothCanvasHeight);
+          clothCanvasCtx.beginPath();
+          clothCanvasCtx.strokeStyle="#fff";
+          clothCanvasCtx.rect(logoLeft,logoTop,logoWidth,logoHeight);
+          clothCanvasCtx.closePath();
+          clothCanvasCtx.stroke();
+          clothCanvasCtx.drawImage(logoImg,logoLeft,logoTop,logoWidth,logoHeight);
+        }
+
+        //触摸移动
+        clothCanvas.addEventListener("touchmove",function (e) {
+
+          var moveTouch = e.targetTouches[0];
+
+          //layerX || offsetX
+          var coordinate = {
+            x: moveTouch.clientX - moveTouch.target.offsetLeft,
+            y: moveTouch.clientY - moveTouch.target.offsetTop
+          };
+          coordinate.x=coordinate.x;
+          coordinate.y=coordinate.y;
+          drawing(coordinate);
+        },false);
+
+        //放大
+        $scope.zoomLogoBig=function () {
+          if(multipleCount >= 8){
+            console.log('not big');
+            return false;
+          }
+          scale(multiple);
+          multipleCount += 1;
+          drawing();
+        }
+        //缩小
+        $scope.zoomLogoSmall= function (){
+          if(multipleCount <= -8) {
+            console.log('not small');
+            return false;
+          }
+          scale(1/multiple);
+          multipleCount -= 1;
+          drawing();
+        }
+        function scale(multiple) {
+          logoWidth = multiple * logoWidth;
+          logoHeight = multiple * logoHeight;
+        }
+      });
+
+      $scope.logoList=[
+        {
+          id:null,
+          caption:"",
+          introduction:"",
+          author:null,
+          imgUrl:""
+        }
+      ];
+      //选择Logo
+      $scope.selectLogoActionSheet= function () {
+        // Show the action sheet
+        var hideSheet= $ionicActionSheet.show({
+          cancelOnStateChange:true,
+          cssClass:'action_s',
+          titleText: "<b>选择logo</b>",
+          buttons: [
+            { text: "设计师的logo" }
+          ],
+          buttonClicked: function() {
+            getDesignerLogoListFactory.getDesignerLogoListFromService(1);
+            var onGetDesignerLogoListFromService=$scope.$on("getDesignerLogoListFactory.getDesignerLogoListFromService",function () {
+              onGetDesignerLogoListFromService();
+              $scope.logoList=getDesignerLogoListFactory.getDesignerLogoList();
+              $scope.modal.show();
+            })
+
+            return true;
+          },
+          cancelText: "取消",
+          cancel: function() {
+            // add cancel code..
+            console.log('执行了取消操作');
+            return true;
+          }
+        });
       }
-      clothCanvasCtx.clearRect(0,0,clothCanvasWidth,clothCanvasHeight);
-      clothCanvasCtx.drawImage(clothImg,0,0,clothCanvasWidth,clothCanvasHeight);
-      clothCanvasCtx.beginPath();
-      clothCanvasCtx.strokeStyle="#fff";
-      clothCanvasCtx.strokeRect(logoLeft,logoTop,logoWidth,logoHeight);
-      clothCanvasCtx.closePath();
-      clothCanvasCtx.stroke();
-      clothCanvasCtx.drawImage(logoImg,logoLeft,logoTop,logoWidth,logoHeight);
-    }
 
 
-    clothImg.onload=function () {
-      logoImg.onload=function () {
-        drawing();
+      $ionicModal.fromTemplateUrl("selectLogo",{
+        scope: $scope,
+        animation: "slide-in-down"
+      }).then (function(modal) {
+
+        $scope.modal = modal;
+      });
+      $scope.openModal = function() {
+        $scope.modal.show();
+      };
+      $scope.closeModal = function() {
+        $scope.modal.hide();
+      };
+
+      $scope.dingZhi=function () {
+        var diyImg=clothCanvas.toDataURL("image/png");
+        var diyImgBase64=diyImg.substr(diyImg.indexOf(",") + 1)//去掉base64的格式头，因为格式头不属于图片的数据，否则后台将图片的base64保存为图片时会出错
+        saveDiyClothFactory.saveDiyClothToService($scope.businessClothId,$scope.selectLogoId,$scope.isBusinessLogo,diyImgBase64);
+        var onSaveDiyClothToService=$scope.$on("saveDiyClothFactory.saveDiyClothToService",function () {
+          onSaveDiyClothToService();
+          var myDiyCloth= {
+            myDiyClothId:null,
+            imgUrl:""
+          };
+          myDiyCloth=saveDiyClothFactory.getMyDiyCloth();
+          $state.go("makeOrder_shopping",{myDiyClothId:myDiyCloth.myDiyClothId,imgUrl:myDiyCloth.imgUrl});
+        });
+
       }
-    }
 
-    clothCanvas.addEventListener("touchmove",function (e) {
-      e.preventDefault();
-      var moveTouch = e.targetTouches[0];
-
-      //layerX || offsetX
-      var coordinate = {
-        x: moveTouch.clientX - moveTouch.target.offsetLeft,
-        y: moveTouch.clientY - moveTouch.target.offsetTop
+      $scope.selectLogo=function (index_) {
+        $scope.modal.hide();
+        getImageBase64Factory.getImageBase64FromService($scope.logoList[index_].imgUrl);
+        $scope.selectLogoId=$scope.logoList[index_].id;
+        $scope.isBusinessLogo=0;
+        var onGetImageBase64FromService=$scope.$on("getImageBase64Factory.getImageBase64FromService",function () {
+          onGetImageBase64FromService();
+          logoImg.src= getImageBase64Factory.getImgBase64();
+        });
       }
-
-      drawing(coordinate);
-    },false);
-
-
-    $scope.dingZhi=function () {
-      $state.go("dingzhi");
-    }
   }])
 
 
   .controller('AiDingZhiCtrl', ["$scope","$state","getDataFactory"
               ,function($scope,$state,getDataFactory) {
+      $scope.designDatas=[
+        "../img/sjg/sjg13.jpg",
+        "../img/sjg/sjg1.jpg",
+        "../img/sjg/sjg3.jpg",
+        "../img/sjg/sjg4.jpg",
+        "../img/sjg/sjg5.png"];
       $scope.goToPostNeed=function () {
         $state.go("postNeed");
       };
@@ -978,13 +1327,88 @@ angular.module("starter.controllers",[])
     $scope.goToUpdateName=function () {
       $state.go("update_name");
     }
-    $scope.goToUpdateAddress=function () {
-      $state.go("update_address");
+    $scope.goToMyAddress=function () {
+      $state.go("myAddress");
     }
 
     $scope.test=function () {
       /*alert("test");*/
     }
+
+
+  }])
+  .controller('MyAddressCtrl',["$scope","$state","getUserAddressListFactory",function($scope,$state,getUserAddressListFactory) {
+    $scope.userAddressList=[{
+      userAddressId:null,
+      userId:null,
+      realName:"",
+      phoneNumber:null,
+      sheng:"",
+      shi:"",
+      qu:"",
+      detailAddress:"",
+      postalcode:null
+    }];
+    getUserAddressListFactory.getUserAddressListFromService();
+    var onGetUserAddressListFromService=$scope.$on("getUserAddressListFactory.getUserAddressListFromService",function () {
+      onGetUserAddressListFromService();
+      $scope.userAddressList=getUserAddressListFactory.getUserAddressList();
+    });
+    $scope.goToAdd_address=function () {
+      $state.go("add_address");
+    };
+    $scope.goToUpdate_address=function (userAddressId) {
+      $state.go("update_address",{userAddressId:userAddressId});
+    };
+
+  }])
+  .controller('Add_addressCtrl',["$scope","$state","saveUserAddressFactory",function($scope,$state,saveUserAddressFactory) {
+    $scope.customerInfo={
+      realName:"",
+      phoneNumber:"",
+      areaData:{
+        sheng:"",//省
+        shi:"",//市
+        qu:""//区
+      },
+      detailAddress:"",
+      postalcode:""
+    };
+
+    var vm=$scope.vm={};
+    vm.cb = function () {
+      $scope.customerInfo.areaData.sheng=vm.CityPickData1.areaData[0];
+      $scope.customerInfo.areaData.shi=vm.CityPickData1.areaData[1];
+      $scope.customerInfo.areaData.qu=vm.CityPickData1.areaData[2];
+    }
+    //例1
+    vm.CityPickData1 = {
+      areaData: [],
+      backdrop: true,
+      backdropClickToClose: true,
+      defaultAreaData: ['江苏', '无锡', '江阴市'],
+      buttonClicked: function () {
+        vm.cb()
+      },
+      title: "所在地区："
+    };
+
+    //保存新增的地址到服务器
+    $scope.saveAddress=function () {
+      //将用户地址数据保存到服务器
+      saveUserAddressFactory.saveUserAddressToService($scope.customerInfo.realName,$scope.customerInfo.phoneNumber,$scope.customerInfo.areaData.sheng,$scope.customerInfo.areaData.shi,$scope.customerInfo.areaData.qu,$scope.customerInfo.detailAddress,$scope.customerInfo.postalcode);
+      var onSaveUserAddressToService=$scope.$on("saveUserAddressFactory.saveUserAddressToService",function () {
+        onSaveUserAddressToService();
+        //保存成功
+        if(saveUserAddressFactory.getIsSaveSuccess()){
+         $state.go("myAddress");
+        }
+      });
+    };
+
+
+
+
 
 
   }])
@@ -1065,7 +1489,6 @@ angular.module("starter.controllers",[])
     var onGetMyShangChengLogoListFromService=$scope.$on("getMyShangChengLogoListFactory.getMyShangChengLogoListFromService",function () {
       onGetMyShangChengLogoListFromService();
       $scope.myShangChengLogoList=getMyShangChengLogoListFactory.getShangChengLogoList();
-      console.log($scope.myShangChengLogoList);
     })
 
     $scope.openModal=function () {
@@ -1078,7 +1501,7 @@ angular.module("starter.controllers",[])
   .controller('Collect_logoCtrl', ["$scope",function($scope) {
   }])
 
-  .controller('MySjgCtrl', ["$scope","$state","getMySjgListFactory","userDataFactory",function($scope,$state,getMySjgListFactory,userDataFactory) {
+  .controller('MySjgCtrl', ["$scope","$state","getMySjgListFactory","userDataFactory","$cordovaImagePicker","$ionicActionSheet",function($scope,$state,getMySjgListFactory,userDataFactory,$cordovaImagePicker,$ionicActionSheet) {
 
     //保存用户的数据
     $scope.userDataView={};
@@ -1096,6 +1519,56 @@ angular.module("starter.controllers",[])
       // sjgId_为设计稿的sjgId
       $state.go("mySjg_details",{sjgId:sjgId_});
     }
+
+    //保存衣服图片
+    $scope.imgClothSrc="";
+    //此函数实现从相册中挑选一张照片
+    function selectImg() {
+      alert("调用相册接口，因为是在公司，无法进行手机测试");
+      $state.go("upload_sjg");
+      var options = {
+        maximumImagesCount: 1,
+        width: 150,
+        height: 150,
+        quality: 80
+      };
+      /*当Cordova加载完成后才可以调用Cordova插件*/
+      document.addEventListener("deviceready", function () {
+        //alert();
+        $cordovaImagePicker.getPictures(options)
+          .then(function (results) {
+              //选择衣服图片
+              $scope.imgClothSrc=results[0];
+              $state.go("upload_sjg");
+          },function (error) {
+
+          });
+      }, false);
+    }
+    //此函数实现显示一个ActionSheet，提示用户选择从相册上传照片
+     $scope.uploadImg=function() {
+      // Show the action sheet
+      var hideSheet= $ionicActionSheet.show({
+        cancelOnStateChange:true,
+        cssClass:'action_s',
+        titleText: "<b>请从相册挑选一件衣服图片进行上传</b>",
+        buttons: [
+          { text: "相册" }
+        ],
+        buttonClicked: function() {
+          selectImg();
+          return true;
+        },
+        cancelText: "取消",
+        cancel: function() {
+          // add cancel code..
+          console.log('执行了取消操作');
+          return true;
+        }
+      });
+    }
+
+
   }])
 
   .controller('MySjg_detailsCtrl', ["$scope","$state","getSjgDetailsFactory","$stateParams",function($scope,$state,getSjgDetailsFactory,$stateParams) {
@@ -1276,7 +1749,67 @@ angular.module("starter.controllers",[])
 
   }])
 
-  .controller('Update_addressCtrl',["$scope","$state",function($scope,$state) {
+  .controller('Update_addressCtrl',["$scope","$state","$stateParams","getUserAddressByUserAddressIdFactory","updateUserAddressByUserAddressIdFactory",function($scope,$state,$stateParams,getUserAddressByUserAddressIdFactory,updateUserAddressByUserAddressIdFactory) {
+
+    var userAddressId=$stateParams["userAddressId"];
+    $scope.customerInfo={
+      realName:"",
+      phoneNumber:"",
+      areaData:{
+        sheng:"",//省
+        shi:"",//市
+        qu:""//区
+      },
+      detailAddress:"",
+      postalcode:""
+    };
+     vm=$scope.vm={};
+    vm.cb = function () {
+      $scope.customerInfo.areaData.sheng=vm.CityPickData1.areaData[0];
+      $scope.customerInfo.areaData.shi=vm.CityPickData1.areaData[1];
+      $scope.customerInfo.areaData.qu=vm.CityPickData1.areaData[2];
+    }
+    //例1
+    vm.CityPickData1 = {
+      areaData: [],
+      backdrop: true,
+      backdropClickToClose: true,
+      buttonClicked: function () {
+        vm.cb()
+      },
+      title: "所在地区："
+    };
+    getUserAddressByUserAddressIdFactory.getUserAddressByUserAddressIdFromService(userAddressId);
+    var onGetUserAddressByUserAddressIdFromService=$scope.$on("getUserAddressByUserAddressIdFactory.getUserAddressByUserAddressIdFromService",function () {
+      onGetUserAddressByUserAddressIdFromService();
+      var userAddress=getUserAddressByUserAddressIdFactory.getUserAddress();
+      $scope.customerInfo.realName=userAddress.realName;
+      $scope.customerInfo.phoneNumber=userAddress.phoneNumber;
+      $scope.customerInfo.detailAddress=userAddress.detailAddress;
+      $scope.customerInfo.postalcode=userAddress.postalcode;
+      $scope.customerInfo.areaData.sheng=userAddress.sheng;
+      $scope.customerInfo.areaData.shi=userAddress.shi;
+      $scope.customerInfo.areaData.qu=userAddress.qu;
+    });
+    $scope.updateAddress=function () {
+
+      updateUserAddressByUserAddressIdFactory.updateUserAddressByUserAddressIdToService(
+        userAddressId,
+        $scope.customerInfo.realName,
+        $scope.customerInfo.phoneNumber,
+        $scope.customerInfo.areaData.sheng,
+        $scope.customerInfo.areaData.shi,
+        $scope.customerInfo.areaData.qu,
+        $scope.customerInfo.detailAddress,
+        $scope.customerInfo.postalcode
+      );
+      var onUpdateUserAddressByUserAddressIdToService=$scope.$on("updateUserAddressByUserAddressIdFactory.updateUserAddressByUserAddressIdToService",function () {
+        onUpdateUserAddressByUserAddressIdToService();
+        if(updateUserAddressByUserAddressIdFactory.getisUpdateSuccess()){
+          $state.go("myAddress");
+        }
+      });
+    }
   }])
 
 

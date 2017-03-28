@@ -1,4 +1,4 @@
-<ion-view view-title="修改地址" hide-back-button="true">
+<ion-view view-title="新增地址" hide-back-button="true">
   <ion-nav-buttons side="left" >
     <a class="button button-clear " href="#/myAddress">
       返回
@@ -7,21 +7,21 @@
   <ion-content>
     <ion-list>
       <ion-item class="item-input">
-        收货人：<input type="text" ng-model="customerInfo.realName" placeholder="真是姓名">
+        收货人：<input type="text" ng-model="customerInfo.realName" >
       </ion-item>
       <ion-item class="item-input">
-        联系方式：<input type="text" ng-model="customerInfo.phoneNumber" placeholder="手机号码">
+        联系方式：<input type="text" ng-model="customerInfo.phoneNumber" >
       </ion-item>
       <ionic-city-picker options='vm.CityPickData1'></ionic-city-picker>
       <ion-item class="item-input">
-        详细地址：<input type="text" ng-model="customerInfo.detailAddress" placeholder="详细地址">
+        详细地址：<input type="text" ng-model="customerInfo.detailAddress" >
       </ion-item>
       <ion-item class="item-input">
         邮政编码：<input type="text" ng-model="customerInfo.postalcode" >
       </ion-item>
     </ion-list>
     <div class="padding">
-      <button class="button button-block button-stable" ng-click="updateAddress()">
+      <button class="button button-block button-stable" ng-click="saveAddress()">
         保存
       </button>
     </div>

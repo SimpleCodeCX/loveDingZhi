@@ -346,11 +346,11 @@ angular.module("starter.accountServices",[])
   /**
    * * Created by simple on 2017/02/05.
    * 获取我的设计稿列表数据（注意：是我的）
-   * 调用接口：account/getMySjgList：
+   * 调用接口：account/getMySjgList_authority：
    * 返回设计稿列表数据：List<DesignDrawing>
    */
   .factory("getMySjgListFactory",function (THEGLOBAL,$resource,$rootScope) {
-    var theUrl=THEGLOBAL.serviceAPI + "/account/getMySjgList";
+    var theUrl=THEGLOBAL.serviceAPI + "/account/getMySjgList_authority";
     var isGetSjgListSuccess;//true代表成功
     var mySjgList=[
       {
@@ -392,11 +392,11 @@ angular.module("starter.accountServices",[])
   /**
    * * Created by simple on 2017/02/05.
    * 获取我的logo列表数据（注意：是我的）
-   * 调用接口：account/getMyLogoList：
+   * 调用接口：account/getMyLogoList_authority：
    * 返回logo列表数据：List<DesignerLogo>
    */
   .factory("getMyLogoListFactory",function (THEGLOBAL,$resource,$rootScope) {
-    var theUrl=THEGLOBAL.serviceAPI + "/account/getMyLogoList";
+    var theUrl=THEGLOBAL.serviceAPI + "/account/getMyLogoList_authority";
     var isGetLogoListSuccess;//true代表成功
     var myLogoList=[
       {
@@ -530,11 +530,196 @@ angular.module("starter.accountServices",[])
     }
   })
 
+  /**
+   * * Created by simple on 2017/03/22.
+   * 保存用户的收货地址  需要登录
+   * 调用接口：account/saveUserAddress_authority：
+   * 保存成功，返回{flat:true,userAddressId:number},否则返回{flat:false}
+   */
+  .factory("saveUserAddressFactory",function (THEGLOBAL,$resource,$rootScope,userDataFactory) {
+    var theUrl=THEGLOBAL.serviceAPI + "/account/saveUserAddress_authority";
+
+    var userAddressId;//用户收货地址保存后在数据库的userAddressId
+    var isSaveSuccess;//true代表成功
+    return{
+      //请求服务器获取数据
+      saveUserAddressToService:function (realName_,phoneNumber_,sheng_,shi_,qu_,detailAddress_,postalcode_) {
+        //账号
+        var accountNumber_=userDataFactory.getUserDataConfig().accountNumber;
+        $.ajax({
+          type:"post",
+          url:theUrl,
+          xhrFields: {
+            withCredentials: true
+          },
+          data:{
+            accountNumber:accountNumber_,
+            realName:realName_,
+            phoneNumber:phoneNumber_,
+            sheng:sheng_,
+            shi:shi_,
+            qu:qu_,
+            detailAddress:detailAddress_,
+            postalcode:postalcode_
+          },
+          success:function (data) {
+
+            var jsonData=JSON.parse(data);
+            isSaveSuccess=jsonData.flat;
+            userAddressId=jsonData.userAddressId;
+            $rootScope.$broadcast("saveUserAddressFactory.saveUserAddressToService");
+          }
+        });
+      },
+      //返回是否成功
+      getIsSaveSuccess:function () {
+        return isSaveSuccess;
+      },
+      //返回保存到数据库成功后的userAddressId
+      getUserAddressId:function () {
+        return userAddressId;
+      }
 
 
+    }
+  })
+
+  /**
+   * Created by simple on 2017/03/22.
+   * 根据用户的userId获得我的收货地址列表  需要登录
+   * 调用接口：account/getUserAddressList_authority：
+   * 返回List<UserAddress>
+   */
+  .factory("getUserAddressListFactory",function (THEGLOBAL,$resource,$rootScope,userDataFactory) {
+    var theUrl=THEGLOBAL.serviceAPI + "/account/getUserAddressList_authority";
+
+    var userAddressList=[{
+      userAddressId:null,
+      userId:null,
+      realName:"",
+      phoneNumber:null,
+      sheng:"",
+      shi:"",
+      qu:"",
+      detailAddress:"",
+      postalcode:null
+    }];
+    return{
+      //请求服务器获取数据
+      getUserAddressListFromService:function () {
+        //账号
+        var accountNumber_=userDataFactory.getUserDataConfig().accountNumber;
+        $.ajax({
+          type:"get",
+          url:theUrl,
+          xhrFields: {
+            withCredentials: true
+          },
+          data:{
+            accountNumber:accountNumber_
+          },
+          success:function (data) {
+            userAddressList=data;
+            $rootScope.$broadcast("getUserAddressListFactory.getUserAddressListFromService");
+          }
+        });
+      },
+
+      getUserAddressList:function () {
+        return userAddressList;
+      }
 
 
+    }
+  })
+  /**
+   * Created by simple on 2017/03/22.
+   * 根据用户的userAddressId获得我的收货地址数据  需要登录
+   * 调用接口：account/getUserAddressByUserAddressId_authority：
+   * 返回UserAddress
+   */
+  .factory("getUserAddressByUserAddressIdFactory",function (THEGLOBAL,$resource,$rootScope) {
+    var theUrl=THEGLOBAL.serviceAPI + "/account/getUserAddressByUserAddressId_authority";
+    var userAddress={
+      userAddressId:null,
+      userId:null,
+      realName:"",
+      phoneNumber:null,
+      sheng:"",
+      shi:"",
+      qu:"",
+      detailAddress:"",
+      postalcode:null
+    };
+    return{
+      //请求服务器获取数据
+      getUserAddressByUserAddressIdFromService:function (userAddressId_) {
+        $.ajax({
+          type:"get",
+          url:theUrl,
+          xhrFields: {
+            withCredentials: true
+          },
+          data:{
+            userAddressId:userAddressId_
+          },
+          success:function (data) {
+            userAddress=data;
+            $rootScope.$broadcast("getUserAddressByUserAddressIdFactory.getUserAddressByUserAddressIdFromService");
+          }
+        });
+      },
 
+      getUserAddress:function () {
+        return userAddress;
+      }
+
+
+    }
+  })
+  /**
+   * Created by simple on 2017/03/22.
+   * 根据用户的userAddressId更新我的收货地址数据  需要登录
+   * 调用接口：account/updateUserAddressByUserAddressId_authority：
+   * 更新成功，返回{flat:true},否则返回{flat:false}
+   */
+  .factory("updateUserAddressByUserAddressIdFactory",function (THEGLOBAL,$resource,$rootScope) {
+    var theUrl=THEGLOBAL.serviceAPI + "/account/updateUserAddressByUserAddressId_authority";
+    var isUpdateSuccess;
+    return{
+      //请求服务器获取数据
+      updateUserAddressByUserAddressIdToService:function (userAddressId_,realName_,phoneNumber_,sheng_,shi_,qu_,detailAddress_,postalcode_) {
+        $.ajax({
+          type:"post",
+          url:theUrl,
+          xhrFields: {
+            withCredentials: true
+          },
+          data:{
+            userAddressId:userAddressId_,
+            realName:realName_,
+            phoneNumber:phoneNumber_,
+            sheng:sheng_,
+            shi:shi_,
+            qu:qu_,
+            detailAddress:detailAddress_,
+            postalcode:postalcode_
+          },
+          success:function (data) {
+            var jsonData=JSON.parse(data);
+            isUpdateSuccess=jsonData.flat;
+            $rootScope.$broadcast("updateUserAddressByUserAddressIdFactory.updateUserAddressByUserAddressIdToService");
+          }
+        });
+      },
+
+      getisUpdateSuccess:function () {
+        return isUpdateSuccess;
+      }
+
+
+    }
+  })
 
 
 
@@ -577,6 +762,7 @@ angular.module("starter.accountServices",[])
           /*data:{a:"aa",b:"bb"},//加上这个就会自动采用contentType:"application/json，浏览器会使用非简单请求*/
           url: theUrl
         }).then(function successCallback(response) {
+          console.log(response);
           data=response.data;
           $rootScope.$broadcast("getDataByHttpFactory.getDataByHttp");
         }, function errorCallback(error) {

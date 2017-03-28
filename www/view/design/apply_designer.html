@@ -17,9 +17,9 @@
         <input type="text" placeholder="专业" ng-model="applyData.major">
       </ion-item>
       <ion-item class="">
-        <div ng-if="applyData.majorImg">
+    <!--    <div ng-if="applyData.majorImg">
           <img id="majorImg" style="margin-top: 10px;height: 150px;width: 50%;"  ng-src="{{applyData.majorImg}}">
-        </div>
+        </div>-->
 
         <br/>
         <button class="button button-dark button-clear button-outline" ng-click="uploadImgMajor()" >
@@ -38,13 +38,13 @@
             <i class="icon ion-wand" style="font-size: 40px;"></i>
           </button>-->
       </ion-item>
-      <ion-item>
+     <!-- <ion-item>
         <div class="row row-wrap">
           <div ng-repeat="sjgImg in applyData.sjgImgs" class="col col-50">
             <img id="sjgImg{{$index}}" style="height: 150px;width: 100%;" ng-src="{{sjgImg}}">
           </div>
         </div>
-      </ion-item>
+      </ion-item>-->
       <ion-item class="" style="" >
         <div class="padding">
           <button class="button button-full button-balanced" ng-click="applyDesigner()">开通</button>

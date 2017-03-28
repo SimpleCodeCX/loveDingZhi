@@ -1,6 +1,9 @@
 <div class="aiDingZhi_page">
   <ion-view view-title="AI定制" hide-back-button="false">
     <ion-content>
+
+
+
       <div class="row padding">
         <div class="col col-25 col-offset-10 calm-bg button" style="margin-left: 35px;"  ng-click="goToPostNeed()">
 
@@ -25,9 +28,31 @@
           聊天记录
         </div>
       </div>
-      <hr/>
+      <hr class="" style="margin: 0px;"/>
+
+      <div class="design-slide">
+
+        <ion-slide-box   auto-play="true" does-continue="true" show-pager="true" slide-interval="1000">
+          <ion-slide ng-repeat="imgSrc in designDatas" class="">
+            <img  ng-src="{{imgSrc}}">
+          </ion-slide>
+          <!--  <ion-slide>
+              <img  src="../img/sjg/sjg2.jpg">
+            </ion-slide>
+            <ion-slide>
+              <img  src="../img/sjg/sjg3.jpg">
+            </ion-slide>
+            <ion-slide>
+              <img  src="../img/sjg/sjg4.jpg">
+            </ion-slide>
+            <ion-slide>
+              <img  src="../img/sjg/sjg5.png">
+            </ion-slide>-->
+        </ion-slide-box>
+      </div>
       <!--{{portalListData.realName}}-->
       <!--<input type="button" id="btn1" value="Ajax请求" ng-click="gogo()">-->
     </ion-content>
   </ion-view>
+
 </div>
